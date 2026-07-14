@@ -1,0 +1,460 @@
+---
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { QUESTIONS } from '../data/quiz';
+
+import archetypeCaregiver from '../assets/archetypes/caregiver.png';
+import archetypeCreator from '../assets/archetypes/creator.png';
+import archetypeEntertainer from '../assets/archetypes/entertainer.png';
+import archetypeEveryman from '../assets/archetypes/everyman.png';
+import archetypeExplorer from '../assets/archetypes/explorer.png';
+import archetypeHero from '../assets/archetypes/hero.png';
+import archetypeInnocent from '../assets/archetypes/innocent.png';
+import archetypeLover from '../assets/archetypes/lover.png';
+import archetypeMagician from '../assets/archetypes/magician.png';
+import archetypeMaverick from '../assets/archetypes/maverick.png';
+import archetypeRoyal from '../assets/archetypes/royal.png';
+import archetypeSage from '../assets/archetypes/sage.png';
+
+const iconSources: Record<string, ImageMetadata> = {
+  caregiver: archetypeCaregiver,
+  creator: archetypeCreator,
+  entertainer: archetypeEntertainer,
+  everyman: archetypeEveryman,
+  explorer: archetypeExplorer,
+  hero: archetypeHero,
+  innocent: archetypeInnocent,
+  lover: archetypeLover,
+  magician: archetypeMagician,
+  maverick: archetypeMaverick,
+  royal: archetypeRoyal,
+  sage: archetypeSage,
+};
+
+// Build the result data (name, desire, tagline, icon URL, profile link)
+// for the client-side result screen.
+const archetypeEntries = await getCollection('archetypes');
+const results: Record<string, {
+  name: string;
+  coreDesire: string;
+  tagline: string;
+  icon: string;
+  url: string;
+}> = {};
+
+for (const entry of archetypeEntries) {
+  const optimized = await getImage({ src: iconSources[entry.data.icon], width: 220 });
+  results[entry.data.slug] = {
+    name: entry.data.name,
+    coreDesire: entry.data.coreDesire,
+    tagline: entry.data.tagline,
+    icon: optimized.src,
+    url: `/brand-archetypes/${entry.data.slug}`,
+  };
+}
+---
+
+<BaseLayout
+  title="The Brand Archetype Quiz | Kaye Putnam"
+  description="Discover your brand archetype in 12 quick questions. The psychology-driven brand personality quiz taken by 250,000+ founders and marketers."
+>
+
+  <Nav currentPath="/quiz" />
+
+  <main style="padding-top: var(--site-header-height);">
+
+    <div class="quiz-shell">
+      <div class="container quiz-container">
+
+        <!-- ============================================================
+             INTRO
+        ============================================================ -->
+        <section class="quiz-intro" id="quiz-intro">
+          <p class="label hero-item">The Brand Archetype Quiz</p>
+          <h1 class="quiz-title hero-item">What's your brand's <em>personality</em>?</h1>
+          <p class="quiz-subhead hero-item">Answer 12 quick questions to discover your brand archetype: the psychology-backed personality behind brands people remember, trust, and choose. Taken by 250,000+ founders and marketers.</p>
+          <div class="hero-item">
+            <button type="button" class="btn quiz-start" id="quiz-start">Start the quiz &rarr;</button>
+            <p class="quiz-meta">12 questions &middot; about 3 minutes &middot; no email required</p>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             QUESTIONS
+        ============================================================ -->
+        <section class="quiz-flow" id="quiz-flow" hidden>
+          <div class="quiz-progress" aria-hidden="true">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+          <p class="quiz-count" id="quiz-count"></p>
+          <h2 class="quiz-question" id="quiz-question" aria-live="polite"></h2>
+          <div class="quiz-answers" id="quiz-answers"></div>
+          <button type="button" class="quiz-back" id="quiz-back" hidden>&larr; Previous question</button>
+        </section>
+
+        <!-- ============================================================
+             RESULT
+        ============================================================ -->
+        <section class="quiz-result" id="quiz-result" hidden>
+          <p class="label">Your brand archetype</p>
+          <div class="result-badge">
+            <img id="result-icon" src="" alt="" width="110" height="110" />
+          </div>
+          <h2 class="result-name" id="result-name"></h2>
+          <p class="result-desire" id="result-desire"></p>
+          <p class="result-tagline" id="result-tagline"></p>
+          <a href="#" class="btn result-cta" id="result-cta">Read your full profile &rarr;</a>
+          <p class="result-secondary" id="result-secondary"></p>
+          <button type="button" class="quiz-retake" id="quiz-retake">Retake the quiz</button>
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <Footer />
+
+</BaseLayout>
+
+<script define:vars={{ QUESTIONS, RESULTS: results }}>
+  const intro = document.getElementById('quiz-intro');
+  const flow = document.getElementById('quiz-flow');
+  const resultEl = document.getElementById('quiz-result');
+  const questionEl = document.getElementById('quiz-question');
+  const answersEl = document.getElementById('quiz-answers');
+  const countEl = document.getElementById('quiz-count');
+  const fillEl = document.getElementById('quiz-progress-fill');
+  const backBtn = document.getElementById('quiz-back');
+
+  let current = 0;
+  const picks = new Array(QUESTIONS.length).fill(null);
+
+  function show(el) {
+    for (const s of [intro, flow, resultEl]) s.hidden = s !== el;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[current];
+    countEl.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+    questionEl.textContent = q.question;
+    fillEl.style.width = `${(current / QUESTIONS.length) * 100}%`;
+    backBtn.hidden = current === 0;
+
+    answersEl.innerHTML = '';
+    q.answers.forEach((a, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'quiz-answer';
+      if (picks[current] === i) btn.classList.add('is-picked');
+      btn.textContent = a.text;
+      btn.addEventListener('click', () => {
+        picks[current] = i;
+        if (current < QUESTIONS.length - 1) {
+          current += 1;
+          renderQuestion();
+        } else {
+          renderResult();
+        }
+      });
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function renderResult() {
+    const scores = {};
+    picks.forEach((pick, qi) => {
+      if (pick === null) return;
+      const mapped = QUESTIONS[qi].answers[pick].archetypes;
+      for (const slug of mapped) {
+        scores[slug] = (scores[slug] || 0) + 1 / mapped.length;
+      }
+    });
+
+    const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    const primary = RESULTS[ranked[0][0]];
+    const secondary = ranked[1] ? RESULTS[ranked[1][0]] : null;
+
+    document.getElementById('result-icon').src = primary.icon;
+    document.getElementById('result-icon').alt = `${primary.name} archetype icon`;
+    document.getElementById('result-name').textContent = primary.name;
+    document.getElementById('result-desire').textContent = `Core desire: ${primary.coreDesire}`;
+    document.getElementById('result-tagline').textContent = primary.tagline;
+    const cta = document.getElementById('result-cta');
+    cta.href = primary.url;
+    cta.textContent = `Read your full ${primary.name.replace('The ', '')} profile →`;
+
+    const secondaryEl = document.getElementById('result-secondary');
+    if (secondary) {
+      secondaryEl.innerHTML = `Your secondary archetype is <a href="${secondary.url}">${secondary.name}</a>. The strongest brands pair a primary and secondary archetype to create a personality that's one of a kind.`;
+    }
+
+    fillEl.style.width = '100%';
+    show(resultEl);
+  }
+
+  document.getElementById('quiz-start').addEventListener('click', () => {
+    show(flow);
+    renderQuestion();
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (current > 0) {
+      current -= 1;
+      renderQuestion();
+    }
+  });
+
+  document.getElementById('quiz-retake').addEventListener('click', () => {
+    current = 0;
+    picks.fill(null);
+    show(flow);
+    renderQuestion();
+  });
+</script>
+
+<style>
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+  .hero-item:nth-child(4) { animation-delay: 440ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item { animation: none; }
+  }
+
+  .quiz-shell {
+    background-color: var(--color-cream);
+    min-height: 70vh;
+    padding-block: var(--space-16) var(--space-22);
+  }
+
+  /* The result section's display:flex would otherwise beat [hidden] */
+  .quiz-shell [hidden] {
+    display: none !important;
+  }
+
+  .quiz-container {
+    max-width: 760px;
+  }
+
+  /* ============================================================
+     INTRO
+  ============================================================ */
+  .quiz-title {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    margin-top: var(--space-4);
+  }
+
+  .quiz-subhead {
+    font-size: clamp(var(--text-lg), 1.8vw, var(--text-xl));
+    color: var(--color-ink);
+    line-height: 1.5;
+    max-width: 56ch;
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .quiz-start {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .quiz-meta {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+    letter-spacing: 0.04em;
+  }
+
+  /* ============================================================
+     QUESTION FLOW
+  ============================================================ */
+  .quiz-progress {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-blush);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--space-8);
+  }
+
+  .quiz-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-gold);
+    transition: width 0.4s var(--easing-standard);
+  }
+
+  .quiz-count {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: var(--space-3);
+  }
+
+  .quiz-question {
+    font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-8);
+  }
+
+  .quiz-answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* Answer buttons are created by the quiz script, so they don't carry
+     Astro's scoped attribute; style them via :global. */
+  .quiz-answers :global(.quiz-answer) {
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    color: var(--color-ink);
+    text-align: left;
+    line-height: var(--leading-normal);
+    background-color: transparent;
+    border: 1px solid var(--color-blush);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    cursor: pointer;
+    transition: border-color var(--duration-base) var(--easing-standard),
+                background-color var(--duration-base) var(--easing-standard);
+  }
+
+  .quiz-answers :global(.quiz-answer:hover),
+  .quiz-answers :global(.quiz-answer:focus-visible) {
+    border-color: var(--color-gold);
+    background-color: rgba(153, 97, 22, 0.06);
+  }
+
+  .quiz-answers :global(.quiz-answer.is-picked) {
+    border-color: var(--color-gold);
+    background-color: rgba(153, 97, 22, 0.1);
+  }
+
+  .quiz-back {
+    margin-top: var(--space-8);
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .quiz-back:hover {
+    color: var(--color-gold);
+  }
+
+  /* ============================================================
+     RESULT
+  ============================================================ */
+  .quiz-result {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .result-badge {
+    margin-top: var(--space-8);
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-ink);
+    border-radius: 50%;
+  }
+
+  .result-name {
+    font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+    margin-top: var(--space-8);
+  }
+
+  .result-desire {
+    margin-top: var(--space-2);
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .result-tagline {
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    max-width: 52ch;
+    color: var(--gray-700);
+  }
+
+  .result-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+    margin-top: var(--space-8);
+  }
+
+  .result-secondary {
+    margin-top: var(--space-8);
+    font-size: var(--text-base);
+    color: var(--gray-700);
+    max-width: 48ch;
+    line-height: var(--leading-relaxed);
+  }
+
+  .result-secondary :global(a) {
+    color: var(--color-gold);
+    font-weight: var(--weight-medium);
+  }
+
+  .quiz-retake {
+    margin-top: var(--space-10);
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .quiz-retake:hover {
+    color: var(--color-gold);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 640px) {
+    .quiz-answers {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -81,6 +81,6 @@ The lever I finally found was brand archetypes: a Jungian psychology framework t
 
 If you're reading this thinking "I might be the confused brand," you're already ahead of most people. (Awareness is underrated.)
 
-The [Brand Personality Quiz](https://www.brandingquiz.com) is the fastest way I know to find your psychological core. Over 250,000 brands have used it. It takes a few minutes and gives you a starting point that most brands skip entirely.
+The [Brand Personality Quiz](/quiz) is the fastest way I know to find your psychological core. Over 250,000 brands have used it. It takes a few minutes and gives you a starting point that most brands skip entirely.
 
 Find the lever. Pull it. Build everything else around it.

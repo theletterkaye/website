@@ -73,7 +73,7 @@ const siblings = (await getCollection('archetypes'))
           <p class="arch-hero-aka hero-item">Also known as {data.aka.join(', ')}</p>
           <p class="arch-hero-tagline hero-item">{data.tagline}</p>
           <div class="arch-hero-actions hero-item">
-            <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn btn--quiz">Is this your archetype? Take the quiz</a>
+            <a href="/quiz" class="btn btn--quiz">Is this your archetype? Take the quiz</a>
           </div>
         </div>
         <div class="arch-hero-badge hero-photo-animate">
@@ -142,7 +142,7 @@ const siblings = (await getCollection('archetypes'))
         ))}
       </ul>
       <div class="reveal" style="margin-top: var(--space-12);">
-        <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn btn--quiz">Confirm it with the quiz</a>
+        <a href="/quiz" class="btn btn--quiz">Confirm it with the quiz</a>
       </div>
     </Section>
 

@@ -26,18 +26,13 @@
       "statusCode": 301
     },
     {
-      "source": "/quiz",
-      "destination": "https://brandingquiz.com",
-      "statusCode": 301
-    },
-    {
       "source": "/brandality-quiz",
-      "destination": "https://brandingquiz.com",
+      "destination": "/quiz",
       "statusCode": 301
     },
     {
       "source": "/multi-quiz",
-      "destination": "https://brandingquiz.com",
+      "destination": "/quiz",
       "statusCode": 301
     },
     {

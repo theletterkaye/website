@@ -95,6 +95,6 @@ If your team is stuck in endless rounds of "I like it, but something feels off" 
 
 This isn't a one-time exercise. It's a practice of choosing, consistently, to stand for something specific instead of something safe. The brands people remember and pay more for are the ones that made that choice and held it, even when it would have been easier to water it down.
 
-The good news: you don't have to figure it all out from scratch. [Brand archetypes](https://www.brandingquiz.com) give you a framework for the hardest part, defining who your brand actually is. Once that's clear, everything else gets simpler.
+The good news: you don't have to figure it all out from scratch. [Brand archetypes](/brand-archetypes) give you a framework for the hardest part, defining who your brand actually is. Once that's clear, everything else gets simpler.
 
 Not easy. But simpler. And that's the whole point.
