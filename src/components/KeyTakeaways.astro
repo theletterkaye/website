@@ -1,0 +1,90 @@
+---
+interface Props {
+  takeaways: string[];
+}
+
+const { takeaways } = Astro.props;
+---
+
+{takeaways.length > 0 && (
+  <aside class="key-takeaways">
+    <div class="key-takeaways-header">
+      <div class="key-takeaways-rule" aria-hidden="true"></div>
+      <p class="key-takeaways-label">Key Takeaways</p>
+    </div>
+    <ol class="key-takeaways-list">
+      {takeaways.map((item, i) => (
+        <li>
+          <span class="key-takeaways-number">{String(i + 1).padStart(2, '0')}</span>
+          <p>{item}</p>
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}
+
+<style>
+  .key-takeaways {
+    margin-top: var(--space-16);
+    padding: var(--space-10) var(--space-10);
+    background-color: var(--gray-200);
+    border-radius: var(--radius-lg);
+  }
+
+  .key-takeaways-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .key-takeaways-rule {
+    width: 32px;
+    height: 2px;
+    background-color: var(--color-gold);
+    margin-bottom: var(--space-4);
+  }
+
+  .key-takeaways-label {
+    font-family: var(--ff-heading);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semi);
+    color: var(--color-ink);
+  }
+
+  .key-takeaways-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .key-takeaways-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--gray-300);
+  }
+
+  .key-takeaways-number {
+    font-family: var(--ff-heading);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    color: var(--color-gold);
+    font-weight: var(--weight-medium);
+  }
+
+  .key-takeaways-list p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink);
+    max-width: none;
+  }
+
+  @media (max-width: 767px) {
+    .key-takeaways {
+      padding: var(--space-8) var(--space-6);
+    }
+  }
+</style>

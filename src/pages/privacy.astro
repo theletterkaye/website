@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy — Kaye Putnam"
+  description="Privacy policy for kayeputnam.com. How your data is collected, used, and protected."
+>
+
+  <Nav />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <section class="hero">
+      <div class="container">
+        <p class="label">Legal</p>
+        <h1>Privacy Policy</h1>
+        <p class="hero-sub">Last updated: March 15, 2026</p>
+      </div>
+    </section>
+
+    <Section variant="default" size="xl">
+      <div class="legal-content">
+
+        <h2>Overview</h2>
+        <p>This privacy policy explains how kayeputnam.com ("the Site") collects, uses, and protects your personal information. Your privacy matters, and I aim to be transparent about what data is collected and why.</p>
+
+        <h2>Information I Collect</h2>
+
+        <h3>Information you provide</h3>
+        <p>When you use a contact form, subscribe to a newsletter, or send me an email, you may provide information such as your name, email address, and message content. This information is collected only when you voluntarily submit it.</p>
+
+        <h3>Automatically collected information</h3>
+        <p>Like most websites, the Site may collect certain information automatically, including:</p>
+        <ul>
+          <li>Browser type and version</li>
+          <li>Pages visited and time spent on the Site</li>
+          <li>Referring website or link</li>
+          <li>General geographic location (country/region level)</li>
+          <li>Device type and screen size</li>
+        </ul>
+
+        <h2>How I Use Your Information</h2>
+        <p>Any information collected is used to:</p>
+        <ul>
+          <li>Respond to your inquiries or messages</li>
+          <li>Send updates you've opted into (such as a newsletter)</li>
+          <li>Understand how the Site is used so I can improve it</li>
+          <li>Maintain the security and functionality of the Site</li>
+        </ul>
+        <p>I do not sell, rent, or share your personal information with third parties for their marketing purposes.</p>
+
+        <h2>Cookies and Tracking</h2>
+        <p>The Site may use cookies and similar technologies to improve your experience and gather analytics data. These may include:</p>
+        <ul>
+          <li><strong>Essential cookies</strong> that are necessary for the Site to function</li>
+          <li><strong>Analytics and advertising pixels</strong> that help me understand how visitors use the Site and measure the effectiveness of advertising</li>
+        </ul>
+        <p>Tracking pixels are small, transparent images embedded in pages or emails that collect information such as your IP address, browser type, and when you viewed a page or opened an email. These are used for analytics and advertising measurement.</p>
+        <p>You can control cookie preferences through your browser settings. Many browsers also allow you to block tracking pixels by disabling remote image loading. Disabling cookies or pixels may affect some Site functionality.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>The Site may use third-party services such as analytics providers, hosting platforms, and email service providers. These services may collect information as described in their own privacy policies. Current third-party services include:</p>
+        <ul>
+          <li><strong>Vercel</strong> for website hosting</li>
+          <li><strong>Adobe Fonts</strong> for typography</li>
+          <li><strong>ConvertKit (Kit)</strong> for email newsletters and subscriber management</li>
+          <li><strong>Advertising and analytics pixels</strong> for measuring site traffic and advertising performance (these may be provided by platforms such as Meta, Google, LinkedIn, or similar services)</li>
+        </ul>
+
+        <h2>Data Retention</h2>
+        <p>I retain personal information only as long as necessary to fulfill the purposes described in this policy, or as required by law. You can request deletion of your data at any time by contacting me.</p>
+
+        <h2>Your Rights</h2>
+        <p>Depending on your location, you may have the right to:</p>
+        <ul>
+          <li>Access the personal data I hold about you</li>
+          <li>Request correction of inaccurate data</li>
+          <li>Request deletion of your data</li>
+          <li>Opt out of marketing communications</li>
+          <li>Withdraw consent at any time</li>
+        </ul>
+
+        <h2>Children's Privacy</h2>
+        <p>The Site is not directed at children under 13. I do not knowingly collect personal information from children. If you believe a child has provided me with personal information, please contact me so I can remove it.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>I may update this privacy policy from time to time. Changes will be posted on this page with an updated revision date.</p>
+
+        <h2>Contact</h2>
+        <p>If you have questions about this privacy policy or your personal data, please reach out through the <a href="/contact">contact page</a>.</p>
+
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<style>
+  .hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-16) var(--space-12);
+  }
+
+  .hero h1 {
+    font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+    margin-top: var(--space-4);
+  }
+
+  .hero-sub {
+    font-size: var(--text-base);
+    color: var(--gray-500);
+    margin-top: var(--space-4);
+  }
+
+  .legal-content {
+    max-width: 720px;
+  }
+
+  .legal-content h2 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+  }
+
+  .legal-content h2:first-child {
+    margin-top: 0;
+  }
+
+  .legal-content h3 {
+    font-size: var(--text-lg);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .legal-content p {
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-relaxed);
+  }
+
+  .legal-content ul {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+  }
+
+  .legal-content li {
+    margin-bottom: var(--space-2);
+    line-height: var(--leading-relaxed);
+  }
+
+  .legal-content a {
+    color: var(--color-forest);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-content a:hover {
+    color: var(--color-gold);
+  }
+</style>

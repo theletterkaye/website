@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Page Not Found — Kaye Putnam"
+  description="This page doesn't exist. But clarity is just one click away."
+>
+
+  <Nav />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <section class="lost">
+      <div class="container lost-inner">
+
+        <div class="lost-content">
+          <p class="lost-code">404</p>
+          <h1 class="lost-headline">You've wandered somewhere <em>undefined</em>.</h1>
+          <p class="lost-body">Even the best strategy can't help if the destination doesn't exist. The good news? Clarity is never more than one step away.</p>
+          <div class="lost-actions">
+            <a href="/" class="btn lost-cta">Back to solid ground →</a>
+            <a href="/work" class="btn btn--ghost lost-ghost">See the work</a>
+          </div>
+        </div>
+
+        <div class="lost-visual" aria-hidden="true">
+          <div class="orb orb--1"></div>
+          <div class="orb orb--2"></div>
+          <div class="orb orb--3"></div>
+          <span class="lost-symbol">?</span>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<style>
+  .lost {
+    background-color: var(--color-forest);
+    min-height: calc(100vh - var(--site-header-height));
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .lost-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    padding-block: var(--space-16);
+  }
+
+  /* ============================================================
+     CONTENT
+  ============================================================ */
+  .lost-code {
+    font-family: var(--ff-heading);
+    font-size: var(--text-lg);
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: var(--space-6);
+  }
+
+  .lost-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    color: var(--color-cream);
+    max-width: 16ch;
+  }
+
+  .lost-headline em {
+    font-style: normal;
+    background-image: linear-gradient(var(--color-gold), var(--color-gold));
+    background-position: 0 calc(100% - 2px);
+    background-size: 100% 2px;
+    background-repeat: no-repeat;
+  }
+
+  .lost-body {
+    font-size: var(--text-lg);
+    color: var(--color-blush);
+    line-height: var(--leading-relaxed);
+    max-width: 44ch;
+    margin-top: var(--space-6);
+    opacity: 0.8;
+  }
+
+  .lost-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+  }
+
+  .lost-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .lost-ghost {
+    border-color: rgba(209, 198, 190, 0.3);
+    color: var(--color-cream);
+  }
+
+  .lost-ghost:hover {
+    background-color: var(--color-cream);
+    border-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  /* ============================================================
+     VISUAL — ambient orbs + floating question mark
+  ============================================================ */
+  .lost-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lost-symbol {
+    font-family: var(--ff-heading);
+    font-size: clamp(10rem, 18vw, 16rem);
+    color: var(--color-cream);
+    opacity: 0.06;
+    line-height: 1;
+    animation: float 6s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    animation: drift 8s ease-in-out infinite;
+  }
+
+  .orb--1 {
+    width: 260px;
+    height: 260px;
+    background-color: var(--color-gold);
+    top: 15%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+
+  .orb--2 {
+    width: 180px;
+    height: 180px;
+    background-color: var(--color-blush);
+    bottom: 20%;
+    right: 15%;
+    animation-delay: -3s;
+    opacity: 0.2;
+  }
+
+  .orb--3 {
+    width: 120px;
+    height: 120px;
+    background-color: var(--color-gold);
+    top: 55%;
+    left: 10%;
+    animation-delay: -5s;
+    opacity: 0.15;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(12px, -8px) scale(1.05); }
+    66%      { transform: translate(-8px, 6px) scale(0.97); }
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 767px) {
+    .lost-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      text-align: center;
+    }
+
+    .lost-headline {
+      max-width: none;
+    }
+
+    .lost-body {
+      max-width: none;
+    }
+
+    .lost-actions {
+      justify-content: center;
+    }
+
+    .lost-visual {
+      aspect-ratio: 3 / 2;
+      max-height: 240px;
+    }
+
+    .lost-symbol {
+      font-size: 8rem;
+    }
+
+    .orb--1 { width: 160px; height: 160px; }
+    .orb--2 { width: 120px; height: 120px; }
+    .orb--3 { width: 80px; height: 80px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lost-symbol, .orb { animation: none; }
+  }
+</style>

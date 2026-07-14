@@ -1,0 +1,615 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+import kayePhoto from '../assets/about/IMG_0446.jpg';
+import backstory1 from '../assets/about/backstory-1.jpg';
+import backstory2 from '../assets/about/backstory-2.jpg';
+import backstory3 from '../assets/about/backstory-3.png';
+import now1 from '../assets/about/now-1.png';
+import now2 from '../assets/about/now-2.jpg';
+import now3 from '../assets/about/now-3.jpg';
+import now4 from '../assets/about/now-4.png';
+---
+
+<BaseLayout
+  title="About Kaye Putnam — Brand Strategist & Marketing Leader"
+  description="Brand strategist at the intersection of psychology, positioning, and AI. 15+ years helping brands find clarity. The backstory, the approach, and what I'm working on now."
+>
+
+  <Nav />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero">
+      <div class="container hero-inner">
+
+        <div class="hero-content">
+          <p class="label hero-item">About</p>
+          <h1 class="hero-headline hero-item">I've spent my career doing <em>one thing</em>.</h1>
+          <p class="hero-subhead hero-item">Helping brands figure out who they actually are. (Turns out, that's the hard part.)</p>
+          <p class="hero-body hero-item">My background is in psychology, and the through-line in everything I've done is this: the most effective marketing doesn't persuade people. It <em>resonates</em> with them.</p>
+        </div>
+
+        <div class="hero-photo hero-photo-animate">
+          <div class="hero-photo-frame">
+            <Image
+              src={kayePhoto}
+              alt="Kaye Putnam"
+              widths={[480, 720, 960]}
+              sizes="(max-width: 767px) 100vw, 50vw"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE BACKSTORY
+    ============================================================ -->
+    <Section variant="cream" size="xl">
+      <p class="label reveal" style="margin-bottom: var(--space-6);">The backstory</p>
+      <div class="story-grid">
+        <div class="story-content" data-stagger>
+          <p class="story-lead reveal">I started my first business at 16 with a camera, some poster boards from Walmart, and my four younger brothers as models. It wasn't a branding business, but it taught me something I've never stopped thinking about: the difference between a service people hire and a brand people choose.</p>
+
+          <p class="reveal">I studied marketing with a psychology minor in college. (My real education came from working with hundreds of brands after.) The pattern I kept seeing was simple: the brands that won weren't the loudest or the best-funded. They were the ones that knew exactly who they were and said it clearly.</p>
+
+          <p class="reveal">That observation led me to brand archetypes, a framework rooted in Jungian psychology that gives brands a way to define their personality with precision. I built a quiz around it, and it took on a life of its own: 250,000+ people have taken it, it's been used in college classrooms and on conference stages, and it became the foundation for a course business, a podcast, and years of deep strategic work.</p>
+
+          <p class="reveal">Then I wanted to prove it could work at a different scale. So I went in-house.</p>
+        </div>
+
+        <div class="collage collage--backstory reveal">
+          <div class="collage-item collage-item--a">
+            <Image src={backstory1} alt="Young Kaye with a camera" widths={[400, 600]} sizes="300px" loading="lazy" />
+          </div>
+          <div class="collage-item collage-item--b">
+            <Image src={backstory2} alt="Kaye Putnam portrait" widths={[400, 600]} sizes="300px" loading="lazy" />
+          </div>
+          <div class="collage-item collage-item--c">
+            <Image src={backstory3} alt="Brand Gravity podcast cover" widths={[400, 600]} sizes="240px" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         BELIEF
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="belief reveal">
+        <blockquote>
+          <p>Most brands are optimizing the wrong thing. Tactics, channels, content calendars... none of it matters if you don't know what you actually stand for. <em>Clarity</em> is the competitive advantage.</p>
+        </blockquote>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         NOW
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <p class="label reveal" style="margin-bottom: var(--space-6);">Now</p>
+      <div class="now-grid">
+        <div class="now-content" data-stagger>
+          <p class="story-lead reveal">Today I lead marketing at Freewyld, where I built two brands from scratch in the short-term rental and hospitality space.</p>
+
+          <p class="reveal">Freewyld Cabins is a hospitality brand in Idyllwild, California, running at 2X market RevPAR with 40% direct bookings. Freewyld Foundry is a B2B revenue management service with $153M in managed revenue. Both were built on the same psychology-driven approach I've used my entire career, just applied to an industry where how a guest <em>feels</em> is the entire product.</p>
+
+          <p class="reveal">I also built the AI system that runs Freewyld's full marketing department, from content to ads. It's the same thing I keep proving: AI is an incredible amplifier, but only when the brand identity underneath it is clear enough to be worth amplifying.</p>
+        </div>
+
+        <div class="collage collage--now reveal">
+          <div class="collage-item collage-item--d">
+            <Image src={now3} alt="Aerial view of a Freewyld property" widths={[400, 600]} sizes="280px" loading="lazy" />
+          </div>
+          <div class="collage-item collage-item--e">
+            <Image src={now2} alt="The Freewyld team at Idyll Wild" widths={[400, 600]} sizes="280px" loading="lazy" />
+          </div>
+          <div class="collage-item collage-item--f">
+            <img src={now1.src} alt="Be Free. Live Wyld." class="collage-script" loading="lazy" />
+          </div>
+          <div class="collage-item collage-item--g">
+            <img src={now4.src} alt="Freewyld stamp logo" class="collage-stamp" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         WHAT I FOCUS ON
+    ============================================================ -->
+    <Section variant="cream" size="xl">
+      <p class="label reveal" style="margin-bottom: var(--space-4);">What I believe</p>
+      <p class="focus-intro reveal">A few convictions I've developed over 15 years that shape how I work:</p>
+
+      <div class="pillars" data-stagger>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">01</span>
+          <h3 class="pillar-headline">Build on <em>truth</em>, not trends.</h3>
+          <p>The brands with staying power aren't chasing the latest platform or tactic. They're built on a clear identity that doesn't need to change every quarter. I've used the same core brand standards for years, and they still work. That's not an accident.</p>
+        </div>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">02</span>
+          <h3 class="pillar-headline">Clarity is the <em>multiplier</em>.</h3>
+          <p>Every tool, every hire, every campaign performs better when the brand underneath it is clear. I've seen this with AI, with teams, with content. Clarity isn't one part of the strategy. It's the thing that makes every other part work.</p>
+        </div>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">03</span>
+          <h3 class="pillar-headline">Different beats <em>better</em>.</h3>
+          <p>"Better" is a race to the bottom. "Different" is an asset you can protect, market, and build a premium around. The brands I admire most aren't trying to outperform their competitors. They've made the competition irrelevant.</p>
+        </div>
+
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         CONNECT
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="connect-inner reveal">
+        <h2 style="max-width: 20ch;">Good things start with a conversation.</h2>
+        <p style="margin-top: var(--space-6); max-width: 52ch;">If you're building a brand you want people to remember, leading a marketing team, or looking for a speaker who connects psychology to strategy, I'd love to hear what you're working on.</p>
+        <div class="connect-actions">
+          <a href="/contact" class="btn connect-cta">Send me a note →</a>
+          <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost connect-linkedin">Connect on LinkedIn</a>
+        </div>
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  /* ============================================================
+     HERO ENTRANCE ANIMATIONS
+  ============================================================ */
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+  .hero-item:nth-child(4) { animation-delay: 440ms; }
+
+  .hero-photo-animate {
+    animation: hero-fade-up 1s cubic-bezier(0.55, 0.21, 0.07, 0.87) 180ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item, .hero-photo-animate { animation: none; }
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-12);
+    min-height: calc(100vh - var(--site-header-height));
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .hero-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    max-width: 18ch;
+  }
+
+  .hero-subhead {
+    font-size: clamp(var(--text-xl), 2.5vw, var(--text-2xl));
+    color: var(--gray-700);
+    line-height: var(--leading-snug);
+    max-width: 48ch;
+  }
+
+  .hero-body {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    max-width: 48ch;
+  }
+
+  .hero-body em {
+    font-style: italic;
+  }
+
+  .hero-photo {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .hero-photo-frame {
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--gray-200);
+    box-shadow: 0 0 0 1px rgba(153, 97, 22, 0.15);
+  }
+
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* ============================================================
+     BACKSTORY
+  ============================================================ */
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .story-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .story-lead {
+    font-size: clamp(var(--text-xl), 2.5vw, var(--text-2xl));
+    color: var(--color-ink);
+    line-height: var(--leading-snug);
+  }
+
+  /* ============================================================
+     COLLAGES — overlapping, organic layout
+  ============================================================ */
+  .collage {
+    position: relative;
+    aspect-ratio: 5 / 4;
+  }
+
+  .collage-item {
+    position: absolute;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(153, 97, 22, 0.08);
+    transition: transform 0.4s var(--easing-standard);
+  }
+
+  .collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* --- Backstory collage --- */
+
+  /* Mirror portrait — anchor, back layer */
+  .collage-item--b {
+    width: 58%;
+    aspect-ratio: 3 / 4;
+    top: 8%;
+    right: 0;
+    z-index: 1;
+    transform: rotate(2deg);
+  }
+
+  /* B&W camera — top left, overlaps portrait */
+  .collage-item--a {
+    width: 52%;
+    aspect-ratio: 4 / 3;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transform: rotate(-3deg);
+  }
+
+  /* Brand Gravity cover — bottom left, overlaps both */
+  .collage-item--c {
+    width: 48%;
+    aspect-ratio: 1 / 1;
+    bottom: -22%;
+    left: 5%;
+    z-index: 3;
+    transform: rotate(2.5deg);
+  }
+
+  /* --- Now collage --- */
+
+  /* Drone aerial — tall anchor, right side */
+  .collage-item--d {
+    width: 52%;
+    aspect-ratio: 3 / 4;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    transform: rotate(2.5deg);
+  }
+
+  /* Team photo — top left, overlaps drone */
+  .collage-item--e {
+    width: 58%;
+    aspect-ratio: 3 / 2;
+    top: 5%;
+    left: 0;
+    z-index: 2;
+    transform: rotate(-2deg);
+  }
+
+  /* Script text — bottom left */
+  .collage-item--f {
+    width: 45%;
+    bottom: 12%;
+    left: 0;
+    z-index: 3;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    transform: rotate(-1.5deg);
+  }
+
+  .collage-script {
+    width: 100%;
+    height: auto;
+    object-fit: contain !important;
+    opacity: 1;
+    padding-right: var(--space-6);
+  }
+
+  /* Stamp logo — bottom right, overlaps drone */
+  .collage-item--g {
+    width: 28%;
+    bottom: -10%;
+    right: 8%;
+    z-index: 4;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    transform: rotate(3deg);
+  }
+
+  .collage-stamp {
+    width: 100%;
+    height: auto;
+    object-fit: contain !important;
+    opacity: 1;
+  }
+
+  /* ============================================================
+     BELIEF
+  ============================================================ */
+  .belief {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .belief blockquote {
+    border-left: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+
+  .belief blockquote::before {
+    content: '\201C';
+    display: block;
+    font-family: var(--ff-heading);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-gold);
+    opacity: 0.4;
+    margin-bottom: var(--space-2);
+  }
+
+  .belief blockquote p {
+    font-family: var(--ff-heading);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-snug);
+    color: var(--color-cream);
+    max-width: none;
+    text-align: center;
+  }
+
+  /* ============================================================
+     NOW
+  ============================================================ */
+  .now-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .now-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .now-content em {
+    font-style: italic;
+  }
+
+  /* ============================================================
+     FOCUS / PILLARS
+  ============================================================ */
+  .focus-intro {
+    font-size: clamp(var(--text-xl), 2.5vw, var(--text-2xl));
+    line-height: var(--leading-snug);
+    max-width: 54ch;
+    margin-bottom: var(--space-16);
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-16);
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 2px solid var(--gray-300);
+    transition: border-color var(--duration-base) var(--easing-standard);
+  }
+
+  .pillar:hover {
+    border-top-color: var(--color-gold);
+  }
+
+  .pillar-number {
+    font-family: var(--ff-heading);
+    font-size: var(--text-base);
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+  }
+
+  .pillar-headline {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+  }
+
+  .pillar p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    flex: 1;
+  }
+
+  /* ============================================================
+     CONNECT
+  ============================================================ */
+  .connect-inner {
+    max-width: 640px;
+  }
+
+  .connect-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+  }
+
+  .connect-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .connect-linkedin {
+    border-color: rgba(209, 198, 190, 0.3);
+    color: var(--color-cream);
+  }
+
+  .connect-linkedin:hover {
+    background-color: var(--color-cream);
+    border-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  /* ============================================================
+     RESPONSIVE — tablet
+  ============================================================ */
+  @media (max-width: 1023px) {
+    .pillars {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE — mobile
+  ============================================================ */
+  @media (max-width: 767px) {
+    .hero {
+      min-height: auto;
+      padding-block: var(--space-16);
+    }
+
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .hero-photo {
+      order: -1;
+      justify-content: center;
+    }
+
+    .hero-photo-frame {
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+    }
+
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+
+    .story-grid,
+    .now-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .collage {
+      max-width: 400px;
+      margin-inline: auto;
+    }
+
+    .belief blockquote p {
+      font-size: var(--text-xl);
+    }
+  }
+</style>

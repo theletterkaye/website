@@ -1,0 +1,47 @@
+---
+interface Props {
+  value: string;
+  label: string;
+  variant?: 'default' | 'card';
+}
+
+const { value, label, variant = 'default' } = Astro.props;
+---
+
+<div class:list={['stat', `stat--${variant}`]}>
+  <span class="stat-value">{value}</span>
+  <span class="stat-label">{label}</span>
+</div>
+
+<style>
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-8);
+    border-radius: var(--radius-lg);
+  }
+
+  .stat--card {
+    background-color: var(--gray-200);
+  }
+
+  .stat-value {
+    font-family: var(--ff-heading);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.02em;
+    line-height: var(--leading-none);
+    color: var(--color-ink);
+  }
+
+  .stat-label {
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    max-width: 20ch;
+  }
+</style>

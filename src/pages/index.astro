@@ -1,17 +1,965 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Stat from '../components/Stat.astro';
+import kayePhoto from '../assets/kaye-putnam.jpg';
+import freewyldCabin from '../assets/freewyld-cabin.jpg';
+import { getImage } from 'astro:assets';
+const freewyldBg = await getImage({ src: freewyldCabin, format: 'webp', quality: 75, width: 1600 });
 
+const recentPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+
+// Archetype icons
+import archetypeCaregiver from '../assets/archetypes/caregiver.png';
+import archetypeCreator from '../assets/archetypes/creator.png';
+import archetypeEntertainer from '../assets/archetypes/entertainer.png';
+import archetypeEveryman from '../assets/archetypes/everyman.png';
+import archetypeExplorer from '../assets/archetypes/explorer.png';
+import archetypeHero from '../assets/archetypes/hero.png';
+import archetypeInnocent from '../assets/archetypes/innocent.png';
+import archetypeLover from '../assets/archetypes/lover.png';
+import archetypeMagician from '../assets/archetypes/magician.png';
+import archetypeMaverick from '../assets/archetypes/maverick.png';
+import archetypeRoyal from '../assets/archetypes/royal.png';
+import archetypeSage from '../assets/archetypes/sage.png';
+
+const archetypes = [
+  { name: 'Caregiver', icon: archetypeCaregiver },
+  { name: 'Creator', icon: archetypeCreator },
+  { name: 'Entertainer', icon: archetypeEntertainer },
+  { name: 'Everyman', icon: archetypeEveryman },
+  { name: 'Explorer', icon: archetypeExplorer },
+  { name: 'Hero', icon: archetypeHero },
+  { name: 'Innocent', icon: archetypeInnocent },
+  { name: 'Lover', icon: archetypeLover },
+  { name: 'Magician', icon: archetypeMagician },
+  { name: 'Maverick', icon: archetypeMaverick },
+  { name: 'Royal', icon: archetypeRoyal },
+  { name: 'Sage', icon: archetypeSage },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Kaye Putnam, Brand Strategist &amp; Marketing Leader"
+  description="Brand strategist at the intersection of psychology, positioning, and AI. 15 years helping brands find their voice. 250K+ brand archetype quiz takers."
+>
+
+  <Nav />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero">
+      <div class="container hero-inner">
+
+        <div class="hero-content">
+          <p class="label hero-item">Brand Strategist &amp; Marketing Leader</p>
+          <h1 class="hero-headline hero-item">Brand <em>clarity</em> is the strategy.</h1>
+          <p class="hero-subhead hero-item">When a brand knows who it is, the marketing lands, the team aligns, and AI amplifies a signal instead of just making noise. I help brands find that clarity.</p>
+          <div class="hero-actions hero-item">
+            <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--linkedin">Connect on LinkedIn</a>
+            <a href="#expertise" class="btn btn--ghost">Explore my work</a>
+          </div>
+        </div>
+
+        <div class="hero-photo hero-photo-animate">
+          <div class="hero-photo-frame">
+            <Image
+              src={kayePhoto}
+              alt="Kaye Putnam"
+              widths={[480, 720, 960]}
+              sizes="(max-width: 767px) 100vw, 50vw"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS BAR
+    ============================================================ -->
+    <div class="stats-bar">
+      <div class="container stats-inner">
+        <Stat value="15+" label="Years in brand + marketing strategy" />
+        <div class="stats-divider" aria-hidden="true"></div>
+        <Stat value="250K+" label="Brand personality quiz takers" />
+        <div class="stats-divider" aria-hidden="true"></div>
+        <Stat value="100+" label="Brands built and positioned" />
+      </div>
+    </div>
+
+    <!-- ============================================================
+         EXPERTISE
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <div id="expertise" style="position: relative; top: -100px;"></div>
+      <p class="label reveal" style="margin-bottom: var(--space-4);">Areas of focus</p>
+      <p class="expertise-intro reveal">After 15 years building brands at the intersection of psychology and marketing, these are the three things I keep coming back to.</p>
+
+      <div class="pillars" data-stagger>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">01</span>
+          <h3 class="pillar-headline">Build your brand on <em>truth</em>, not trends.</h3>
+          <p>The brands people remember aren't the ones with the best tactics. They're the ones that know exactly who they are and say it clearly.</p>
+          <span class="tag" style="margin-top: auto;">Brand Strategy</span>
+        </div>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">02</span>
+          <h3 class="pillar-headline">AI doesn't replace brand thinking. It <em>amplifies</em> it.</h3>
+          <p>Strong brands get more out of every tool, including AI. Without brand clarity, you're just producing more content nobody connects with, faster. I help teams use AI to scale their voice, not lose it.</p>
+          <span class="tag" style="margin-top: auto;">AI + Marketing Systems</span>
+        </div>
+
+        <div class="pillar reveal">
+          <span class="pillar-number">03</span>
+          <h3 class="pillar-headline">People don't choose a place to stay. They choose a <em>feeling</em>.</h3>
+          <p>Most STR operators focus on the mechanics of hosting when the real differentiator is the feeling they're selling. The brands that win are building something guests remember and come back for.</p>
+          <span class="tag" style="margin-top: auto;">STR &amp; Hospitality</span>
+        </div>
+
+      </div>
+    </Section>
+
+
+    <!-- ============================================================
+         TESTIMONIAL
+    ============================================================ -->
+    <Section variant="cream" size="lg">
+      <div class="testimonial reveal">
+        <blockquote>
+          <p>Kaye's not only exceptional at branding but also a marketing expert above and beyond most self-proclaimed gurus.</p>
+          <cite>Chris, brand strategy client</cite>
+        </blockquote>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         CURRENT WORK
+    ============================================================ -->
+    <div class="current-work-section">
+      <div class="current-work-bg" style={`background-image: url(${freewyldBg.src})`}></div>
+      <div class="container current-work-grid">
+        <div>
+          <p class="label">Currently</p>
+        </div>
+        <div class="current-work-content reveal">
+          <h2>Brand psychology, <em>applied to hospitality</em>.</h2>
+          <p style="margin-top: var(--space-6);">I lead marketing at Freewyld, where I get to prove the thesis every day: brand strategy rooted in psychology works even better in an industry where how a guest <em>feels</em> is the entire product.</p>
+          <p style="margin-top: var(--space-4);">Freewyld Cabins is a growing hospitality brand in Idyllwild, California. Freewyld Foundry is a revenue management service for the top 1% of STR operators. Two brands, one strategic thread.</p>
+          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-8);">
+            <a href="https://www.freewyldfoundry.com" target="_blank" rel="noopener noreferrer" class="tag tag--dark">Freewyld Foundry</a>
+            <a href="https://www.freewyld.com" target="_blank" rel="noopener noreferrer" class="tag tag--dark">Freewyld Cabins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SPEAKING
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <p class="label reveal" style="margin-bottom: var(--space-6);">Speaking</p>
+      <h2 class="reveal" style="max-width: 20ch;">Tactics fade. Brands <em>compound</em>.</h2>
+      <p class="reveal" style="margin-top: var(--space-4); margin-bottom: var(--space-12); max-width: 56ch;">I speak to hospitality brands and marketing teams about brand psychology, AI, and what actually makes a brand stick in someone's memory.</p>
+
+      <div class="talk-grid" data-stagger>
+        <div class="talk-item reveal">
+          <span class="talk-number">01</span>
+          <h4 class="talk-title">Brand Archetypes for Hospitality</h4>
+          <p class="talk-body">The framework that's helped 250,000+ brands find their personality, applied to the STR industry. Walk away knowing exactly what your brand should feel like and how to build it.</p>
+        </div>
+        <div class="talk-item reveal">
+          <span class="talk-number">02</span>
+          <h4 class="talk-title">Human-First Marketing in the Age of AI</h4>
+          <p class="talk-body">AI is changing what's possible in marketing. But the brands that benefit most aren't the ones moving fastest. They're the ones with the clearest identity.</p>
+        </div>
+        <div class="talk-item reveal">
+          <span class="talk-number">03</span>
+          <h4 class="talk-title">Build Your Brand on Truth, Not Trends</h4>
+          <p class="talk-body">Most marketing advice is about tactics. This talk is about the kind of strategy that compounds over time and makes every tactic work better.</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top: var(--space-16);">
+        <p class="label" style="margin-bottom: var(--space-4); font-size: var(--text-base);">Past appearances</p>
+        <p class="speaking-appearances">Get Paid for Your Pad (occasional co-host, 1.9M+ downloads) · Logo Geek Podcast · JUST Branding Podcast · Boss Project Podcast · On Branding Podcast · The Brand Bite Podcast · Brand Gravity (30+ episodes)</p>
+      </div>
+
+      <a href="/contact" class="btn speaking-cta">Inquire about speaking</a>
+    </Section>
+
+    <!-- ============================================================
+         WRITING
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <div class="writing-header reveal">
+        <div>
+          <p class="label" style="margin-bottom: var(--space-4);">Latest thinking</p>
+          <p>What I'm noticing about brand strategy, AI in marketing, and what it actually takes to build something people remember.</p>
+        </div>
+        <a href="/writing" class="link-underline writing-more">Read more →</a>
+      </div>
+
+      <div class="writing-grid" data-stagger>
+        {recentPosts.map((post) => (
+          <Card
+            href={`/writing/${post.data.slug}`}
+            eyebrow={post.data.category}
+            tag={post.data.tags[0]}
+            title={post.data.title}
+            excerpt={post.data.excerpt}
+            class="reveal"
+          />
+        ))}
+      </div>
+    </Section>
+
+
+    <!-- ============================================================
+         STAY CONNECTED
+    ============================================================ -->
+    <div class="subscribe-bar">
+      <div class="container subscribe-inner reveal">
+        <div class="subscribe-text">
+          <p class="label" style="margin-bottom: var(--space-3);">Stay in the loop</p>
+          <p class="subscribe-desc">I write about brand strategy, AI in marketing, and hospitality a few times a month. No spam. Just the ideas I'd share over coffee.</p>
+        </div>
+        <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+        <form
+          action="https://app.kit.com/forms/9207980/subscriptions"
+          class="seva-form formkit-form subscribe-form"
+          method="post"
+          data-sv-form="9207980"
+          data-uid="53433df288"
+          data-format="inline"
+          data-version="5"
+          data-options={JSON.stringify({"settings":{"after_subscribe":{"action":"message","success_message":"You're in! Check your email to confirm."},"powered_by":{"show":false},"recaptcha":{"enabled":false}},"version":"5"})}
+        >
+          <div data-style="clean">
+            <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
+            <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
+              <div class="formkit-field">
+                <input
+                  class="formkit-input subscribe-input"
+                  name="email_address"
+                  aria-label="Email address"
+                  placeholder="Your email"
+                  required
+                  type="email"
+                />
+              </div>
+              <button data-element="submit" class="formkit-submit btn subscribe-btn">
+                <div class="formkit-spinner"><div></div><div></div><div></div></div>
+                <span>Subscribe</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         BRAND ARCHETYPES
+    ============================================================ -->
+    <Section variant="cream" size="xl">
+      <div class="archetypes-icon-strip reveal" aria-hidden="true">
+        {archetypes.map(a => (
+          <div class="archetype-icon-wrap">
+            <Image
+              src={a.icon}
+              alt=""
+              width={32}
+              height={32}
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+      <div class="archetypes-grid">
+        <div class="archetypes-content reveal">
+          <p class="label" style="margin-bottom: var(--space-6);">A signature framework</p>
+          <h2>Every brand has a personality. Most just haven't <em>chosen</em> theirs.</h2>
+          <p style="margin-top: var(--space-6);">Brand archetypes are the fastest path to clarity I know. Rooted in Jungian psychology and applied to branding by Carol Pearson, they give you a framework for your brand's core personality and the emotional language your buyers already respond to.</p>
+          <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn" style="margin-top: var(--space-8);">Take the brand personality quiz</a>
+        </div>
+        <div class="archetypes-stat reveal">
+          <div class="archetypes-number">250K+</div>
+          <p class="archetypes-number-label">quiz takers and counting</p>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         CONNECT
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="connect-inner reveal">
+        <h2 style="max-width: 20ch;">Good things start with a conversation.</h2>
+        <p style="margin-top: var(--space-6); max-width: 52ch;">I'm always open to connecting with people who think seriously about brand. If you're leading marketing, organizing an event, or building something you want people to remember, I'd love to hear what you're working on.</p>
+        <div class="connect-actions">
+          <a href="/contact" class="btn connect-cta">Send me a note →</a>
+          <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost connect-linkedin">Connect on LinkedIn</a>
+        </div>
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  /* ============================================================
+     HERO ENTRANCE ANIMATIONS
+  ============================================================ */
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+  .hero-item:nth-child(4) { animation-delay: 440ms; }
+
+  .hero-photo-animate {
+    animation: hero-fade-up 1s cubic-bezier(0.55, 0.21, 0.07, 0.87) 180ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item, .hero-photo-animate { animation: none; }
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-12);
+    min-height: calc(100vh - var(--site-header-height));
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .hero-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    max-width: 15ch;
+  }
+
+  .hero-subhead {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    max-width: 48ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+
+  .btn--linkedin {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .hero-photo {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .hero-photo-frame {
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--gray-200);
+    box-shadow: 0 0 0 1px rgba(153, 97, 22, 0.15);
+  }
+
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* ============================================================
+     STATS BAR
+  ============================================================ */
+  .stats-bar {
+    background-color: var(--gray-100);
+    border-top: 1px solid rgba(153, 97, 22, 0.15);
+    border-bottom: 1px solid rgba(153, 97, 22, 0.15);
+    padding-block: var(--space-10);
+  }
+
+  .stats-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-16);
+    flex-wrap: wrap;
+  }
+
+  .stats-divider {
+    width: 1px;
+    height: 40px;
+    background-color: var(--gray-300);
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     EXPERTISE / PILLARS
+  ============================================================ */
+  .expertise-intro {
+    font-size: var(--text-lg);
+    max-width: 54ch;
+    margin-bottom: var(--space-16);
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-16);
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 2px solid var(--gray-300);
+    transition: border-color var(--duration-base) var(--easing-standard);
+  }
+
+  .pillar:hover {
+    border-top-color: var(--color-gold);
+  }
+
+  .pillar-number {
+    font-family: var(--ff-heading);
+    font-size: var(--text-base);
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+  }
+
+  .pillar-headline {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+  }
+
+  .pillar p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    flex: 1;
+  }
+
+  /* ============================================================
+     CURRENT WORK
+  ============================================================ */
+  .current-work-section {
+    position: relative;
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    overflow: hidden;
+  }
+
+  .current-work-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+  }
+
+  .current-work-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--space-16);
+    align-items: start;
+    padding-block: var(--space-24);
+  }
+
+  .current-work-content h2 {
+    max-width: 20ch;
+    color: var(--color-cream);
+  }
+
+  .current-work-content p {
+    color: var(--color-blush);
+  }
+
+  .current-work-section .label {
+    color: var(--color-gold);
+  }
+
+  /* ============================================================
+     SPEAKING
+  ============================================================ */
+  .talk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+
+  .talk-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(209, 198, 190, 0.2);
+  }
+
+  .talk-number {
+    font-family: var(--ff-heading);
+    font-size: var(--text-base);
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+  }
+
+  .talk-title {
+    font-size: var(--text-lg);
+    color: var(--color-cream);
+    line-height: var(--leading-snug);
+  }
+
+  .talk-body {
+    font-size: var(--text-lg);
+    color: var(--color-blush);
+    opacity: 0.8;
+    max-width: none;
+    line-height: var(--leading-relaxed);
+  }
+
+  .speaking-appearances {
+    font-size: var(--text-lg);
+    color: var(--color-blush);
+    opacity: 0.8;
+    max-width: none;
+    line-height: var(--leading-relaxed);
+  }
+
+  .speaking-cta {
+    margin-top: var(--space-12);
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  /* ============================================================
+     WRITING
+  ============================================================ */
+  .writing-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    align-items: end;
+    margin-bottom: var(--space-10);
+  }
+
+  .writing-more {
+    grid-column: 3;
+    justify-self: end;
+    align-self: end;
+    font-size: var(--text-base);
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .writing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  /* ============================================================
+     BRAND ARCHETYPES
+  ============================================================ */
+  .archetypes-icon-strip {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--space-6);
+    margin-bottom: var(--space-16);
+    flex-wrap: wrap;
+  }
+
+  .archetype-icon-wrap {
+    width: 32px;
+    height: 32px;
+    opacity: 0.7;
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+
+  .archetype-icon-wrap:hover {
+    opacity: 1;
+  }
+
+  .archetype-icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .archetypes-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  .archetypes-stat {
+    text-align: center;
+    padding: var(--space-10);
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .archetypes-number {
+    font-family: var(--ff-heading);
+    font-size: clamp(var(--text-4xl), 5vw, 5.5rem);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.01em;
+    color: var(--color-gold);
+    line-height: 1;
+  }
+
+  .archetypes-number-label {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: var(--space-3);
+    max-width: none;
+    text-align: center;
+  }
+
+  /* ============================================================
+     TESTIMONIAL
+  ============================================================ */
+  .testimonial {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .testimonial blockquote {
+    border-left: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+
+  .testimonial blockquote::before {
+    content: '\201C';
+    display: block;
+    font-family: var(--ff-heading);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-gold);
+    opacity: 0.4;
+    margin-bottom: var(--space-2);
+  }
+
+  .testimonial blockquote p {
+    font-family: var(--ff-heading);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    max-width: none;
+    text-align: center;
+  }
+
+  .testimonial blockquote cite {
+    display: block;
+    margin-top: var(--space-6);
+    text-align: center;
+  }
+
+  /* ============================================================
+     SUBSCRIBE BAR
+  ============================================================ */
+  .subscribe-bar {
+    background-color: var(--gray-100);
+    border-top: 1px solid rgba(153, 97, 22, 0.15);
+    border-bottom: 1px solid rgba(153, 97, 22, 0.15);
+    padding-block: var(--space-12);
+  }
+
+  .subscribe-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-10);
+  }
+
+  .subscribe-desc {
+    font-size: var(--text-md);
+    color: var(--gray-700);
+    max-width: 48ch;
+  }
+
+  .subscribe-form {
+    flex-shrink: 0;
+    max-width: none !important;
+  }
+
+  .subscribe-form [data-style="clean"] {
+    padding: 0 !important;
+  }
+
+  .subscribe-form .formkit-fields {
+    display: flex !important;
+    gap: var(--space-3);
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+  }
+
+  .subscribe-form .formkit-field {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  .subscribe-form .formkit-input.subscribe-input {
+    height: var(--btn-height) !important;
+    padding: 0 var(--space-5) !important;
+    border-radius: var(--radius-full) !important;
+    border: 1px solid var(--gray-300) !important;
+    background-color: var(--color-cream) !important;
+    font-family: var(--ff-body) !important;
+    font-size: var(--text-base) !important;
+    color: var(--color-ink) !important;
+    width: 240px !important;
+    transition: border-color var(--duration-base) var(--easing-standard);
+    line-height: var(--btn-height) !important;
+  }
+
+  .subscribe-form .formkit-input.subscribe-input::placeholder {
+    color: var(--gray-400) !important;
+    opacity: 1 !important;
+  }
+
+  .subscribe-form .formkit-input.subscribe-input:focus {
+    outline: none !important;
+    border-color: var(--color-gold) !important;
+  }
+
+  .subscribe-form .formkit-submit.subscribe-btn {
+    --btn-bg-color: var(--color-ink);
+    --btn-border-color: var(--color-ink);
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  .subscribe-form .formkit-submit.subscribe-btn > span {
+    padding: 0 var(--btn-padding-x) !important;
+    line-height: var(--btn-height) !important;
+  }
+
+  .subscribe-form .formkit-spinner {
+    display: none;
+  }
+
+  .subscribe-form .formkit-submit[data-active] .formkit-spinner {
+    display: flex;
+  }
+
+  .subscribe-form .formkit-alert {
+    border-radius: var(--radius-full) !important;
+    font-family: var(--ff-body) !important;
+    font-size: var(--text-sm) !important;
+  }
+
+  .subscribe-form .formkit-powered-by-convertkit-container {
+    display: none !important;
+  }
+
+  /* ============================================================
+     CONNECT
+  ============================================================ */
+  .connect-inner {
+    max-width: 640px;
+  }
+
+  .connect-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+  }
+
+  .connect-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .connect-linkedin {
+    border-color: rgba(209, 198, 190, 0.3);
+    color: var(--color-cream);
+  }
+
+  .connect-linkedin:hover {
+    background-color: var(--color-cream);
+    border-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  /* ============================================================
+     RESPONSIVE — tablet
+  ============================================================ */
+  @media (max-width: 1023px) {
+    .pillars {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .talk-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .archetypes-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .archetypes-stat {
+      border-left: none;
+      border-top: 1px solid var(--gray-300);
+      padding: var(--space-8) 0 0;
+      text-align: left;
+    }
+
+    .archetypes-number-label {
+      text-align: left;
+    }
+
+    .subscribe-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-6);
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE — mobile
+  ============================================================ */
+  @media (max-width: 767px) {
+    .hero {
+      min-height: auto;
+      padding-block: var(--space-16);
+    }
+
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .hero-photo {
+      order: -1;
+      justify-content: center;
+    }
+
+    .hero-photo-frame {
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+    }
+
+    .stats-inner {
+      gap: var(--space-8);
+    }
+
+    .stats-divider {
+      display: none;
+    }
+
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+
+    .current-work-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      padding-block: var(--space-16);
+    }
+
+    .talk-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .writing-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .subscribe-form .formkit-fields {
+      flex-direction: column !important;
+      width: 100%;
+    }
+
+    .subscribe-form .formkit-input.subscribe-input {
+      width: 100% !important;
+    }
+
+    .testimonial blockquote p {
+      font-size: var(--text-xl);
+    }
+  }
+</style>

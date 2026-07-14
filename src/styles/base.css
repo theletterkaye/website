@@ -1,0 +1,362 @@
+/* ============================================================
+   BASE — reset + root typography
+   ============================================================ */
+
+/* Box model reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Root */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--ff-body);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--body-text-color);
+  background-color: var(--body-bg-color);
+  min-height: 100dvh;
+}
+
+/* ----------------------------------------------------------
+   Typography
+---------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ff-heading);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  color: var(--color-ink);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  letter-spacing: 0.02em;
+  line-height: var(--leading-none);
+}
+
+h2 {
+  font-size: var(--text-4xl);
+  letter-spacing: 0.02em;
+}
+
+h3 {
+  font-size: var(--text-2xl);
+}
+
+h4 {
+  font-size: var(--text-xl);
+}
+
+h5 {
+  font-size: var(--text-lg);
+}
+
+h6 {
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+p {
+  color: var(--gray-700);
+  line-height: var(--leading-relaxed);
+  max-width: 68ch;
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--easing-standard);
+}
+
+a:hover {
+  color: var(--color-gold);
+}
+
+strong, b {
+  font-weight: var(--weight-semi);
+}
+
+h1 em, h2 em, h3 em, h4 em {
+  font-style: normal;
+  text-decoration: none;
+  background-image: linear-gradient(var(--color-gold), var(--color-gold));
+  background-position: 0 calc(100% - 1px);
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  transition: background-size 0.6s cubic-bezier(0.55, 0.21, 0.07, 0.87) 0.5s;
+}
+
+.is-visible em,
+.hero-item em {
+  background-size: 100% 2px;
+}
+
+small {
+  font-size: var(--text-base);
+}
+
+/* Label / eyebrow */
+.label {
+  font-family: var(--ff-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* ----------------------------------------------------------
+   Layout
+---------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  padding-inline: var(--container-fluid-margin);
+}
+
+.container--inner {
+  padding-inline: var(--container-inner-padding);
+}
+
+/* ----------------------------------------------------------
+   Buttons
+---------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--btn-height);
+  padding-inline: var(--btn-padding-x);
+  border-radius: var(--btn-radius);
+  border: 1px solid var(--btn-border-color);
+  background-color: var(--btn-bg-color);
+  color: var(--btn-text-color);
+  font-family: var(--ff-body);
+  font-size: var(--btn-font-size);
+  font-weight: var(--weight-semi);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-base) var(--easing-standard),
+    color var(--duration-base) var(--easing-standard),
+    border-color var(--duration-base) var(--easing-standard);
+}
+
+.btn:hover {
+  background-color: var(--btn-bg-hover-color);
+  border-color: var(--btn-bg-hover-color);
+  color: var(--btn-text-hover-color);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-ink);
+  border-color: var(--gray-300);
+}
+
+.btn--ghost:hover {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-cream);
+}
+
+/* ----------------------------------------------------------
+   Blockquote
+---------------------------------------------------------- */
+
+blockquote {
+  position: relative;
+  padding: var(--space-8) var(--space-10);
+  margin-block: var(--space-8);
+  border-left: 2px solid var(--color-gold);
+  background-color: var(--gray-100);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+blockquote p {
+  font-family: var(--ff-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.01em;
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  max-width: 40ch;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: var(--space-4);
+  font-family: var(--ff-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  font-style: normal;
+}
+
+/* ----------------------------------------------------------
+   Tag / Badge
+---------------------------------------------------------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-blush);
+  font-family: var(--ff-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.tag--gold {
+  background-color: var(--color-gold);
+  color: var(--color-cream);
+}
+
+.tag--dark {
+  background-color: var(--color-ink);
+  color: var(--color-cream);
+}
+
+a.tag--dark:hover {
+  background-color: var(--color-gold);
+  color: var(--color-cream);
+}
+
+/* ----------------------------------------------------------
+   Divider
+---------------------------------------------------------- */
+
+hr,
+.divider {
+  border: none;
+  height: 1px;
+  background-color: var(--gray-300);
+  margin-block: var(--space-8);
+}
+
+/* ----------------------------------------------------------
+   Inline link (animated underline)
+---------------------------------------------------------- */
+
+.link-underline {
+  position: relative;
+  color: var(--color-ink);
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--duration-base) var(--easing-editorial);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ----------------------------------------------------------
+   Aspect-ratio image container
+---------------------------------------------------------- */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--gray-200);
+}
+
+.media--16-9  { aspect-ratio: 16 / 9; }
+.media--4-3   { aspect-ratio: 4 / 3; }
+.media--1-1   { aspect-ratio: 1 / 1; }
+.media--3-4   { aspect-ratio: 3 / 4; }
+
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ----------------------------------------------------------
+   Scroll reveal
+---------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985);
+  transition:
+    opacity 0.7s cubic-bezier(0.55, 0.21, 0.07, 0.87),
+    transform 0.7s cubic-bezier(0.55, 0.21, 0.07, 0.87);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger delays for grouped children */
+[data-stagger] .reveal:nth-child(1) { transition-delay:   0ms; }
+[data-stagger] .reveal:nth-child(2) { transition-delay: 100ms; }
+[data-stagger] .reveal:nth-child(3) { transition-delay: 200ms; }
+[data-stagger] .reveal:nth-child(4) { transition-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ----------------------------------------------------------
+   Utilities
+---------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}

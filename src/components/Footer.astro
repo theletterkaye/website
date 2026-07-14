@@ -1,0 +1,230 @@
+---
+const links = [
+  { label: 'Work',     href: '/work' },
+  { label: 'About',    href: '/about' },
+  { label: 'Writing',  href: '/writing' },
+  { label: 'Contact',  href: '/contact' },
+];
+
+const socials = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/kayeputnam/',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@kayeputnam',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+  },
+  {
+    label: 'Pinterest',
+    href: 'https://www.pinterest.com/kayeputnam/',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641 0 12.017 0z"/></svg>`,
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/kayeputnam/',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 100-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.88 0 1.441 1.441 0 012.88 0z"/></svg>`,
+  },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <img src="/kaye-logo-white.png" alt="Kaye Putnam" class="footer-logo-img" />
+        </a>
+        <p class="footer-tagline">Helping brands find the clarity that changes everything.</p>
+      </div>
+
+      <div class="footer-right">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <ul role="list">
+            {links.map(link => (
+              <li><a href={link.href} class="footer-link">{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <div class="footer-socials">
+          {socials.map(s => (
+            <a href={s.href} target="_blank" rel="noopener noreferrer" class="footer-social" aria-label={s.label}>
+              <Fragment set:html={s.icon} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; {new Date().getFullYear()} Kaye Putnam. All rights reserved.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="/privacy" class="footer-legal-link">Privacy Policy</a>
+        <span class="footer-legal-sep" aria-hidden="true">&middot;</span>
+        <a href="/terms" class="footer-legal-link">Terms & Conditions</a>
+      </nav>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-forest);
+    color: var(--color-blush);
+  }
+
+  .footer-inner {
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-12);
+    padding-bottom: var(--space-12);
+    border-bottom: 1px solid rgba(209, 198, 190, 0.15);
+  }
+
+  .footer-logo {
+    display: block;
+    margin-bottom: var(--space-4);
+  }
+
+  .footer-logo-img {
+    height: 48px;
+    width: auto;
+    opacity: 0.9;
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+
+  .footer-logo:hover .footer-logo-img {
+    opacity: 1;
+  }
+
+  .footer-tagline {
+    font-size: var(--text-base);
+    color: var(--color-blush);
+    line-height: var(--leading-relaxed);
+    opacity: 0.7;
+    max-width: 28ch;
+  }
+
+  .footer-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    text-align: right;
+  }
+
+  .footer-link {
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-blush);
+    opacity: 0.7;
+    transition: opacity var(--duration-base) var(--easing-standard),
+                color var(--duration-base) var(--easing-standard);
+  }
+
+  .footer-link:hover {
+    color: var(--color-gold);
+    opacity: 1;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-6);
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .footer-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    color: var(--color-blush);
+    opacity: 0.5;
+    transition:
+      opacity var(--duration-base) var(--easing-standard),
+      color var(--duration-base) var(--easing-standard);
+  }
+
+  .footer-social:hover {
+    color: var(--color-gold);
+    opacity: 1;
+  }
+
+  .footer-social svg {
+    display: block;
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-8);
+  }
+
+  .footer-copy {
+    font-size: var(--text-sm);
+    color: var(--color-blush);
+    opacity: 0.4;
+    letter-spacing: 0.04em;
+    max-width: none;
+  }
+
+  .footer-legal {
+    margin-top: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .footer-legal-link {
+    font-size: var(--text-sm);
+    color: var(--color-blush);
+    opacity: 0.4;
+    letter-spacing: 0.04em;
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+
+  .footer-legal-link:hover {
+    opacity: 0.7;
+  }
+
+  .footer-legal-sep {
+    font-size: var(--text-sm);
+    color: var(--color-blush);
+    opacity: 0.3;
+  }
+
+  @media (max-width: 767px) {
+    .footer-top {
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .footer-right {
+      align-items: flex-start;
+    }
+
+    .footer-nav ul {
+      text-align: left;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-4) var(--space-6);
+    }
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+interface Props {
+  variant?: 'default' | 'warm' | 'dark' | 'cream';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  size = 'lg',
+  class: className,
+} = Astro.props;
+---
+
+<section class:list={['section', `section--${variant}`, `section--${size}`, className]}>
+  <div class="container">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    width: 100%;
+  }
+
+  /* Size variants — vertical padding */
+  .section--sm  { padding-block: var(--space-12); }
+  .section--md  { padding-block: var(--space-16); }
+  .section--lg  { padding-block: var(--space-24); }
+  .section--xl  { padding-block: var(--space-32); }
+
+  /* Color variants */
+  .section--default { background-color: var(--color-cream); }
+  .section--warm    { background-color: var(--gray-100); }
+  .section--cream   { background-color: var(--gray-200); }
+  .section--dark {
+    background-color: var(--color-forest);
+    color: var(--color-cream);
+  }
+
+  .section--dark :global(h1),
+  .section--dark :global(h2),
+  .section--dark :global(h3),
+  .section--dark :global(h4) {
+    color: var(--color-cream);
+  }
+
+  .section--dark :global(p) {
+    color: var(--color-blush);
+  }
+</style>

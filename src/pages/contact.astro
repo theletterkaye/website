@@ -1,0 +1,380 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+---
+
+<BaseLayout
+  title="Contact — Kaye Putnam"
+  description="Get in touch with Kaye Putnam. Whether it's about brand strategy, speaking, or a project you're working on — I'd love to hear from you."
+>
+
+  <Nav currentPath="/contact" />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="label hero-item">Get in touch</p>
+          <h1 class="hero-headline hero-item">Let's start a <em>conversation</em>.</h1>
+          <p class="hero-subhead hero-item">Whether you're exploring a brand strategy engagement, booking a speaker, or just want to connect, I'd love to hear what you're working on.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FORM + SIDEBAR
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <div class="contact-grid">
+
+        <form id="contact-form" class="contact-form" novalidate>
+          <div class="form-group reveal">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name" />
+          </div>
+
+          <div class="form-group reveal">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+
+          <div class="form-group reveal">
+            <label for="topic">What's this about?</label>
+            <select id="topic" name="topic" required>
+              <option value="" disabled selected>Select a topic</option>
+              <option value="brand-strategy">Brand strategy engagement</option>
+              <option value="speaking">Speaking inquiry</option>
+              <option value="collaboration">Collaboration or partnership</option>
+              <option value="media">Media or press</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+
+          <div class="form-group reveal">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+
+          <div class="form-actions reveal">
+            <button type="submit" class="btn form-submit">Send message →</button>
+          </div>
+
+          <div id="form-status" class="form-status" aria-live="polite" hidden></div>
+        </form>
+
+        <aside class="contact-sidebar" data-stagger>
+
+          <div class="sidebar-block reveal">
+            <h3>Connect elsewhere</h3>
+            <p>I'm most active on LinkedIn. Follow along for thoughts on brand strategy, AI in marketing, and what I'm learning.</p>
+            <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost sidebar-cta">Connect on LinkedIn</a>
+          </div>
+
+          <div class="sidebar-block reveal">
+            <h3>Speaking</h3>
+            <p>I speak on brand psychology, positioning strategy, and the role of AI in brand-led marketing. Select "Speaking inquiry" in the form and I'll get back to you with availability.</p>
+          </div>
+
+          <div class="sidebar-block reveal">
+            <h3>Response time</h3>
+            <p>I read every message. Expect a response within a few business days.</p>
+          </div>
+
+        </aside>
+
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<!-- Form handling — swap the fetch URL for your form endpoint (Formspree, Vercel serverless function, etc.) -->
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const status = document.getElementById('form-status') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Basic client-side validation
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const submitBtn = form.querySelector('.form-submit') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const data = Object.fromEntries(new FormData(form));
+
+    try {
+      // TODO: Replace with your form endpoint
+      // Examples:
+      //   Formspree:  https://formspree.io/f/YOUR_FORM_ID
+      //   Custom API: /api/contact
+      const res = await fetch('https://formspree.io/f/meerldwa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error('Failed to send');
+
+      status.hidden = false;
+      status.className = 'form-status form-status--success';
+      status.textContent = 'Message sent! I\'ll be in touch soon.';
+      form.reset();
+    } catch {
+      status.hidden = false;
+      status.className = 'form-status form-status--error';
+      status.textContent = 'Something went wrong. Please try again or reach out on LinkedIn.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send message →';
+    }
+  });
+</script>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  /* ============================================================
+     HERO
+  ============================================================ */
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item { animation: none; }
+  }
+
+  .hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-16) var(--space-12);
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 640px;
+  }
+
+  .hero-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+  }
+
+  .hero-subhead {
+    font-size: var(--text-xl);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    max-width: 52ch;
+  }
+
+  /* ============================================================
+     CONTACT GRID
+  ============================================================ */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--space-20);
+    align-items: start;
+  }
+
+  /* ============================================================
+     FORM
+  ============================================================ */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: 600px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .form-group label {
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-family: var(--ff-body);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-regular);
+    color: var(--color-ink);
+    background-color: var(--color-cream);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    transition: border-color var(--duration-base) var(--easing-standard),
+                box-shadow var(--duration-base) var(--easing-standard);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-forest);
+    box-shadow: 0 0 0 3px rgba(42, 64, 48, 0.1);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--gray-400);
+  }
+
+  .form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-4) center;
+    padding-right: var(--space-10);
+    cursor: pointer;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 160px;
+  }
+
+  .form-actions {
+    padding-top: var(--space-2);
+  }
+
+  .form-submit {
+    --btn-bg-color: var(--color-forest);
+    --btn-border-color: var(--color-forest);
+    --btn-text-color: var(--color-cream);
+    --btn-bg-hover-color: var(--color-ink);
+    --btn-text-hover-color: var(--color-cream);
+  }
+
+  .form-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* ============================================================
+     FORM STATUS
+  ============================================================ */
+  .form-status {
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    margin-top: var(--space-2);
+  }
+
+  .form-status--success {
+    background-color: rgba(42, 64, 48, 0.08);
+    color: var(--color-forest);
+    border: 1px solid rgba(42, 64, 48, 0.2);
+  }
+
+  .form-status--error {
+    background-color: rgba(180, 60, 60, 0.08);
+    color: #8b3030;
+    border: 1px solid rgba(180, 60, 60, 0.2);
+  }
+
+  /* ============================================================
+     SIDEBAR
+  ============================================================ */
+  .contact-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+    padding-top: var(--space-2);
+  }
+
+  .sidebar-block h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .sidebar-block p {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+  }
+
+  .sidebar-cta {
+    margin-top: var(--space-5);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1023px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+    }
+
+    .contact-form {
+      max-width: none;
+    }
+
+    .contact-sidebar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      padding-block: var(--space-16);
+    }
+
+    .contact-sidebar {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+  }
+</style>

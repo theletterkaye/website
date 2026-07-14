@@ -1,0 +1,365 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
+
+const allCaseStudies = await getCollection('casestudies');
+const sorted = allCaseStudies.sort((a, b) => a.data.order - b.data.order);
+
+// Insert Brand Archetypes as a manual card after Freewyld Foundry (order 2)
+const archetypeCard = {
+  _manual: true,
+  href: '/brand-archetypes',
+  industry: 'Brand Psychology',
+  title: 'Brand Archetypes',
+  description: 'A psychology-driven framework rooted in Jungian archetypes that has helped over 250,000 people discover their brand personality. The system behind the quiz, the course, and years of deep brand work.',
+  pillars: ['Psychology', 'Brand Strategy', 'Framework'],
+};
+
+const foundryIndex = sorted.findIndex(cs => cs.data.title === 'Freewyld Foundry');
+const cards: any[] = [...sorted];
+cards.splice(foundryIndex + 1, 0, archetypeCard);
+
+// Sticky offset increment per card (px) — controls how much of
+// the previous card's rounded edge peeks above the next card
+const stickyBase = 80;   // matches --site-header-height
+const stickyStep = 8;    // subtle peek per card
+---
+
+<BaseLayout
+  title="Work — Kaye Putnam"
+  description="Selected case studies in brand strategy, AI-powered marketing systems, and hospitality branding. See the thinking behind the results."
+>
+
+  <Nav currentPath="/work" />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <p class="label hero-item" style="margin-bottom: var(--space-4);">Selected work</p>
+      <h1 class="page-headline hero-item">Strategy in <em>action</em>.</h1>
+      <p class="page-subhead hero-item">Case studies in brand strategy, marketing systems, and hospitality. The thinking behind the results.</p>
+    </Section>
+
+    <!-- ============================================================
+         STACKING CARDS
+    ============================================================ -->
+    <div class="stack-wrapper">
+      {cards.map((item, i) => {
+        const isManual = item._manual;
+        const href = isManual ? item.href : `/work/${item.id}`;
+        const industry = isManual ? item.industry : item.data.industry;
+        const title = isManual ? item.title : item.data.title;
+        const description = isManual ? item.description : item.data.description;
+        const pillars = isManual ? item.pillars : item.data.pillars;
+        const heroImage = isManual ? null : item.data.heroImage;
+        const cta = isManual ? 'Explore the framework →' : 'View case study →';
+
+        return (
+          <a
+            href={href}
+            class="stack-card"
+            style={`--stack-top: ${stickyBase + (i * stickyStep)}px; --stack-z: ${i + 1};`}
+          >
+            {heroImage && (
+              <div class="stack-card-bg">
+                <img src={heroImage} alt="" loading={i < 2 ? 'eager' : 'lazy'} />
+              </div>
+            )}
+            <div class="stack-card-overlay"></div>
+
+            <div class="stack-card-content">
+              <span class="stack-card-label">{industry}</span>
+              <h2 class="stack-card-title">{title}</h2>
+              <p class="stack-card-desc">{description}</p>
+              <div class="stack-card-pillars">
+                {pillars.map(pillar => (
+                  <span class="tag tag--dark">{pillar}</span>
+                ))}
+              </div>
+              <span class="stack-card-cta">{cta}</span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- ============================================================
+         CONNECT
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="connect-inner reveal">
+        <h2 style="max-width: 20ch;">Good things start with a conversation.</h2>
+        <p style="margin-top: var(--space-6); max-width: 52ch;">If you're building a brand and want to talk strategy, I'd love to hear what you're working on.</p>
+        <div class="connect-actions">
+          <a href="/contact" class="btn connect-cta">Send me a note →</a>
+          <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost connect-linkedin">Connect on LinkedIn</a>
+        </div>
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+  // Fade out cards as they get scrolled past
+  const cards = document.querySelectorAll('.stack-card');
+  const fadeObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target as HTMLElement;
+        if (entry.isIntersecting) {
+          el.style.opacity = '1';
+        } else if (entry.boundingClientRect.top < 0) {
+          // Card has been scrolled past — dim it
+          el.style.opacity = '0.4';
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  cards.forEach((card) => fadeObserver.observe(card));
+</script>
+
+<style>
+  /* ============================================================
+     HERO ENTRANCE
+  ============================================================ */
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item { animation: none; }
+  }
+
+  /* ============================================================
+     PAGE HERO
+  ============================================================ */
+  .page-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    max-width: 20ch;
+  }
+
+  .page-subhead {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    max-width: 52ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ============================================================
+     STACKING CARDS
+  ============================================================ */
+  .stack-wrapper {
+    position: relative;
+  }
+
+  .stack-card {
+    position: sticky;
+    top: var(--stack-top);
+    z-index: var(--stack-z);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 85vh;
+    border-radius: 48px 48px 0 0;
+    overflow: hidden;
+    color: var(--color-cream);
+    text-align: center;
+    transition: opacity 0.5s var(--easing-editorial);
+  }
+
+  .stack-card:hover {
+    color: var(--color-cream);
+  }
+
+  /* Background image — fills the card */
+  .stack-card-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .stack-card-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 8s var(--easing-standard);
+  }
+
+  .stack-card:hover .stack-card-bg img {
+    transform: scale(1.04);
+  }
+
+  /* Dark overlay for text legibility */
+  .stack-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(18, 24, 27, 0.93) 0%,
+      rgba(18, 24, 27, 0.82) 50%,
+      rgba(18, 24, 27, 0.6) 100%
+    );
+  }
+
+  /* Fallback bg when no hero image is set */
+  .stack-card:nth-child(odd) {
+    background-color: var(--color-forest);
+  }
+
+  .stack-card:nth-child(even) {
+    background-color: var(--color-ink);
+  }
+
+  /* Content */
+  .stack-card-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    max-width: 640px;
+    padding: var(--space-16) var(--space-8);
+  }
+
+  .stack-card-label {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-cream);
+    background-color: rgba(153, 97, 22, 0.4);
+    padding: var(--space-1) var(--space-4);
+    border-radius: var(--radius-full);
+  }
+
+  .stack-card-title {
+    font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    color: var(--color-cream);
+  }
+
+  .stack-card-desc {
+    font-size: var(--text-lg);
+    color: var(--color-blush);
+    line-height: var(--leading-relaxed);
+    max-width: 48ch;
+  }
+
+  .stack-card-pillars {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-2);
+  }
+
+  .stack-card-cta {
+    margin-top: var(--space-4);
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    transition: color var(--duration-base) var(--easing-standard);
+  }
+
+  .stack-card:hover .stack-card-cta {
+    color: var(--color-cream);
+  }
+
+  /* ============================================================
+     CONNECT (reused from homepage)
+  ============================================================ */
+  .connect-inner {
+    max-width: 640px;
+  }
+
+  .connect-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+  }
+
+  .connect-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .connect-linkedin {
+    border-color: rgba(209, 198, 190, 0.3);
+    color: var(--color-cream);
+  }
+
+  .connect-linkedin:hover {
+    background-color: var(--color-cream);
+    border-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 767px) {
+    .stack-card {
+      min-height: 75vh;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .stack-card-content {
+      padding: var(--space-12) var(--space-6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-card {
+      transition: none;
+    }
+
+    .stack-card-bg img {
+      transition: none;
+    }
+  }
+</style>

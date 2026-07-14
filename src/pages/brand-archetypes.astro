@@ -1,0 +1,710 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/Section.astro';
+
+import archetypeCaregiver from '../assets/archetypes/caregiver.png';
+import archetypeCreator from '../assets/archetypes/creator.png';
+import archetypeEntertainer from '../assets/archetypes/entertainer.png';
+import archetypeEveryman from '../assets/archetypes/everyman.png';
+import archetypeExplorer from '../assets/archetypes/explorer.png';
+import archetypeHero from '../assets/archetypes/hero.png';
+import archetypeInnocent from '../assets/archetypes/innocent.png';
+import archetypeLover from '../assets/archetypes/lover.png';
+import archetypeMagician from '../assets/archetypes/magician.png';
+import archetypeMaverick from '../assets/archetypes/maverick.png';
+import archetypeRoyal from '../assets/archetypes/royal.png';
+import archetypeSage from '../assets/archetypes/sage.png';
+
+const archetypes = [
+  {
+    name: 'The Innocent',
+    icon: archetypeInnocent,
+    desire: 'Safety & happiness',
+    description: 'The Innocent believes in doing things the right way. These brands signal trust, simplicity, and optimism. They make people feel safe choosing them, which is why they dominate categories where trust is the buying decision.',
+    example: 'Coca-Cola',
+  },
+  {
+    name: 'The Explorer',
+    icon: archetypeExplorer,
+    desire: 'Freedom & discovery',
+    description: 'Restless and independent. Explorer brands invite people to break from the ordinary and discover something new. They win by making their audience feel like individuals, not demographics.',
+    example: 'Jeep',
+  },
+  {
+    name: 'The Sage',
+    icon: archetypeSage,
+    desire: 'Knowledge & truth',
+    description: 'Driven by the pursuit of truth and a need to understand how things work. Sage brands earn trust by making complex things clear. They sell insight, not information.',
+    example: 'Google',
+  },
+  {
+    name: 'The Hero',
+    icon: archetypeHero,
+    desire: 'Mastery & courage',
+    description: 'The Hero proves their worth through action and inspires others to do the same. These brands don\'t coddle their audience. They challenge them to be better. The real enemy isn\'t a villain; it\'s inaction.',
+    example: 'Nike',
+  },
+  {
+    name: 'The Maverick',
+    icon: archetypeMaverick,
+    desire: 'Liberation & revolution',
+    description: 'The Maverick breaks rules others follow blindly and gives people permission to do the same. These brands are polarizing on purpose. They\'d rather be loved by some than tolerated by all.',
+    example: 'Harley-Davidson',
+  },
+  {
+    name: 'The Magician',
+    icon: archetypeMagician,
+    desire: 'Transformation & vision',
+    description: 'The Magician makes the impossible feel inevitable. These brands sell transformation, not features. They never promise gradual improvement. They promise a fundamentally different result.',
+    example: 'Apple',
+  },
+  {
+    name: 'The Girl/Guy Next Door',
+    icon: archetypeEveryman,
+    desire: 'Belonging & connection',
+    description: 'Genuine, grounded, and deeply loyal. This archetype makes people feel like they belong. These brands win through community, not exclusivity. Their customers don\'t just buy; they identify.',
+    example: 'Budweiser',
+  },
+  {
+    name: 'The Lover',
+    icon: archetypeLover,
+    desire: 'Intimacy & passion',
+    description: 'Driven by beauty, deep connection, and the desire to be desired. Lover brands create experiences rooted in pleasure and sensory detail. They make the ordinary feel indulgent.',
+    example: "Victoria's Secret",
+  },
+  {
+    name: 'The Entertainer',
+    icon: archetypeEntertainer,
+    desire: 'Joy & spontaneity',
+    description: 'The Entertainer uses humor, surprise, and play to create connection. These brands don\'t take themselves too seriously, and that\'s exactly why people take them seriously. Fun is the strategy.',
+    example: "Ben & Jerry's",
+  },
+  {
+    name: 'The Caregiver',
+    icon: archetypeCaregiver,
+    desire: 'Service & protection',
+    description: 'The Caregiver is driven to protect and nurture. These brands build trust through warmth and reliability. They don\'t just serve their customers; they genuinely look out for them.',
+    example: 'Johnson & Johnson',
+  },
+  {
+    name: 'The Royal',
+    icon: archetypeRoyal,
+    desire: 'Control & excellence',
+    description: 'The Royal leads with confidence and sets the standard. These brands signal quality over quantity, prestige over accessibility. People don\'t just buy Royal brands; they aspire to them.',
+    example: 'Mercedes-Benz',
+  },
+  {
+    name: 'The Creator',
+    icon: archetypeCreator,
+    desire: 'Innovation & self-expression',
+    description: 'The Creator turns vision into something tangible. These brands value originality above all and inspire their audience to build, make, and express. The product is never the point. The act of creating is.',
+    example: 'LEGO',
+  },
+];
+---
+
+<BaseLayout
+  title="Brand Archetypes — Psychology-Driven Brand Strategy | Kaye Putnam"
+  description="Discover your brand archetype. A psychology-driven framework rooted in Jungian theory that's helped 250,000+ brands find their personality and connect with the right people."
+>
+
+  <Nav />
+
+  <div style="padding-top: var(--site-header-height);">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="label hero-item">A signature framework</p>
+          <h1 class="hero-headline hero-item">Every brand has a personality. Most just haven't <em>chosen</em> theirs.</h1>
+          <p class="hero-subhead hero-item">Brand archetypes are the fastest way to get clear on who your brand actually is. They give you a psychology-backed framework for your brand's personality, voice, and the emotional language your buyers already respond to.</p>
+          <div class="hero-actions hero-item">
+            <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn btn--quiz">Take the brand personality quiz</a>
+            <a href="#the-twelve-archetypes" class="btn btn--ghost">Explore the archetypes</a>
+          </div>
+        </div>
+        <div class="hero-stat hero-item">
+          <div class="hero-stat-number">250K+</div>
+          <p class="hero-stat-label">quiz takers and counting</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ICON STRIP
+    ============================================================ -->
+    <div class="icon-strip-bar">
+      <div class="container">
+        <div class="icon-strip">
+          {archetypes.map(a => (
+            <div class="icon-strip-item">
+              <Image src={a.icon} alt="" width={28} height={28} loading="eager" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         WHAT ARE ARCHETYPES
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <div class="intro-grid">
+        <div class="intro-content" data-stagger>
+          <p class="label reveal" style="margin-bottom: var(--space-6);">The concept</p>
+          <h2 class="reveal">Psychology meets <em>branding</em>.</h2>
+          <p class="intro-lead reveal" style="margin-top: var(--space-6);">Archetypes are universal character patterns that show up across every culture, era, and story ever told. They're the reason certain characters feel instantly familiar, and why some brands feel like people you already know.</p>
+          <p class="reveal">Carl Jung identified these patterns in the early 20th century. Carol Pearson later applied them to business, identifying twelve distinct archetypes with unique traits, motivations, and values. Research from Young & Rubicam found that brands with a clear archetypal identity grew 97% faster in market value than those without one.</p>
+          <p class="reveal">That research confirmed what I'd been seeing for years: the brands people remember and trust all have a clear personality at the core. Not a manufactured one. A real one. Archetypes gave me the framework to build that deliberately.</p>
+        </div>
+        <div class="intro-aside reveal">
+          <div class="aside-card">
+            <h4>Why archetypes work</h4>
+            <p>Our brains are pattern-recognition machines. When your brand embodies a recognizable archetype, people understand who you are almost instantly. That recognition builds trust, and trust is what drives preference, pricing power, and loyalty.</p>
+          </div>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         CLARITY CODE
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="clarity-inner">
+        <div class="clarity-content reveal">
+          <p class="label" style="margin-bottom: var(--space-6);">My approach</p>
+          <h2>I built a system around <em>this</em>.</h2>
+          <p style="margin-top: var(--space-6);">Archetypes are the foundation of my Clarity Code framework. The conviction behind it is simple: brands built on real personality outperform brands built on positioning statements and best practices.</p>
+          <p style="margin-top: var(--space-4);">When your brand reflects who you actually are, you stop second-guessing every decision about voice, visuals, and strategy. The archetype becomes the filter. It makes the right choice obvious and the wrong one easy to spot.</p>
+          <p style="margin-top: var(--space-4);">I've used this approach with hundreds of brands and taught it to over 250,000 through my quiz and courses. It works because it's built on psychology that doesn't change, not trends that do.</p>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         QUIZ CTA
+    ============================================================ -->
+    <div class="quiz-cta-bar">
+      <div class="container quiz-cta-inner reveal">
+        <h3>Want to know your brand's archetype?</h3>
+        <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn btn--quiz">Take the quiz</a>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         THE TWELVE ARCHETYPES
+    ============================================================ -->
+    <Section variant="default" size="xl">
+      <div id="the-twelve-archetypes" style="position: relative; top: -100px;"></div>
+      <p class="label reveal" style="margin-bottom: var(--space-4);">The twelve archetypes</p>
+      <p class="archetypes-intro reveal">Each archetype taps into a different set of human desires and motivations. The brands that choose one deliberately (and commit to it) are the ones people remember, trust, and pay more for.</p>
+
+      <div class="archetype-grid" data-stagger>
+        {archetypes.map((a) => (
+          <div class="archetype-card reveal">
+            <div class="archetype-card-header">
+              <div class="archetype-icon">
+                <Image src={a.icon} alt="" width={40} height={40} loading="lazy" />
+              </div>
+              <div>
+                <h4 class="archetype-name">{a.name}</h4>
+                <span class="archetype-desire">{a.desire}</span>
+              </div>
+            </div>
+            <p class="archetype-desc">{a.description}</p>
+            <span class="archetype-example">Think: {a.example}</span>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         HOW TO USE THEM
+    ============================================================ -->
+    <Section variant="warm" size="xl">
+      <p class="label reveal" style="margin-bottom: var(--space-4);">Putting it into practice</p>
+      <h2 class="reveal" style="max-width: 22ch;">From archetype to <em>action</em>.</h2>
+      <p class="reveal" style="margin-top: var(--space-6); margin-bottom: var(--space-16); max-width: 56ch;">Knowing your archetype is the starting point. Here's how to turn it into a brand that actually works.</p>
+
+      <div class="steps-grid" data-stagger>
+        <div class="step reveal">
+          <span class="step-number">01</span>
+          <h4 class="step-title">Identify your archetype</h4>
+          <p>Take the <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="link-underline">Brand Personality Quiz</a> to find your brand's core personality. It takes a few minutes and gives you a starting point that most brands skip entirely.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-number">02</span>
+          <h4 class="step-title">Know who you're talking to</h4>
+          <p>Your archetype tells you who you are. Now figure out what your buyers respond to. The best brands create a match between their personality and the emotional needs of the people they serve.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-number">03</span>
+          <h4 class="step-title">Embed it in your identity</h4>
+          <p>Your archetype should show up in your visuals: logo, color palette, typography, photography. When the design matches the personality, people trust the brand faster.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-number">04</span>
+          <h4 class="step-title">Lock in the voice</h4>
+          <p>Voice is where most brands fall apart. Whether it's authoritative, warm, or rebellious, the archetype gives you a clear filter. Consistency is what turns a personality into a reputation.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-number">05</span>
+          <h4 class="step-title">Use it as a decision filter</h4>
+          <p>Content, campaigns, partnerships, hiring. When every creative and strategic decision runs through the archetype, the brand stays coherent even as the team scales.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-number">06</span>
+          <h4 class="step-title">Refine as you grow</h4>
+          <p>Your archetype is a foundation, not a cage. Pay attention to what resonates. The core identity stays the same, but how you express it should evolve with your brand and market.</p>
+        </div>
+      </div>
+    </Section>
+
+    <!-- ============================================================
+         FINAL CTA
+    ============================================================ -->
+    <Section variant="dark" size="xl">
+      <div class="connect-inner reveal">
+        <h2 style="max-width: 22ch;">Find out what your brand is <em>actually</em> saying.</h2>
+        <p style="margin-top: var(--space-6); max-width: 52ch;">250,000+ brands have used the quiz to identify their archetype. It takes a few minutes and gives you a framework that makes every brand decision clearer.</p>
+        <div class="connect-actions">
+          <a href="https://www.brandingquiz.com" target="_blank" rel="noopener noreferrer" class="btn connect-cta">Take the brand quiz →</a>
+          <a href="https://www.linkedin.com/in/kayeputnam/" target="_blank" rel="noopener noreferrer" class="btn btn--ghost connect-linkedin">Connect on LinkedIn</a>
+        </div>
+      </div>
+    </Section>
+
+  </div>
+
+  <Footer />
+
+</BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  /* ============================================================
+     HERO ENTRANCE ANIMATIONS
+  ============================================================ */
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-item {
+    animation: hero-fade-up 0.8s cubic-bezier(0.55, 0.21, 0.07, 0.87) both;
+  }
+  .hero-item:nth-child(1) { animation-delay:  80ms; }
+  .hero-item:nth-child(2) { animation-delay: 200ms; }
+  .hero-item:nth-child(3) { animation-delay: 320ms; }
+  .hero-item:nth-child(4) { animation-delay: 440ms; }
+  .hero-item:nth-child(5) { animation-delay: 560ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-item { animation: none; }
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-24);
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .hero-headline {
+    font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+    line-height: var(--leading-tight);
+    letter-spacing: 0.01em;
+    max-width: 20ch;
+  }
+
+  .hero-subhead {
+    font-size: var(--text-lg);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    max-width: 56ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+
+  .btn--quiz {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .hero-stat {
+    text-align: center;
+    padding: var(--space-10);
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .hero-stat-number {
+    font-family: var(--ff-heading);
+    font-size: clamp(var(--text-4xl), 5vw, 5.5rem);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.01em;
+    color: var(--color-gold);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: var(--space-3);
+    max-width: none;
+  }
+
+  /* ============================================================
+     ICON STRIP
+  ============================================================ */
+  .icon-strip-bar {
+    background-color: var(--gray-100);
+    border-top: 1px solid rgba(153, 97, 22, 0.15);
+    border-bottom: 1px solid rgba(153, 97, 22, 0.15);
+    padding-block: var(--space-6);
+  }
+
+  .icon-strip {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .icon-strip-item {
+    width: 28px;
+    height: 28px;
+    opacity: 0.6;
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+
+  .icon-strip-item:hover {
+    opacity: 1;
+  }
+
+  .icon-strip-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* ============================================================
+     INTRO
+  ============================================================ */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .intro-lead {
+    font-size: var(--text-xl);
+    color: var(--color-ink);
+    line-height: var(--leading-relaxed);
+  }
+
+  .aside-card {
+    background-color: var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    border-top: 2px solid var(--color-gold);
+  }
+
+  .aside-card h4 {
+    margin-bottom: var(--space-4);
+  }
+
+  .aside-card p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ============================================================
+     CLARITY CODE
+  ============================================================ */
+  .clarity-inner {
+    max-width: 640px;
+  }
+
+  .clarity-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ============================================================
+     QUIZ CTA BAR
+  ============================================================ */
+  .quiz-cta-bar {
+    background-color: var(--color-gold);
+    padding-block: var(--space-10);
+  }
+
+  .quiz-cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .quiz-cta-inner h3 {
+    color: var(--color-cream);
+    font-size: var(--text-2xl);
+  }
+
+  .quiz-cta-inner .btn {
+    --btn-bg-color: var(--color-cream);
+    --btn-border-color: var(--color-cream);
+    --btn-text-color: var(--color-ink);
+    --btn-bg-hover-color: var(--color-ink);
+    --btn-text-hover-color: var(--color-cream);
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     ARCHETYPE GRID
+  ============================================================ */
+  .archetypes-intro {
+    font-size: var(--text-lg);
+    max-width: 60ch;
+    margin-bottom: var(--space-16);
+  }
+
+  .archetype-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  .archetype-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    transition:
+      border-color var(--duration-base) var(--easing-standard),
+      box-shadow var(--duration-base) var(--easing-standard);
+  }
+
+  .archetype-card:hover {
+    border-color: rgba(153, 97, 22, 0.3);
+    box-shadow: inset 0 0 0 1px rgba(153, 97, 22, 0.08);
+  }
+
+  .archetype-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .archetype-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .archetype-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .archetype-name {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+
+  .archetype-desire {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    color: var(--color-gold);
+    letter-spacing: 0.02em;
+  }
+
+  .archetype-desc {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    flex: 1;
+  }
+
+  .archetype-example {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--gray-500);
+    letter-spacing: 0.02em;
+    margin-top: auto;
+  }
+
+  /* ============================================================
+     STEPS
+  ============================================================ */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--gray-300);
+  }
+
+  .step-number {
+    font-family: var(--ff-heading);
+    font-size: var(--text-base);
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+  }
+
+  .step-title {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+  }
+
+  .step p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ============================================================
+     CONNECT
+  ============================================================ */
+  .connect-inner {
+    max-width: 640px;
+  }
+
+  .connect-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-10);
+  }
+
+  .connect-cta {
+    --btn-bg-color: var(--color-gold);
+    --btn-border-color: var(--color-gold);
+  }
+
+  .connect-linkedin {
+    border-color: rgba(209, 198, 190, 0.3);
+    color: var(--color-cream);
+  }
+
+  .connect-linkedin:hover {
+    background-color: var(--color-cream);
+    border-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  /* ============================================================
+     RESPONSIVE — tablet
+  ============================================================ */
+  @media (max-width: 1023px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-stat {
+      border-left: none;
+      border-top: 1px solid var(--gray-300);
+      padding: var(--space-8) 0 0;
+      text-align: left;
+    }
+
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .archetype-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE — mobile
+  ============================================================ */
+  @media (max-width: 767px) {
+    .hero {
+      padding-block: var(--space-16);
+    }
+
+    .archetype-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quiz-cta-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .quiz-cta-inner h3 {
+      font-size: var(--text-xl);
+    }
+  }
+</style>
