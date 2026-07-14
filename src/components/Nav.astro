@@ -39,7 +39,7 @@ const { currentPath = '/' } = Astro.props;
   </nav>
 </header>
 
-<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
   <ul role="list">
     {links.map(link => (
       <li>
@@ -275,6 +275,7 @@ const { currentPath = '/' } = Astro.props;
     mobileMenu.classList.toggle('is-open');
     hamburger.setAttribute('aria-expanded', String(!isOpen));
     mobileMenu.setAttribute('aria-hidden', String(isOpen));
+    mobileMenu.toggleAttribute('inert', isOpen);
   });
 
   // Close on link click
@@ -283,6 +284,7 @@ const { currentPath = '/' } = Astro.props;
       mobileMenu.classList.remove('is-open');
       hamburger.setAttribute('aria-expanded', 'false');
       mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileMenu.setAttribute('inert', '');
     });
   });
 </script>

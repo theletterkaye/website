@@ -2,12 +2,23 @@
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  ogType?: string;
 }
 
 const {
   title = 'Kaye Putnam',
   description = 'Brand strategist and positioning expert.',
+  image = '/og-default.jpg',
+  ogType = 'website',
 } = Astro.props;
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+const ogImage = image.startsWith('http')
+  ? image
+  : Astro.site
+    ? new URL(image, Astro.site).href
+    : image;
 ---
 
 <html lang="en">
@@ -19,11 +30,27 @@ const {
 
     <title>{title}</title>
 
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:site_name" content="Kaye Putnam" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Adobe Fonts: Moret + Mr Eaves Mod OT -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/gvu8enl.css" />
 
     <slot name="head" />

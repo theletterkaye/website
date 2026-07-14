@@ -54,7 +54,7 @@ const archetypes = [
 
   <Nav />
 
-  <div style="padding-top: var(--site-header-height);">
+  <main style="padding-top: var(--site-header-height);">
 
     <!-- ============================================================
          HERO
@@ -113,21 +113,21 @@ const archetypes = [
 
         <div class="pillar reveal">
           <span class="pillar-number">01</span>
-          <h3 class="pillar-headline">Build your brand on <em>truth</em>, not trends.</h3>
+          <h2 class="pillar-headline">Build your brand on <em>truth</em>, not trends.</h2>
           <p>The brands people remember aren't the ones with the best tactics. They're the ones that know exactly who they are and say it clearly.</p>
           <span class="tag" style="margin-top: auto;">Brand Strategy</span>
         </div>
 
         <div class="pillar reveal">
           <span class="pillar-number">02</span>
-          <h3 class="pillar-headline">AI doesn't replace brand thinking. It <em>amplifies</em> it.</h3>
+          <h2 class="pillar-headline">AI doesn't replace brand thinking. It <em>amplifies</em> it.</h2>
           <p>Strong brands get more out of every tool, including AI. Without brand clarity, you're just producing more content nobody connects with, faster. I help teams use AI to scale their voice, not lose it.</p>
           <span class="tag" style="margin-top: auto;">AI + Marketing Systems</span>
         </div>
 
         <div class="pillar reveal">
           <span class="pillar-number">03</span>
-          <h3 class="pillar-headline">People don't choose a place to stay. They choose a <em>feeling</em>.</h3>
+          <h2 class="pillar-headline">People don't choose a place to stay. They choose a <em>feeling</em>.</h2>
           <p>Most STR operators focus on the mechanics of hosting when the real differentiator is the feeling they're selling. The brands that win are building something guests remember and come back for.</p>
           <span class="tag" style="margin-top: auto;">STR &amp; Hospitality</span>
         </div>
@@ -180,17 +180,17 @@ const archetypes = [
       <div class="talk-grid" data-stagger>
         <div class="talk-item reveal">
           <span class="talk-number">01</span>
-          <h4 class="talk-title">Brand Archetypes for Hospitality</h4>
+          <h3 class="talk-title">Brand Archetypes for Hospitality</h3>
           <p class="talk-body">The framework that's helped 250,000+ brands find their personality, applied to the STR industry. Walk away knowing exactly what your brand should feel like and how to build it.</p>
         </div>
         <div class="talk-item reveal">
           <span class="talk-number">02</span>
-          <h4 class="talk-title">Human-First Marketing in the Age of AI</h4>
+          <h3 class="talk-title">Human-First Marketing in the Age of AI</h3>
           <p class="talk-body">AI is changing what's possible in marketing. But the brands that benefit most aren't the ones moving fastest. They're the ones with the clearest identity.</p>
         </div>
         <div class="talk-item reveal">
           <span class="talk-number">03</span>
-          <h4 class="talk-title">Build Your Brand on Truth, Not Trends</h4>
+          <h3 class="talk-title">Build Your Brand on Truth, Not Trends</h3>
           <p class="talk-body">Most marketing advice is about tactics. This talk is about the kind of strategy that compounds over time and makes every tactic work better.</p>
         </div>
       </div>
@@ -239,7 +239,23 @@ const archetypes = [
           <p class="label" style="margin-bottom: var(--space-3);">Stay in the loop</p>
           <p class="subscribe-desc">I write about brand strategy, AI in marketing, and hospitality a few times a month. No spam. Just the ideas I'd share over coffee.</p>
         </div>
-        <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+        <script>
+            // Load ConvertKit only when the form is near the viewport
+            const ckForm = document.querySelector('.formkit-form');
+            if (ckForm) {
+              const loadCk = () => {
+                if (document.getElementById('ck-script')) return;
+                const s = document.createElement('script');
+                s.src = 'https://f.convertkit.com/ckjs/ck.5.js';
+                s.id = 'ck-script';
+                document.body.appendChild(s);
+              };
+              const io = new IntersectionObserver((entries) => {
+                if (entries.some((e) => e.isIntersecting)) { loadCk(); io.disconnect(); }
+              }, { rootMargin: '400px' });
+              io.observe(ckForm);
+            }
+          </script>
         <form
           action="https://app.kit.com/forms/9207980/subscriptions"
           class="seva-form formkit-form subscribe-form"
@@ -318,7 +334,7 @@ const archetypes = [
       </div>
     </Section>
 
-  </div>
+  </main>
 
   <Footer />
 

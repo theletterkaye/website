@@ -129,14 +129,8 @@ const faqSchema = faq.length > 0
   : null;
 ---
 
-<BaseLayout title={pageTitle} description={description}>
+<BaseLayout title={pageTitle} description={description} image={ogImage} ogType="article">
   <Fragment slot="head">
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
     {faqSchema && (
       <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
@@ -145,7 +139,7 @@ const faqSchema = faq.length > 0
 
   <Nav />
 
-  <div style="padding-top: var(--site-header-height);">
+  <main style="padding-top: var(--site-header-height);">
     <article class="post">
 
       <!-- ========== HERO HEADER — full width, dramatic ========== -->
@@ -198,7 +192,23 @@ const faqSchema = faq.length > 0
             <p class="post-subscribe-heading">Enjoyed this? Stay in the loop.</p>
             <p class="post-subscribe-desc">I share new thinking on brands, AI, and hospitality on an irregular basis.</p>
           </div>
-          <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+          <script>
+            // Load ConvertKit only when the form is near the viewport
+            const ckForm = document.querySelector('.formkit-form');
+            if (ckForm) {
+              const loadCk = () => {
+                if (document.getElementById('ck-script')) return;
+                const s = document.createElement('script');
+                s.src = 'https://f.convertkit.com/ckjs/ck.5.js';
+                s.id = 'ck-script';
+                document.body.appendChild(s);
+              };
+              const io = new IntersectionObserver((entries) => {
+                if (entries.some((e) => e.isIntersecting)) { loadCk(); io.disconnect(); }
+              }, { rootMargin: '400px' });
+              io.observe(ckForm);
+            }
+          </script>
           <form
             action="https://app.kit.com/forms/9207980/subscriptions"
             class="seva-form formkit-form post-subscribe-form"
@@ -271,7 +281,7 @@ const faqSchema = faq.length > 0
         </div>
       </section>
     )}
-  </div>
+  </main>
 
   <Footer />
 </BaseLayout>
