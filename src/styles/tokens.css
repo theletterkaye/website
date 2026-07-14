@@ -38,7 +38,7 @@
   ---------------------------------------------------------- */
 
   --ff-heading: 'scale-variable', sans-serif;
-  --ff-body:    'mr-eaves-modern', sans-serif;
+  --ff-body:    'freight-sans-pro', 'mr-eaves-modern', sans-serif;
 
   /* Type scale */
   --text-xs:   0.75rem;   /*  12px */
