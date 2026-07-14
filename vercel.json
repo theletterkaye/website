@@ -1,6 +1,28 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "brandingquiz.com"
+        }
+      ],
+      "destination": "https://kayeputnam.com/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.brandingquiz.com"
+        }
+      ],
+      "destination": "https://kayeputnam.com/quiz",
+      "statusCode": 301
+    },
+    {
       "source": "/my-work",
       "destination": "/work",
       "statusCode": 301
