@@ -1,9 +1,10 @@
 ---
 const links = [
-  { label: 'Work',     href: '/work' },
-  { label: 'About',    href: '/about' },
-  { label: 'Writing',  href: '/writing' },
-  { label: 'Contact',  href: '/contact' },
+  { label: 'Work',       href: '/work' },
+  { label: 'About',      href: '/about' },
+  { label: 'Writing',    href: '/writing' },
+  { label: 'Contact',    href: '/contact' },
+  { label: 'SourceBook', href: 'https://sourcebook.kayeputnam.com', external: true },
 ];
 
 const socials = [
@@ -45,7 +46,14 @@ const socials = [
         <nav class="footer-nav" aria-label="Footer navigation">
           <ul role="list">
             {links.map(link => (
-              <li><a href={link.href} class="footer-link">{link.label}</a></li>
+              <li>
+                <a
+                  href={link.href}
+                  class="footer-link"
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
+                >{link.label}</a>
+              </li>
             ))}
           </ul>
         </nav>

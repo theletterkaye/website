@@ -136,7 +136,7 @@ import now4 from '../assets/about/now-4.png';
         <div class="pillar reveal">
           <span class="pillar-number">01</span>
           <h2 class="pillar-headline">Build on <em>truth</em>, not trends.</h2>
-          <p>The brands with staying power aren't chasing the latest platform or tactic. They're built on a clear identity that doesn't need to change every quarter. I've used the same core brand standards for years, and they still work. That's not an accident.</p>
+          <p>The brands with staying power aren't chasing the latest platform or tactic. They're built on a clear identity that doesn't need to change every quarter. I've used the same <a href="https://sourcebook.kayeputnam.com" target="_blank" rel="noopener noreferrer" class="pillar-link">core brand standards</a> for years, and they still work. That's not an accident. (Mine are published in the open, if you're curious.)</p>
         </div>
 
         <div class="pillar reveal">
@@ -530,6 +530,19 @@ import now4 from '../assets/about/now-4.png';
     font-size: var(--text-md);
     line-height: var(--leading-relaxed);
     flex: 1;
+  }
+
+  .pillar-link {
+    color: var(--color-ink);
+    background-image: linear-gradient(var(--color-gold), var(--color-gold));
+    background-position: 0 100%;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    transition: color var(--duration-base) var(--easing-standard);
+  }
+
+  .pillar-link:hover {
+    color: var(--color-gold);
   }
 
   /* ============================================================
