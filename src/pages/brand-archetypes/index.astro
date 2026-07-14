@@ -1,26 +1,27 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-import Section from '../components/Section.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
 
-import archetypeCaregiver from '../assets/archetypes/caregiver.png';
-import archetypeCreator from '../assets/archetypes/creator.png';
-import archetypeEntertainer from '../assets/archetypes/entertainer.png';
-import archetypeEveryman from '../assets/archetypes/everyman.png';
-import archetypeExplorer from '../assets/archetypes/explorer.png';
-import archetypeHero from '../assets/archetypes/hero.png';
-import archetypeInnocent from '../assets/archetypes/innocent.png';
-import archetypeLover from '../assets/archetypes/lover.png';
-import archetypeMagician from '../assets/archetypes/magician.png';
-import archetypeMaverick from '../assets/archetypes/maverick.png';
-import archetypeRoyal from '../assets/archetypes/royal.png';
-import archetypeSage from '../assets/archetypes/sage.png';
+import archetypeCaregiver from '../../assets/archetypes/caregiver.png';
+import archetypeCreator from '../../assets/archetypes/creator.png';
+import archetypeEntertainer from '../../assets/archetypes/entertainer.png';
+import archetypeEveryman from '../../assets/archetypes/everyman.png';
+import archetypeExplorer from '../../assets/archetypes/explorer.png';
+import archetypeHero from '../../assets/archetypes/hero.png';
+import archetypeInnocent from '../../assets/archetypes/innocent.png';
+import archetypeLover from '../../assets/archetypes/lover.png';
+import archetypeMagician from '../../assets/archetypes/magician.png';
+import archetypeMaverick from '../../assets/archetypes/maverick.png';
+import archetypeRoyal from '../../assets/archetypes/royal.png';
+import archetypeSage from '../../assets/archetypes/sage.png';
 
 const archetypes = [
   {
     name: 'The Innocent',
+    slug: 'innocent',
     icon: archetypeInnocent,
     desire: 'Safety & happiness',
     description: 'The Innocent believes in doing things the right way. These brands signal trust, simplicity, and optimism. They make people feel safe choosing them, which is why they dominate categories where trust is the buying decision.',
@@ -28,6 +29,7 @@ const archetypes = [
   },
   {
     name: 'The Explorer',
+    slug: 'explorer',
     icon: archetypeExplorer,
     desire: 'Freedom & discovery',
     description: 'Restless and independent. Explorer brands invite people to break from the ordinary and discover something new. They win by making their audience feel like individuals, not demographics.',
@@ -35,6 +37,7 @@ const archetypes = [
   },
   {
     name: 'The Sage',
+    slug: 'sage',
     icon: archetypeSage,
     desire: 'Knowledge & truth',
     description: 'Driven by the pursuit of truth and a need to understand how things work. Sage brands earn trust by making complex things clear. They sell insight, not information.',
@@ -42,6 +45,7 @@ const archetypes = [
   },
   {
     name: 'The Hero',
+    slug: 'hero',
     icon: archetypeHero,
     desire: 'Mastery & courage',
     description: 'The Hero proves their worth through action and inspires others to do the same. These brands don\'t coddle their audience. They challenge them to be better. The real enemy isn\'t a villain; it\'s inaction.',
@@ -49,6 +53,7 @@ const archetypes = [
   },
   {
     name: 'The Maverick',
+    slug: 'maverick',
     icon: archetypeMaverick,
     desire: 'Liberation & revolution',
     description: 'The Maverick breaks rules others follow blindly and gives people permission to do the same. These brands are polarizing on purpose. They\'d rather be loved by some than tolerated by all.',
@@ -56,6 +61,7 @@ const archetypes = [
   },
   {
     name: 'The Magician',
+    slug: 'magician',
     icon: archetypeMagician,
     desire: 'Transformation & vision',
     description: 'The Magician makes the impossible feel inevitable. These brands sell transformation, not features. They never promise gradual improvement. They promise a fundamentally different result.',
@@ -63,6 +69,7 @@ const archetypes = [
   },
   {
     name: 'The Girl/Guy Next Door',
+    slug: 'girl-guy-next-door',
     icon: archetypeEveryman,
     desire: 'Belonging & connection',
     description: 'Genuine, grounded, and deeply loyal. This archetype makes people feel like they belong. These brands win through community, not exclusivity. Their customers don\'t just buy; they identify.',
@@ -70,6 +77,7 @@ const archetypes = [
   },
   {
     name: 'The Lover',
+    slug: 'lover',
     icon: archetypeLover,
     desire: 'Intimacy & passion',
     description: 'Driven by beauty, deep connection, and the desire to be desired. Lover brands create experiences rooted in pleasure and sensory detail. They make the ordinary feel indulgent.',
@@ -77,6 +85,7 @@ const archetypes = [
   },
   {
     name: 'The Entertainer',
+    slug: 'entertainer',
     icon: archetypeEntertainer,
     desire: 'Joy & spontaneity',
     description: 'The Entertainer uses humor, surprise, and play to create connection. These brands don\'t take themselves too seriously, and that\'s exactly why people take them seriously. Fun is the strategy.',
@@ -84,6 +93,7 @@ const archetypes = [
   },
   {
     name: 'The Caregiver',
+    slug: 'caregiver',
     icon: archetypeCaregiver,
     desire: 'Service & protection',
     description: 'The Caregiver is driven to protect and nurture. These brands build trust through warmth and reliability. They don\'t just serve their customers; they genuinely look out for them.',
@@ -91,6 +101,7 @@ const archetypes = [
   },
   {
     name: 'The Royal',
+    slug: 'royal',
     icon: archetypeRoyal,
     desire: 'Control & excellence',
     description: 'The Royal leads with confidence and sets the standard. These brands signal quality over quantity, prestige over accessibility. People don\'t just buy Royal brands; they aspire to them.',
@@ -98,6 +109,7 @@ const archetypes = [
   },
   {
     name: 'The Creator',
+    slug: 'creator',
     icon: archetypeCreator,
     desire: 'Innovation & self-expression',
     description: 'The Creator turns vision into something tangible. These brands value originality above all and inspire their audience to build, make, and express. The product is never the point. The act of creating is.',
@@ -207,7 +219,7 @@ const archetypes = [
 
       <div class="archetype-grid" data-stagger>
         {archetypes.map((a) => (
-          <div class="archetype-card reveal">
+          <a href={`/brand-archetypes/${a.slug}`} class="archetype-card reveal">
             <div class="archetype-card-header">
               <div class="archetype-icon">
                 <Image src={a.icon} alt="" width={40} height={40} loading="lazy" />
@@ -219,7 +231,8 @@ const archetypes = [
             </div>
             <p class="archetype-desc">{a.description}</p>
             <span class="archetype-example">Think: {a.example}</span>
-          </div>
+            <span class="archetype-cta">Explore the {a.name.replace('The ', '')} &rarr;</span>
+          </a>
         ))}
       </div>
     </Section>
@@ -536,6 +549,21 @@ const archetypes = [
     transition:
       border-color var(--duration-base) var(--easing-standard),
       box-shadow var(--duration-base) var(--easing-standard);
+  }
+
+  .archetype-card,
+  .archetype-card:hover {
+    color: inherit;
+  }
+
+  .archetype-cta {
+    margin-top: auto;
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-gold);
   }
 
   .archetype-card:hover {

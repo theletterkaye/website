@@ -63,4 +63,26 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { casestudies, blog };
+const archetypes = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/archetypes' }),
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    icon: z.string(),
+    aka: z.array(z.string()),
+    coreDesire: z.string(),
+    tagline: z.string(),
+    description: z.string(),
+    emotions: z.array(z.string()),
+    values: z.array(z.string()),
+    brandExamples: z.array(z.object({
+      name: z.string(),
+      note: z.string().optional(),
+    })),
+    realExamples: z.array(z.string()).default([]),
+    bestFor: z.array(z.string()),
+    order: z.number(),
+  }),
+});
+
+export const collections = { casestudies, blog, archetypes };
