@@ -5,6 +5,7 @@ interface UnsplashPhoto {
   id: string;
   width: number;
   height: number;
+  color?: string;
   urls: { raw: string };
   alt_description: string | null;
   description: string | null;
@@ -28,14 +29,59 @@ function isAnimal(desc: string): boolean {
   return ANIMAL_WORDS.some((a) => words.some((w) => w.includes(a)));
 }
 
-// Search terms per category to rank photos
+// Words that indicate urban/man-made subjects (site uses nature imagery only)
+const URBAN_WORDS = [
+  'city', 'cities', 'skyline', 'building', 'buildings', 'skyscraper',
+  'street', 'road', 'car', 'cars', 'driving', 'bridge', 'urban',
+  'downtown', 'architecture', 'traffic', 'highway', 'town', 'house',
+  'houses', 'tower', 'train', 'taxi', 'boat', 'ship', 'ferris',
+  'people', 'person', 'man', 'woman', 'crowd', 'sign', 'signpost',
+  'signage', 'tent', 'camp', 'campsite',
+];
+
+function isUrban(desc: string): boolean {
+  const words = desc.toLowerCase().split(/\s+/);
+  return URBAN_WORDS.some((u) => words.some((w) => w === u || w === u + 's'));
+}
+
+// Palette fit: the site runs Ink/Forest darks, warm golds, dune/blush neutrals.
+// Unsplash exposes each photo's average color as hex; keep photos that are
+// dark, warm-toned, or muted earthy greens. Reject bright/cool/saturated.
+function fitsPalette(hex?: string): boolean {
+  if (!hex) return true;
+  const n = parseInt(hex.replace('#', ''), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const lightness = (max + min) / 2 / 255;
+  const sat = max === min ? 0 : (max - min) / (255 - Math.abs(max + min - 255));
+  let hue = 0;
+  if (max !== min) {
+    if (max === r) hue = ((g - b) / (max - min)) % 6;
+    else if (max === g) hue = (b - r) / (max - min) + 2;
+    else hue = (r - g) / (max - min) + 4;
+    hue = (hue * 60 + 360) % 360;
+  }
+  if (lightness < 0.3) return true;                      // ink/forest darks
+  if (hue >= 15 && hue <= 75 && lightness < 0.85) return true;   // golds, sand, blush
+  if (hue > 75 && hue <= 170 && sat < 0.45) return true; // muted greens
+  if (sat < 0.12) return true;                           // near-neutral creams/grays
+  return false;                                          // bright blues, vivid colors
+}
+
+// Search terms per category to rank photos (nature only)
 const CATEGORY_TERMS: Record<string, string[]> = {
-  'Brand Strategy': ['mountain', 'sunset', 'rock', 'arch', 'desert'],
-  'AI + Marketing Systems': ['city', 'road', 'driving', 'car', 'starry'],
+  'Brand Strategy': ['mountain', 'sunset', 'rock', 'arch', 'desert', 'canyon', 'cliff'],
+  'AI + Marketing Systems': ['starry', 'stars', 'night', 'fog', 'mist', 'forest', 'dusk', 'milky'],
   'STR & Hospitality': ['ocean', 'dune', 'beach', 'coast', 'sand', 'wave'],
 };
 
 let cachedPhotos: UnsplashPhoto[] | null = null;
+
+// Build-time assignment registry: each slug keeps one photo for the whole
+// build (consistent across hero/thumbnail widths), and no two slugs share one.
+const assignedBySlug = new Map<string, UnsplashPhoto>();
+const usedPhotoIds = new Set<string>();
 
 async function fetchPhotos(): Promise<UnsplashPhoto[]> {
   if (cachedPhotos) return cachedPhotos;
@@ -62,12 +108,14 @@ async function fetchPhotos(): Promise<UnsplashPhoto[]> {
         if (p.width <= p.height) continue;
         const desc = p.alt_description || p.description || '';
         if (isAnimal(desc)) continue;
+        if (isUrban(desc)) continue;
+        if (!fitsPalette(p.color)) continue;
         photos.push(p);
       }
     }
 
     cachedPhotos = photos;
-    console.log(`[unsplash] ${photos.length} landscape photos loaded (animals excluded)`);
+    console.log(`[unsplash] ${photos.length} nature photos loaded (animals/urban/off-palette excluded)`);
     return photos;
   } catch (err) {
     console.warn('[unsplash] Failed to fetch:', err);
@@ -102,12 +150,28 @@ export async function getPostImage(
   const topPool = scored.filter((s) => s.score > 0);
   const pool = topPool.length >= 3 ? topPool : scored;
 
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = ((hash << 5) - hash + slug.charCodeAt(i)) | 0;
+  let photo: UnsplashPhoto;
+  const existing = assignedBySlug.get(slug);
+  if (existing) {
+    photo = existing;
+  } else {
+    let hash = 0;
+    for (let i = 0; i < slug.length; i++) {
+      hash = ((hash << 5) - hash + slug.charCodeAt(i)) | 0;
+    }
+    // Linear-probe from the hashed index so no two posts share a photo
+    let index = Math.abs(hash) % pool.length;
+    for (let step = 0; step < pool.length; step++) {
+      const candidate = pool[(index + step) % pool.length].photo;
+      if (!usedPhotoIds.has(candidate.id)) {
+        index = (index + step) % pool.length;
+        break;
+      }
+    }
+    photo = pool[index].photo;
+    assignedBySlug.set(slug, photo);
+    usedPhotoIds.add(photo.id);
   }
-  const index = Math.abs(hash) % pool.length;
-  const photo = pool[index].photo;
 
   // Trigger download tracking (Unsplash guidelines)
   fetch(photo.links.download_location, {
