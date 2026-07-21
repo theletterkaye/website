@@ -171,12 +171,13 @@ export async function getPostImage(
     photo = pool[index].photo;
     assignedBySlug.set(slug, photo);
     usedPhotoIds.add(photo.id);
-  }
 
-  // Trigger download tracking (Unsplash guidelines)
-  fetch(photo.links.download_location, {
-    headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
-  }).catch(() => {});
+    // Trigger download tracking once per photo per build (Unsplash guidelines;
+    // pinging on every render burns through the 50 req/hr rate limit)
+    fetch(photo.links.download_location, {
+      headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
+    }).catch(() => {});
+  }
 
   return {
     url: `${photo.urls.raw}&w=${width}&q=80&fm=webp&fit=crop`,
