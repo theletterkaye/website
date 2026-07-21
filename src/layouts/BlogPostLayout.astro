@@ -5,7 +5,6 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import KeyTakeaways from '../components/KeyTakeaways.astro';
 import AuthorBio from '../components/AuthorBio.astro';
-import { getPostImages } from '../lib/unsplash';
 
 interface Props {
   title: string;
@@ -54,13 +53,7 @@ const otherPosts = (await getCollection('blog'))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
   .slice(0, 3);
 
-// Fetch Unsplash images for other posts (only those without manual images)
-const otherPostsNeedingImages = otherPosts
-  .filter((p) => !p.data.image)
-  .map((p) => ({ slug: p.data.slug, category: p.data.category }));
-const otherImages = otherPostsNeedingImages.length > 0
-  ? await getPostImages(otherPostsNeedingImages, 400)
-  : new Map();
+const otherImages = new Map<string, { url: string; alt: string }>();
 
 const pageTitle = metaTitle || `${title} | Kaye Putnam`;
 const canonical = canonicalUrl || `https://kayeputnam.com/writing/${slug}`;

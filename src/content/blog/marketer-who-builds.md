@@ -31,6 +31,10 @@ tldr: "Marketing keeps absorbing the tech stack, and AI means a non-engineer can
 topics: ["AI marketing tools", "marketing technology stack", "marketers who code", "marketing operations", "technical debt in marketing", "engineering practices for marketers", "martech maintenance", "AI-assisted development", "marketing team structure"]
 
 ogImage: "/writing-covers/marketer-who-builds_cover.webp"
+
+image: "/writing-heroes/marketer-who-builds.webp"
+imageAlt: "Golden desert rocks and green shrubs in warm afternoon light"
+imageCredit: "Photo by Nir Himi on Unsplash"
 ---
 
 I was on a call this week watching a deploy quietly undo itself.

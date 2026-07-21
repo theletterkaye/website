@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
-import { getPostImage } from '../../lib/unsplash';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -13,18 +12,13 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-
-// Fetch Unsplash image if post doesn't have one set manually
-const unsplashImage = !post.data.image
-  ? await getPostImage(post.data.slug, post.data.category)
-  : null;
 ---
 
 <BlogPostLayout
   {...post.data}
-  image={unsplashImage?.url || post.data.image}
-  imageAlt={unsplashImage?.alt || post.data.imageAlt}
-  imageCredit={unsplashImage?.credit}
+  image={post.data.image}
+  imageAlt={post.data.imageAlt}
+  imageCredit={post.data.imageCredit}
 >
   <Content />
 </BlogPostLayout>

@@ -29,6 +29,10 @@ faq:
 tldr: "Most STR operators compete on amenities and price because they skip brand strategy entirely. The brands that outperform define what they want guests to feel first, then let that guide every decision. Hospitality is the most human category in marketing, and the brands that treat it that way win."
 
 topics: ["short-term rental branding", "hospitality marketing", "STR strategy", "guest experience", "brand archetypes", "hospitality brand identity", "vacation rental marketing", "guest loyalty", "Freewyld"]
+
+image: "/writing-heroes/str-operators-branding.webp"
+imageAlt: "Desert mountain at sunset under a purple and gold sky"
+imageCredit: "Photo by Nir Himi on Unsplash"
 ---
 
 Name a vacation rental brand known for world-class hospitality.

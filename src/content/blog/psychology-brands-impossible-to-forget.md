@@ -29,6 +29,10 @@ faq:
 tldr: "The brands people never forget succeed because of three psychological drivers: leading with emotion over features, achieving differentiation through clarity over creativity, and finding the single lever that makes the right people say 'that's exactly what I've been looking for.'"
 
 topics: ["brand psychology", "brand archetypes", "emotional branding", "brand differentiation", "brand clarity", "positioning strategy", "Jungian psychology", "brand loyalty"]
+
+image: "/writing-heroes/psychology-brands-impossible-to-forget.webp"
+imageAlt: "Natural rock arch silhouetted against a sunset sky"
+imageCredit: "Photo by Nir Himi on Unsplash"
 ---
 
 Quick question: why do you buy the ice cream you buy?

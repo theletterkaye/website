@@ -29,6 +29,10 @@ faq:
 tldr: "Brand differentiation isn't about being louder or more creative. It's about clarity: choosing what you stand for and who you're for. The brands that hold attention have a real mission, a specific USP, and a voice that strategy defined first."
 
 topics: ["brand differentiation", "brand positioning", "brand strategy", "unique selling proposition", "brand voice", "visual identity", "brand mission", "target audience", "psychographics"]
+
+image: "/writing-heroes/brand-differentiation-clarity.webp"
+imageAlt: "Sunlight flaring over golden desert boulders"
+imageCredit: "Photo by Nir Himi on Unsplash"
 ---
 
 I once watched a brand spend $80,000 on a rebrand and come out the other side looking exactly like their two closest competitors. Different logo. Same personality. Same voice. Same vague promise to "deliver exceptional results." Just in a slightly different shade of blue.

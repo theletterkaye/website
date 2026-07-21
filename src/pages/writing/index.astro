@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-import { getPostImages } from '../../lib/unsplash';
 
 const allPosts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
@@ -11,19 +10,11 @@ const allPosts = (await getCollection('blog'))
 
 const [featured, ...listPosts] = allPosts;
 
-// Fetch Unsplash images for any post without a manual image
-const needingImages = allPosts
-  .filter((p) => !p.data.image)
-  .map((p) => ({ slug: p.data.slug, category: p.data.category }));
-const unsplashImages = needingImages.length > 0
-  ? await getPostImages(needingImages, 1200)
-  : new Map();
-
 function getPostImage(post: (typeof allPosts)[number]) {
-  return post.data.image || unsplashImages.get(post.data.slug)?.url || null;
+  return post.data.image || null;
 }
 function getPostImageAlt(post: (typeof allPosts)[number]) {
-  return post.data.imageAlt || unsplashImages.get(post.data.slug)?.alt || '';
+  return post.data.imageAlt || '';
 }
 function formatDate(date: Date) {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
