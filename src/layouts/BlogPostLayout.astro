@@ -19,6 +19,7 @@ interface Props {
   image?: string;
   imageAlt?: string;
   imageCredit?: string;
+  ogImage?: string;
   metaTitle?: string;
   canonicalUrl?: string;
   keyTakeaways: string[];
@@ -38,6 +39,7 @@ const {
   image,
   imageAlt,
   imageCredit,
+  ogImage,
   metaTitle,
   canonicalUrl,
   keyTakeaways,
@@ -62,7 +64,7 @@ const otherImages = otherPostsNeedingImages.length > 0
 
 const pageTitle = metaTitle || `${title} | Kaye Putnam`;
 const canonical = canonicalUrl || `https://kayeputnam.com/writing/${slug}`;
-const ogImage = image || undefined;
+const metaImage = ogImage || image || undefined;
 
 const formattedDate = publishDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -129,7 +131,7 @@ const faqSchema = faq.length > 0
   : null;
 ---
 
-<BaseLayout title={pageTitle} description={description} image={ogImage} ogType="article">
+<BaseLayout title={pageTitle} description={description} image={metaImage} ogType="article">
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
     {faqSchema && (

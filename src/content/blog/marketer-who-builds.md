@@ -29,6 +29,8 @@ faq:
 tldr: "Marketing keeps absorbing the tech stack, and AI means a non-engineer can now ship real software to production. The pitch skips the second half of the job: once you own the code, you own the patches, the upgrades, and the outage."
 
 topics: ["AI marketing tools", "marketing technology stack", "marketers who code", "marketing operations", "technical debt in marketing", "engineering practices for marketers", "martech maintenance", "AI-assisted development", "marketing team structure"]
+
+ogImage: "/writing-covers/marketer-who-builds_cover.webp"
 ---
 
 I was on a call this week watching a deploy quietly undo itself.

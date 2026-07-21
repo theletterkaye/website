@@ -45,6 +45,8 @@ const blog = defineCollection({
     excerpt: z.string(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
+    // Social-share-only image (og:image); never rendered on the page
+    ogImage: z.string().optional(),
 
     // SEO
     metaTitle: z.string().optional(),
