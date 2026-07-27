@@ -83,7 +83,7 @@ Every brand has a visual identity. Fewer have a genuine voice: one that's consis
 
 Innocent Drinks built a brand people genuinely enjoy interacting with because their voice has personality. It's warm, slightly absurd, and the same whether you're reading the back of a juice bottle or their Instagram. That consistency creates familiarity. Familiarity builds trust. Trust builds the kind of loyalty that doesn't evaporate when a competitor runs a sale.
 
-Here's what I've seen over 15 years of brand work: when voice decisions are hard ("should we say it this way or that way?"), it's almost always because the strategic choices underneath haven't been made yet. When the brand's personality is clear, the right words become obvious and the wrong ones are easy to spot.
+Here's what I've seen over 20 years of brand work: when voice decisions are hard ("should we say it this way or that way?"), it's almost always because the strategic choices underneath haven't been made yet. When the brand's personality is clear, the right words become obvious and the wrong ones are easy to spot.
 
 That's why I start with archetypes before I touch copy. Define who the brand is first. The voice follows.
 
