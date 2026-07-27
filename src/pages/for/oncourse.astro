@@ -52,7 +52,7 @@ import Stat from '../../components/Stat.astro';
             <li>Customer and partner value propositions defined, then activated from acquisition through onboarding, ongoing service, and renewal</li>
             <li>Built as part of the founding team: zero clients and zero revenue to 75+ clients and $3.7M ARR</li>
           </ul>
-          <a href="/work/freewyld-foundry">Read the case study →</a>
+          <a href="/work/freewyld-foundry">See the public case study →</a>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ import Stat from '../../components/Stat.astro';
             <li>A documented answer-engine optimization playbook the whole content operation follows</li>
             <li>Three websites rebuilt with AI-assisted development; I treat AI as marketing infrastructure, not a delegated tool</li>
           </ul>
-          <a href="/work/brand-archetype-quiz">See a build in action →</a>
+          <a href="/quiz">Try the live build →</a>
         </div>
       </div>
 
@@ -103,7 +103,7 @@ import Stat from '../../components/Stat.astro';
             <li>Guest journey activated at every stage: booking, pre-arrival, in-stay upsell offers, and post-stay review requests across a 12-touch email lifecycle</li>
             <li>Consumer press earned along the way: Staycation TV feature and a Visit California mention</li>
           </ul>
-          <a href="/work/freewyld-cabins">Read the case study →</a>
+          <a href="/work/freewyld-cabins">See the public case study →</a>
         </div>
       </div>
     </Section>
@@ -123,6 +123,27 @@ import Stat from '../../components/Stat.astro';
           <p>Twelve years leading creative teams, from a core of three to project teams of fifteen. Today I lead marketing inside a 20-person company as part of its leadership team, with a hiring record my direct reports' reviews back up.</p>
         </div>
       </div>
+    </Section>
+
+    <Section variant="dark" size="lg">
+      <p class="label" style="margin-bottom: var(--space-3);">Thinking out loud</p>
+      <h2 class="map-title" style="margin-bottom: var(--space-8);">A point of view on <em>your</em> brand.</h2>
+      <p style="max-width: 58ch; margin-bottom: var(--space-8);">Three things I noticed in your posting that I'd want to explore in a first conversation.</p>
+      <div class="pov-grid">
+        <div>
+          <h3 class="label" style="margin-bottom: var(--space-3);">The two-brand question</h3>
+          <p>The American Water Resources to Oncourse decision reads like a renaming project, but the real work is sequencing customer and partner trust through the transition. I run a portfolio where brands share a family reputation while serving different buyers, and the architecture calls about what to share and what to separate shaped everything downstream.</p>
+        </div>
+        <div>
+          <h3 class="label" style="margin-bottom: var(--space-3);">Reviews are the brand surface</h3>
+          <p>In home services, a prospect meets your Google and Trustpilot ratings before they meet any campaign, so reputation strategy and brand strategy are one discipline. I've built client advocacy systematically: case studies with approval workflows, review generation, and customer stories treated as a pipeline rather than a request.</p>
+        </div>
+        <div>
+          <h3 class="label" style="margin-bottom: var(--space-3);">Enrollment research is moving into AI</h3>
+          <p>Your posting names how Oncourse is represented in AI tools during enrollment research, and that instinct is ahead of the market. I treat AI assistants as a distribution channel with its own ranking logic, and homeowner services is exactly the category where assistant recommendations will start deciding shortlists.</p>
+        </div>
+      </div>
+      <p style="margin-top: var(--space-8); max-width: 58ch;">If any of these are live debates inside Oncourse, that's the conversation I'd most enjoy having.</p>
     </Section>
 
     <Section variant="cream" size="lg">
@@ -191,6 +212,11 @@ import Stat from '../../components/Stat.astro';
   }
   .prose li::marker {
     color: var(--color-gold);
+  }
+  .pov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-8);
   }
   @media (max-width: 820px) {
     .evidence {
