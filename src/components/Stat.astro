@@ -2,7 +2,7 @@
 interface Props {
   value: string;
   label: string;
-  variant?: 'default' | 'card';
+  variant?: 'default' | 'card' | 'dark';
 }
 
 const { value, label, variant = 'default' } = Astro.props;
@@ -24,6 +24,11 @@ const { value, label, variant = 'default' } = Astro.props;
 
   .stat--card {
     background-color: var(--gray-200);
+  }
+
+  /* For use on dark sections (e.g. Section variant="dark") where ink text vanishes */
+  .stat--dark .stat-value {
+    color: var(--color-cream);
   }
 
   .stat-value {
