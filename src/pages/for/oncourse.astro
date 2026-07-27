@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/Section.astro';
+import Stat from '../../components/Stat.astro';
+---
+
+<BaseLayout
+  title="Kaye Putnam for Oncourse Home Solutions"
+  description="A brief on why Kaye Putnam fits the Head of Brand Strategy role at Oncourse Home Solutions."
+  noindex={true}
+>
+  <Nav />
+
+  <main style="padding-top: var(--site-header-height);">
+
+    <Section variant="default" size="xl">
+      <p class="label" style="margin-bottom: var(--space-4);">Prepared for the Oncourse Home Solutions team</p>
+      <h1 class="page-headline">Head of Brand Strategy, <em>with receipts</em>.</h1>
+      <p style="max-width: 62ch; margin-top: var(--space-6); font-size: var(--text-lg);">
+        I'm Kaye Putnam, a brand strategist and marketing leader in St. Charles, twenty minutes up the road from your Naperville office. Rather than tell you I can do this job, this page maps your role's requirements to work I've already shipped. One note before you read: building a personalized page for a specific account is exactly how I run partner and account-based marketing professionally, so consider this a work sample too.
+      </p>
+    </Section>
+
+    <Section variant="warm" size="lg">
+      <h2 class="label" style="margin-bottom: var(--space-6);">You asked for brand strategy across every stakeholder</h2>
+      <p style="max-width: 62ch;">
+        I currently steward a portfolio of four brands at Freewyld: a consumer hospitality brand, a B2B revenue management consultancy, and two founder personal brands, each with documented voice systems, guidelines, and messaging architecture activated across the full customer journey. Before that I spent 11 years as a brand strategist, building a proprietary psychology-driven framework used with more than 100 companies to define positioning, value propositions, and go-to-market strategy. The framework's public face, my brand archetype quiz, has been taken over 250,000 times.
+      </p>
+      <p style="margin-top: var(--space-4);">
+        <a href="/work/freewyld-foundry">Case study: Freewyld Foundry</a> &nbsp;|&nbsp; <a href="/brand-archetypes">The archetype framework</a>
+      </p>
+    </Section>
+
+    <Section variant="default" size="lg">
+      <h2 class="label" style="margin-bottom: var(--space-6);">You asked how the brand shows up in AI search</h2>
+      <p style="max-width: 62ch;">
+        Your posting calls out optimizing how Oncourse is represented in AI tools during customer research. I have already built this in production: structured data across 25+ page types, a deliberate AI-crawler policy, and a documented optimization playbook so the brand surfaces when buyers research through ChatGPT, Claude, and Perplexity. I also rebuilt two company websites and this one with AI-assisted development, so I treat AI as marketing infrastructure rather than a tool I delegate.
+      </p>
+      <p style="margin-top: var(--space-4);">
+        <a href="/work/freewyld-cabins">Case study: rebuilding a hospitality brand's digital presence</a>
+      </p>
+    </Section>
+
+    <Section variant="dark" size="lg">
+      <h2 class="label" style="margin-bottom: var(--space-6);">You asked for brand activated via performance, in a recurring-revenue business</h2>
+      <p style="max-width: 62ch; margin-bottom: var(--space-8);">
+        Freewyld Foundry is a recurring-revenue B2B2C-adjacent business, and I built its marketing from zero as part of the founding team. Brand and performance reinforced each other: the numbers below are from the function I run today.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-4);">
+        <Stat value="$3.7M" label="ARR built from zero" />
+        <Stat value="$190M+" label="Client revenue under management" />
+        <Stat value="75+" label="Recurring-revenue clients" />
+        <Stat value="+610%" label="Site users, year over year" />
+      </div>
+    </Section>
+
+    <Section variant="default" size="lg">
+      <h2 class="label" style="margin-bottom: var(--space-6);">You asked for storytelling, earned media, and creative direction</h2>
+      <p style="max-width: 62ch;">
+        I built a customer storytelling engine that has published 20+ client case studies with a per-client approval workflow, and I run the founders' earned media program: industry podcast placements, VRMA conference speaking in 2025 and 2026, and consumer press including Staycation TV and Visit California. I direct creative across web, video, social, and email, and I've led creative teams from a core of three to project teams of fifteen for over a decade.
+      </p>
+    </Section>
+
+    <Section variant="cream" size="lg">
+      <h2 class="label" style="margin-bottom: var(--space-4);">Let's talk</h2>
+      <p style="max-width: 62ch; margin-bottom: var(--space-6);">
+        The tailored resume below covers the full twenty years. I'd welcome a conversation about what brand strategy can do for Oncourse and American Water Resources.
+      </p>
+      <p>
+        <a href="/for/oncourse/Kaye-Putnam-Resume-Oncourse.pdf">Download my resume (PDF)</a><br />
+        <a href="mailto:kayeputnam@gmail.com">kayeputnam@gmail.com</a><br />
+        <a href="https://www.linkedin.com/in/kayeputnam/">LinkedIn</a>
+      </p>
+    </Section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
