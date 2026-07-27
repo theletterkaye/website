@@ -7,6 +7,7 @@ interface Props {
   description?: string;
   image?: string;
   ogType?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -14,6 +15,7 @@ const {
   description = 'Brand strategist and positioning expert.',
   image = '/og-default.jpg',
   ogType = 'website',
+  noindex = false,
 } = Astro.props;
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
@@ -30,6 +32,7 @@ const ogImage = image.startsWith('http')
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <title>{title}</title>
 
