@@ -23,6 +23,13 @@ const allCaseStudies = await getCollection('casestudies');
 const sorted = allCaseStudies.sort((a, b) => a.data.order - b.data.order);
 const currentIndex = sorted.findIndex(cs => cs.id === entry.id);
 const nextStudy = sorted[(currentIndex + 1) % sorted.length];
+
+// Responsive variants exist only for hero images (generated at -800/-1200)
+const heroSrcset = (p: string) => {
+  const dot = p.lastIndexOf('.');
+  const base = p.slice(0, dot), ext = p.slice(dot);
+  return `${base}-800${ext} 800w, ${base}-1200${ext} 1200w, ${p} 1600w`;
+};
 ---
 
 <BaseLayout
@@ -51,7 +58,7 @@ const nextStudy = sorted[(currentIndex + 1) % sorted.length];
         </div>
         {data.heroImage && (
           <div class="cs-hero-image hero-photo-animate">
-            <img src={data.heroImage} alt={data.heroImageAlt || ''} loading="eager" fetchpriority="high" />
+            <img src={data.heroImage} srcset={heroSrcset(data.heroImage)} sizes="(min-width: 768px) 50vw, 100vw" alt={data.heroImageAlt || ''} loading="eager" fetchpriority="high" />
           </div>
         )}
       </div>

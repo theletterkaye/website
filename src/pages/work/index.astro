@@ -26,6 +26,13 @@ cards.splice(foundryIndex + 1, 0, archetypeCard);
 // the previous card's rounded edge peeks above the next card
 const stickyBase = 80;   // matches --site-header-height
 const stickyStep = 8;    // subtle peek per card
+
+// Responsive variants exist only for hero images (generated at -800/-1200)
+const heroSrcset = (p: string) => {
+  const dot = p.lastIndexOf('.');
+  const base = p.slice(0, dot), ext = p.slice(dot);
+  return `${base}-800${ext} 800w, ${base}-1200${ext} 1200w, ${p} 1600w`;
+};
 ---
 
 <BaseLayout
@@ -68,7 +75,7 @@ const stickyStep = 8;    // subtle peek per card
           >
             {heroImage && (
               <div class="stack-card-bg">
-                <img src={heroImage} alt="" loading={i < 2 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+                <img src={heroImage} srcset={heroSrcset(heroImage)} sizes="100vw" alt="" loading={i < 2 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
               </div>
             )}
             <div class="stack-card-overlay"></div>

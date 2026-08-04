@@ -54,10 +54,13 @@ const ogImage = image.startsWith('http')
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Adobe Fonts: Moret + Mr Eaves Mod OT -->
+    <!-- Adobe Fonts: async so the stylesheet never blocks first paint; text renders
+         in the fallback stack and swaps when the kit arrives -->
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
-    <link rel="stylesheet" href="https://use.typekit.net/gvu8enl.css" />
+    <link rel="preload" as="style" href="https://use.typekit.net/gvu8enl.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/gvu8enl.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://use.typekit.net/gvu8enl.css" /></noscript>
 
     <slot name="head" />
   </head>
