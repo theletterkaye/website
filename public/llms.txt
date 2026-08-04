@@ -1,0 +1,26 @@
+# Kaye Putnam
+
+> Kaye Putnam is a brand strategist and marketing leader working at the intersection of psychology, positioning, and AI. Over 20 years she has helped 100+ brands find their voice, built the brand archetype quiz taken by 250,000+ people, and now builds AI-powered marketing systems. Based in the US.
+
+## Start here
+
+- [Home](https://kayeputnam.com/): who Kaye is and what she does
+- [About](https://kayeputnam.com/about): backstory, approach, and current work
+- [Work](https://kayeputnam.com/work): selected case studies
+- [Contact](https://kayeputnam.com/contact): brand strategy, speaking, and collaboration inquiries
+
+## Case studies
+
+- [Freewyld Foundry](https://kayeputnam.com/work/freewyld-foundry): brand and marketing systems for a short-term-rental management company
+- [Freewyld Cabins](https://kayeputnam.com/work/freewyld-cabins): hospitality brand for a cabin collection
+- [The Brand Studio](https://kayeputnam.com/work/the-brand-studio): brand strategy for 100+ client brands
+- [The Brand Archetype Quiz](https://kayeputnam.com/work/brand-archetype-quiz): quiz product with 250K+ takers, rebuilt natively
+
+## Brand archetypes
+
+- [The 12 Brand Archetypes](https://kayeputnam.com/brand-archetypes): Kaye's archetype framework, with a dedicated page per archetype
+- [Brand Archetype Quiz](https://kayeputnam.com/quiz): find your brand's archetype
+
+## Writing
+
+- [Writing index](https://kayeputnam.com/writing): articles on brand strategy, AI + marketing systems, and hospitality
