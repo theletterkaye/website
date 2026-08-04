@@ -57,6 +57,15 @@ const archetypes = [
   <main style="padding-top: var(--site-header-height);">
 
     <!-- ============================================================
+         ANNOUNCEMENT BAR
+    ============================================================ -->
+    <div class="announce-bar">
+      <div class="container">
+        <p>New writing: The Marketer Who Builds Is Rediscovering Why IT Departments Exist <a href="/writing/marketer-who-builds">Read it →</a></p>
+      </div>
+    </div>
+
+    <!-- ============================================================
          HERO
     ============================================================ -->
     <section class="hero">
@@ -360,6 +369,35 @@ const archetypes = [
 </script>
 
 <style>
+  /* ============================================================
+     ANNOUNCEMENT BAR
+  ============================================================ */
+  .announce-bar {
+    background-color: var(--color-forest);
+    padding: var(--space-3) 0;
+  }
+
+  .announce-bar p {
+    max-width: none;
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-blush);
+    letter-spacing: 0.02em;
+  }
+
+  .announce-bar a {
+    color: var(--color-cream);
+    font-weight: var(--weight-medium);
+    text-decoration-color: var(--color-gold);
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    margin-left: var(--space-2);
+  }
+
+  .announce-bar a:hover {
+    color: var(--color-gold);
+  }
+
   /* ============================================================
      HERO ENTRANCE ANIMATIONS
   ============================================================ */
