@@ -1,0 +1,86 @@
+---
+import FunnelLayout from '../../layouts/FunnelLayout.astro';
+import { ROLE } from '../../data/household-role';
+---
+
+<FunnelLayout
+  title="Your offer: household manager role"
+  description="Offer details and everything needed before the first day."
+  eyebrow="Step five · The offer"
+  headline="We'd like you to <em>take the job</em>."
+  lede="Here's the offer in full, and everything that needs to happen before your first real day. Nothing here should be a surprise, but read it properly and ask about anything that isn't clear."
+>
+  <div class="facts">
+    <div class="fact"><dt>Role</dt><dd>{ROLE.title}, part-time</dd></div>
+    <div class="fact"><dt>Rate</dt><dd>${ROLE.hourlyRate} per hour</dd></div>
+    <div class="fact"><dt>Hours</dt><dd>About {ROLE.hoursPerWeek} per week</dd></div>
+    <div class="fact"><dt>Schedule</dt><dd>[TODO: the days and times you agreed]</dd></div>
+    <div class="fact"><dt>Typical week</dt><dd>About ${ROLE.weeklyPay} gross</dd></div>
+    <div class="fact"><dt>Paid</dt><dd>Every two weeks by direct deposit, through {ROLE.payrollService}</dd></div>
+    <div class="fact"><dt>Start date</dt><dd>[TODO: first real day]</dd></div>
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>This offer is conditional on a background check.</strong> That's the only condition,
+      and it's standard. Step two below covers exactly what it involves and what your rights are.
+    </p>
+  </div>
+
+  <h2>What the job includes</h2>
+  <ul>
+    <li>W-2 employment with taxes withheld, so this shows up as real earnings history for you</li>
+    <li>Paid leave accruing under Illinois law, usable for any reason, no explanation needed</li>
+    <li>Mileage on errands reimbursed at the IRS rate, and a household card so you never front money</li>
+    <li>All supplies and equipment provided</li>
+    <li>A written priority list, so you always know what matters most when time runs short</li>
+    <li>A rate review at least once a year</li>
+    <li>A check-in every two weeks for the first two months, then monthly</li>
+  </ul>
+
+  <h2>Three things to do before your first day</h2>
+
+  <h3>1. Read and sign the employment agreement</h3>
+  <p>
+    We'll send it separately. It covers the schedule, rate, duties, the priority order, time off,
+    what happens when we travel, and notice periods on both sides. Read it properly. If anything
+    in it doesn't match what we discussed, say so before you sign, not after.
+  </p>
+
+  <h3>2. Background check paperwork</h3>
+  <p>
+    Two short forms: a disclosure telling you we intend to run a check, and your authorization.
+    We pay for it. If anything comes back that gives us pause, you get a copy of the full report
+    and a real chance to respond before any decision is made. That's your right under federal law,
+    and we'll follow it properly.
+  </p>
+
+  <h3>3. Payroll setup</h3>
+  <p>
+    {ROLE.payrollService} will email you directly to collect your W-4 and I-9 and set up direct
+    deposit. For the I-9 you'll need to show original documents in person on or before your first
+    day. A passport works alone, or a driver's license plus a Social Security card or birth
+    certificate.
+  </p>
+
+  <h2>What we'll have ready for you</h2>
+  <ul>
+    <li>
+      No key or code to keep track of. I work from home, so I'll be here to let you in. If we
+      later find you'd rather have your own key, we'll sort that out then
+    </li>
+    <li>The household card for groceries and supplies</li>
+    <li>A shared running list for "we're out of X" and one-off requests</li>
+    <li>Written preferences on the handful of things we're genuinely particular about</li>
+    <li>The written priority order, so the first week isn't guesswork</li>
+  </ul>
+
+  <h2>Saying yes</h2>
+  <p>
+    Reply to our email or text <a href={ROLE.interviewPhoneHref} class="link-underline">{ROLE.interviewPhone}</a>. If you want a day or two to think it over,
+    take it. If something in here needs adjusting, tell us now while it's easy to change.
+  </p>
+  <p>
+    And if the answer is no, please just say so plainly. We'd much rather know.
+  </p>
+</FunnelLayout>

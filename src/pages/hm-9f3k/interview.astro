@@ -1,0 +1,87 @@
+---
+import FunnelLayout from '../../layouts/FunnelLayout.astro';
+import { ROLE } from '../../data/household-role';
+---
+
+<FunnelLayout
+  title="Your visit: household manager role"
+  description="What to expect at the in-person visit."
+  eyebrow="Step three · The in-person visit"
+  headline="Come see the house, and <em>ask us anything</em>."
+  lede="You've made it past the video call. This is the part where you find out whether you want the job, not just whether we want you."
+>
+  <div class="facts">
+    <div class="fact"><dt>When</dt><dd>[TODO: date and time, confirmed by text]</dd></div>
+    <div class="fact">
+      <dt>Where</dt>
+      <dd>{ROLE.street}, {ROLE.town}, IL {ROLE.zip}</dd>
+    </div>
+    <div class="fact"><dt>How long</dt><dd>About 45 minutes</dd></div>
+    <div class="fact"><dt>Parking</dt><dd>{ROLE.parking}</dd></div>
+    <div class="fact"><dt>Getting in</dt><dd>Just ring the bell. I'll be here.</dd></div>
+    <div class="fact">
+      <dt>If you're lost</dt>
+      <dd>Text or call <a href={ROLE.interviewPhoneHref}>{ROLE.interviewPhone}</a></dd>
+    </div>
+  </div>
+
+  <h2>What to expect</h2>
+  <ol>
+    <li>
+      <strong>We talk for about 20 minutes.</strong> Your experience, how you like to work, and
+      how you'd handle a few real situations that come up in this house.
+    </li>
+    <li>
+      <strong>We walk the house together.</strong> Laundry room, kids' closets, the kitchen, the
+      pantry, the mail pile. You'll see the real conditions, not a staged version.
+    </li>
+    <li>
+      <strong>You ask us everything.</strong> Bring your questions. This is the most useful part
+      of the whole visit.
+    </li>
+    <li>
+      <strong>We talk logistics.</strong> Days, hours, rate, and when a paid trial day could
+      happen.
+    </li>
+  </ol>
+
+  <div class="note">
+    <p>
+      <strong>Please don't dress up.</strong> Wear what you'd actually wear to work. We're not
+      evaluating an outfit, and it makes the house walk easier.
+    </p>
+  </div>
+
+  <h2>What we'll ask about</h2>
+  <p>
+    No trick questions, and nothing you need to rehearse. To take the guesswork out of it, these
+    are roughly the areas we'll cover:
+  </p>
+  <ul>
+    <li>How you'd prioritize a four-hour visit when the list is longer than the time</li>
+    <li>What you do with a stack of papers on the counter when you don't know what they are</li>
+    <li>How you'd want to handle it if something got broken or stained while you were working</li>
+    <li>How you prefer to get direction: a written checklist, a text thread, a quick chat</li>
+    <li>How you feel about working while I'm home working, since that's most days</li>
+    <li>What would make you want to stay in a job like this for years</li>
+  </ul>
+  <p>
+    On the broken-or-stained one, the answer we're listening for is simply "I'd tell you right
+    away." Things break in a working house. We've never once been upset about a broken glass.
+  </p>
+
+  <h2>What to bring</h2>
+  <ul>
+    <li>Your driver's license, so we can confirm the name matches the paperwork later</li>
+    <li>Your questions, written down if that helps you remember them</li>
+    <li>Nothing else. No résumé, no portfolio, no references list beyond what you already sent</li>
+  </ul>
+
+  <h2>If you need to reschedule</h2>
+  <p>
+    Just text <a href={ROLE.interviewPhoneHref} class="link-underline">{ROLE.interviewPhone}</a>. Life happens, and rescheduling once holds nothing against
+    you. Going quiet is the only thing that does.
+  </p>
+
+  <a href={ROLE.basePath} class="btn btn--ghost">Re-read the role</a>
+</FunnelLayout>

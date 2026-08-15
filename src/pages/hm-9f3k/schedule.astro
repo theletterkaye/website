@@ -1,0 +1,50 @@
+---
+import FunnelLayout from '../../layouts/FunnelLayout.astro';
+import BookingCalendar from '../../components/BookingCalendar.astro';
+import { ROLE } from '../../data/household-role';
+
+// Rendered per request so the prefill query params below actually resolve.
+export const prerender = false;
+
+// Optional prefill so a link sent by email lands on a half-filled form:
+//   /hm-9f3k/schedule?name=Maria&email=maria@example.com
+const name = Astro.url.searchParams.get('name') ?? undefined;
+const email = Astro.url.searchParams.get('email') ?? undefined;
+
+const { durationMinutes, platform } = ROLE.scheduling;
+---
+
+<FunnelLayout
+  title="Book your call: household manager role"
+  description={`Pick a time for a ${durationMinutes}-minute video call about the household manager role.`}
+  eyebrow={`Step two · The ${durationMinutes}-minute call`}
+  headline="Pick a time that <em>actually works</em> for you."
+  lede={`Every time on this calendar is one we're genuinely free, so grab whichever suits you. It's ${durationMinutes} minutes on ${platform}, nothing more.`}
+>
+  <BookingCalendar name={name} email={email} />
+
+  <h2>What to expect</h2>
+  <ul>
+    <li>{durationMinutes} minutes, and we'll keep to it</li>
+    <li>{platform}, from a phone or a computer, whichever is easier. A link arrives with your confirmation</li>
+    <li>Camera on if you're comfortable, off if you're not. It genuinely doesn't count against you</li>
+    <li>No preparation. We'll confirm your availability, the rate, and the scope, and you can ask us anything</li>
+  </ul>
+
+  <div class="note">
+    <p>
+      <strong>Not sure about video calls?</strong> If they aren't your thing, email
+      <a href={`mailto:${ROLE.contactEmail}`}>{ROLE.contactEmail}</a> and we'll do a regular phone
+      call instead. That's a completely normal request and it changes nothing about your
+      application.
+    </p>
+  </div>
+
+  <h2>If you need to change it</h2>
+  <p>
+    Your confirmation email has reschedule and cancel links. Use them freely, no explanation
+    needed. We'd much rather you move it than no-show.
+  </p>
+
+  <a href={ROLE.basePath} class="btn btn--ghost">Re-read the role</a>
+</FunnelLayout>

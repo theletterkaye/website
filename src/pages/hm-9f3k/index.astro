@@ -1,0 +1,460 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import Footer from '../../components/Footer.astro';
+import { ROLE, DUTIES, REQUIREMENTS, PROCESS } from '../../data/household-role';
+---
+
+<BaseLayout
+  title={`${ROLE.title}, ${ROLE.town} IL (part-time)`}
+  description={`A part-time household manager role in ${ROLE.town}, Illinois. About ${ROLE.hoursPerWeek} hours a week, $${ROLE.hourlyRate}/hour, paid legally with a W-2. Not a childcare position.`}
+  noindex={true}
+>
+  <main>
+
+    <Section variant="default" size="lg">
+      <p class="label">{ROLE.town}, {ROLE.state} · Part-time · ~{ROLE.hoursPerWeek} hrs/week</p>
+      <h1 class="hero-title">Help us keep a busy house <em>running</em>.</h1>
+      <p class="lede">
+        We're looking for one reliable, self-directed person to take the weekly rhythm of our
+        household off our plate. Laundry, lunches, cleaning, the clutter, the errands. Paid
+        properly, treated like a professional, with a clear list so you always know what matters most.
+      </p>
+      <p class="callout">
+        <strong>This is not a childcare role.</strong> You would never be responsible for
+        supervising, transporting, or caring for our kids.
+      </p>
+
+      <p class="callout">
+        <strong>I work from home, so the house usually isn't empty.</strong> If you're someone who
+        does your best work in a quiet, empty house, this honestly isn't the right fit, and we'd
+        rather say so on the first screen than on your first day.
+      </p>
+
+      <div class="terms">
+        <div class="term">
+          <span class="term-value">${ROLE.hourlyRate}<span class="term-unit">/hr</span></span>
+          <span class="term-label">Starting rate</span>
+        </div>
+        <div class="term">
+          <span class="term-value">{ROLE.hoursPerWeek}<span class="term-unit"> hrs</span></span>
+          <span class="term-label">Per week</span>
+        </div>
+        <div class="term">
+          <span class="term-value">W-2</span>
+          <span class="term-label">On the books, with paid leave</span>
+        </div>
+        <div class="term">
+          <span class="term-value">Paid</span>
+          <span class="term-label">Trial day before either of us commits</span>
+        </div>
+      </div>
+
+      <a href={`${ROLE.basePath}/apply`} class="btn cta">Apply for this role</a>
+      <p class="cta-note">Ten minutes. No account, no résumé upload required.</p>
+    </Section>
+
+    <Section variant="warm" size="lg">
+      <p class="label">The work</p>
+      <h2 class="section-title">What you'd actually <em>do</em>.</h2>
+      <p class="section-intro">
+        {ROLE.schedule} {ROLE.scheduleFlexNote}
+      </p>
+
+      <ul class="duties" role="list">
+        {DUTIES.map(duty => (
+          <li class="duty">
+            <h3>{duty.name}</h3>
+            <p>{duty.detail}</p>
+          </li>
+        ))}
+      </ul>
+
+      <p class="honest">
+        <strong>Being honest about the hours:</strong> ten hours a week will not cover every one
+        of those every single week, and we don't expect it to. You'll have a written priority
+        order, so when there isn't time for everything you'll know exactly what to leave for next
+        visit. Nobody is asked to skip breaks or stay late to finish a list.
+      </p>
+    </Section>
+
+    <Section variant="default" size="lg">
+      <p class="label">The fit</p>
+      <h2 class="section-title">Is this <em>you</em>?</h2>
+      <p class="section-intro">
+        Read this list before you apply. If the first five aren't all true, this particular role
+        isn't going to work, and we'd rather save you the time.
+      </p>
+
+      <ul class="checks" role="list">
+        {REQUIREMENTS.map(req => (
+          <li class:list={['check', { 'check--required': req.knockout }]}>
+            <span class="check-mark" aria-hidden="true">{req.knockout ? '✓' : '+'}</span>
+            <span>
+              {req.text}
+              {req.knockout && <span class="check-tag">Required</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="detail-note">
+        <p><strong>A few other things about our household:</strong></p>
+        <ul class="plain" role="list">
+          {ROLE.pets && <li>{ROLE.pets}</li>}
+          <li>No pets</li>
+          {ROLE.nonNegotiables.map(item => <li>{item}</li>)}
+        </ul>
+      </div>
+
+      <p class="detail-note">
+        On working while I'm here: I'll be in my office on calls for a good part of the day, not
+        following you around. I'm not going to hover, and I'm not going to check your work. But
+        you'd be sharing the house with someone most days, and it's worth being honest with
+        yourself about whether that suits you.
+      </p>
+    </Section>
+
+    <Section variant="dark" size="lg">
+      <p class="label">What we offer</p>
+      <h2 class="section-title section-title--light">Paid properly, <em>on purpose</em>.</h2>
+
+      <div class="offers">
+        <div class="offer">
+          <h3>${ROLE.hourlyRate} an hour, with a real paycheck</h3>
+          <p>
+            Payroll through {ROLE.payrollService}, taxes withheld, a W-2 in January. No
+            under-the-table arrangement, and no asking you to call yourself a contractor when
+            you aren't one. That protects you as much as us.
+          </p>
+        </div>
+        <div class="offer">
+          <h3>Paid time off</h3>
+          <p>
+            You accrue paid leave under Illinois law, usable for any reason, and you don't have
+            to explain why you're taking it.
+          </p>
+        </div>
+        <div class="offer">
+          <h3>Nothing out of your pocket</h3>
+          <p>
+            A household card for groceries and supplies, mileage reimbursed at the IRS rate, and
+            reimbursement within a week if you ever do front something.
+          </p>
+        </div>
+        <div class="offer">
+          <h3>A written list, not a moving target</h3>
+          <p>
+            Clear priorities, written preferences for the things we're actually particular about,
+            and a standing check-in so small frustrations get said out loud instead of stacking up.
+          </p>
+        </div>
+        <div class="offer">
+          <h3>A paid trial day</h3>
+          <p>
+            Full day, full rate, before either of us commits to anything. You get to find out
+            what the house is really like before you say yes.
+          </p>
+        </div>
+        <div class="offer">
+          <h3>A yearly raise conversation</h3>
+          <p>
+            We review the rate at least once a year against your work and cost of living. You
+            shouldn't have to ask.
+          </p>
+        </div>
+      </div>
+    </Section>
+
+    <Section variant="warm" size="lg">
+      <p class="label">The process</p>
+      <h2 class="section-title">What happens <em>next</em>.</h2>
+      <p class="section-intro">
+        No black holes. If you apply, you'll hear back either way.
+      </p>
+
+      <ol class="process" role="list">
+        {PROCESS.map((stage, i) => (
+          <li class="stage">
+            <span class="stage-num">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{stage.step}</h3>
+              <p>{stage.detail}</p>
+              <span class="stage-timing">{stage.timing}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </Section>
+
+    <Section variant="default" size="lg">
+      <div class="final">
+        <h2 class="section-title">Sound like a <em>fit</em>?</h2>
+        <p class="section-intro">
+          Target start is {ROLE.startDate}. We're reading applications as they come in.
+        </p>
+        <a href={`${ROLE.basePath}/apply`} class="btn cta">Apply for this role</a>
+        <p class="cta-note">
+          Would rather just email? <a href={`mailto:${ROLE.contactEmail}`} class="link-underline">{ROLE.contactEmail}</a>.
+          Tell us your relevant experience, your availability, and two references.
+        </p>
+      </div>
+    </Section>
+
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* This funnel runs without the site nav on purpose: a candidate landing here
+     should have one path forward, not five ways out into the portfolio. */
+  .hero-title {
+    max-width: 16ch;
+    margin-top: var(--space-4);
+  }
+
+  .lede {
+    max-width: 58ch;
+    margin-top: var(--space-6);
+    font-size: var(--text-xl);
+    color: var(--color-ink);
+  }
+
+  .callout {
+    max-width: 58ch;
+    margin-top: var(--space-6);
+    padding: var(--space-4) var(--space-6);
+    border-left: 2px solid var(--color-gold);
+    background-color: var(--gray-100);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  /* Terms strip: the four numbers that decide whether someone keeps reading */
+  .terms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--gray-300);
+  }
+
+  .term {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .term-value {
+    font-family: var(--ff-heading);
+    font-size: var(--text-3xl);
+    line-height: var(--leading-none);
+    color: var(--color-ink);
+  }
+
+  .term-unit {
+    font-size: var(--text-lg);
+    color: var(--gray-400);
+  }
+
+  .term-label {
+    font-size: var(--text-sm);
+    color: var(--gray-700);
+    max-width: 22ch;
+  }
+
+  .cta {
+    margin-top: var(--space-10);
+  }
+
+  .cta-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+    color: var(--gray-400);
+  }
+
+  .section-title {
+    max-width: 18ch;
+    margin-top: var(--space-3);
+  }
+
+  .section-title--light {
+    color: var(--color-cream);
+  }
+
+  .section-intro {
+    max-width: 58ch;
+    margin-top: var(--space-5);
+    font-size: var(--text-lg);
+  }
+
+  /* Duties */
+  .duties {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-8);
+    margin-top: var(--space-12);
+  }
+
+  .duty h3 {
+    font-size: var(--text-xl);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--gray-300);
+  }
+
+  .duty p {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+  }
+
+  .honest {
+    max-width: 62ch;
+    margin-top: var(--space-12);
+    padding: var(--space-6);
+    background-color: var(--color-cream);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-base);
+  }
+
+  /* Requirements checklist */
+  .checks {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+    max-width: 68ch;
+  }
+
+  .check {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-3);
+    align-items: start;
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--gray-300);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+  }
+
+  .check--required {
+    color: var(--color-ink);
+  }
+
+  .check-mark {
+    font-family: var(--ff-heading);
+    color: var(--color-gold);
+    line-height: var(--leading-relaxed);
+  }
+
+  .check-tag {
+    display: inline-block;
+    margin-left: var(--space-3);
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-full);
+    background-color: var(--color-blush);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semi);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-ink);
+    vertical-align: 2px;
+  }
+
+  .detail-note {
+    max-width: 58ch;
+    margin-top: var(--space-8);
+    font-size: var(--text-base);
+  }
+
+  .plain {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .plain li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--text-base);
+    color: var(--gray-700);
+  }
+
+  .plain li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 6px;
+    height: 1px;
+    background-color: var(--color-gold);
+  }
+
+  /* Offers */
+  .offers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-10) var(--space-8);
+    margin-top: var(--space-12);
+  }
+
+  .offer h3 {
+    font-size: var(--text-lg);
+    color: var(--color-cream);
+  }
+
+  .offer p {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+  }
+
+  /* Process */
+  .process {
+    display: grid;
+    gap: var(--space-8);
+    margin-top: var(--space-12);
+    max-width: 62ch;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .stage-num {
+    font-family: var(--ff-heading);
+    font-size: var(--text-2xl);
+    color: var(--color-blush);
+    line-height: 1;
+  }
+
+  .stage h3 {
+    font-size: var(--text-xl);
+  }
+
+  .stage p {
+    margin-top: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .stage-timing {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .final {
+    max-width: 58ch;
+  }
+
+  @media (max-width: 767px) {
+    .hero-title { font-size: var(--text-4xl); }
+    .section-title { font-size: var(--text-3xl); }
+    .stage { grid-template-columns: 44px 1fr; }
+  }
+</style>

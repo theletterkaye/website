@@ -1,0 +1,145 @@
+---
+/**
+ * Cal.com inline booking embed for the 10-minute screening call.
+ *
+ * Cal.com holds the Google Meet connection and reads the connected Google
+ * Calendar for conflicts, so the times offered here are already free. This
+ * mirrors the namespaced snippet Cal.com generates for the `10min` event,
+ * with prefill and brand colors added.
+ */
+import { ROLE } from '../data/household-role';
+
+interface Props {
+  /** Prefills the booking form so a candidate doesn't retype what she just sent. */
+  name?: string;
+  email?: string;
+}
+
+const { name, email } = Astro.props;
+const { calLink, namespace, bookingUrl, durationMinutes, platform } = ROLE.scheduling;
+
+const configured = !calLink.startsWith('TODO');
+---
+
+{configured ? (
+  <div class="booking">
+    <div id="cal-inline" class="cal-inline"></div>
+
+    <noscript>
+      <p class="fallback">
+        <a href={bookingUrl} class="btn">Pick a time for the {durationMinutes}-minute call</a>
+      </p>
+    </noscript>
+
+    <p class="fallback-note">
+      Calendar not loading? <a href={bookingUrl} class="link-underline">Open it in a new tab</a>.
+    </p>
+  </div>
+) : (
+  <p class="unconfigured">
+    <strong>Booking calendar not connected yet.</strong> Set <code>ROLE.scheduling.calLink</code> in
+    <code>src/data/household-role.ts</code> to your Cal.com link.
+  </p>
+)}
+
+{configured && (
+  <script is:inline define:vars={{ calLink, namespace, name, email }}>
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement('script')).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const ns = ar[1];
+          api.q = api.q || [];
+          if (typeof ns === 'string') {
+            cal.ns[ns] = cal.ns[ns] || api;
+            p(cal.ns[ns], ar);
+            p(cal, ['initNamespace', ns]);
+          } else {
+            p(cal, ar);
+          }
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+
+    Cal('init', namespace, { origin: 'https://app.cal.com' });
+
+    Cal.config = Cal.config || {};
+    Cal.config.forwardQueryParams = true;
+
+    // Prefill from the application so she isn't retyping what she just sent.
+    const config = { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' };
+    if (name) config.name = name;
+    if (email) config.email = email;
+
+    Cal.ns[namespace]('inline', {
+      elementOrSelector: '#cal-inline',
+      config: config,
+      calLink: calLink,
+    });
+
+    Cal.ns[namespace]('ui', {
+      hideEventTypeDetails: false,
+      layout: 'month_view',
+      cssVarsPerTheme: {
+        light: {
+          'cal-brand': '#996116',
+          'cal-bg': '#F7F7F5',
+        },
+      },
+    });
+  </script>
+)}
+
+<style>
+  .booking {
+    margin-top: var(--space-8);
+  }
+
+  .cal-inline {
+    width: 100%;
+    min-height: 620px;
+    overflow: auto;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-cream);
+  }
+
+  .fallback {
+    margin-top: var(--space-6);
+  }
+
+  .fallback-note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+  }
+
+  .unconfigured {
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-6);
+    border-left: 2px solid var(--color-gold);
+    background-color: var(--gray-100);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: var(--text-base);
+  }
+
+  .unconfigured code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.9em;
+    background-color: var(--gray-200);
+    padding: 2px 5px;
+    border-radius: var(--radius-sm);
+  }
+</style>
