@@ -1,0 +1,464 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import Footer from '../../components/Footer.astro';
+import { ROLE, KNOCKOUT_COUNT_WORD } from '../../data/household-role';
+
+// Rendered per request so the error banner below can key off the query param.
+export const prerender = false;
+
+// `?error=1` comes back from the API route when the submission couldn't be
+// delivered, so nobody loses ten minutes of typing to a silent failure.
+const failed = Astro.url.searchParams.get('error') === '1';
+---
+
+<BaseLayout
+  title={`Apply: ${ROLE.title}, ${ROLE.town} IL`}
+  description="Application form for the part-time household manager role."
+  noindex={true}
+>
+  <main>
+    <Section variant="default" size="md">
+      <p class="label">
+        <a href={ROLE.basePath} class="link-underline">← Back to the role</a>
+      </p>
+      <h1 class="form-title">Apply for the <em>household manager</em> role.</h1>
+      <p class="lede">
+        About ten minutes. There's no way to save and come back, so give yourself one sitting.
+        Short, honest answers beat long, polished ones. We read every application and reply
+        either way.
+      </p>
+
+      {failed && (
+        <p class="alert" role="alert">
+          <strong>Something went wrong sending that.</strong> Nothing was lost on your end if you
+          use your browser's back button. If it fails again, please email everything to
+          <a href={`mailto:${ROLE.contactEmail}`}>{ROLE.contactEmail}</a> instead.
+        </p>
+      )}
+
+      <form method="post" action="/api/household-apply" class="form">
+
+        {/* Bot trap. Real people never see it; scripts fill everything in. */}
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <fieldset>
+          <legend>How to reach you</legend>
+
+          <div class="row">
+            <div class="field">
+              <label for="name">Full name <span class="req">*</span></label>
+              <input type="text" id="name" name="name" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="pronouns">Pronouns <span class="opt">optional</span></label>
+              <input type="text" id="pronouns" name="pronouns" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="email">Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="phone">Phone <span class="req">*</span></label>
+              <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="town">What town do you live in? <span class="req">*</span></label>
+            <input type="text" id="town" name="town" required autocomplete="address-level2" />
+            <p class="help">We ask because a long commute for a short shift tends not to last.</p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>The basics</legend>
+          <p class="fieldset-note">
+            These {KNOCKOUT_COUNT_WORD} are genuine requirements for this role. Please answer honestly.
+            A "no" here isn't a judgment, it just means this particular job isn't the right one.
+          </p>
+
+          <div class="field">
+            <span class="label-text">
+              Do you have reliable transportation and a valid driver's license? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="transport" value="yes" required /> Yes</label>
+              <label class="choice"><input type="radio" name="transport" value="no" /> No</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="label-text">
+              This role is worked on {ROLE.workDays.slice(0, -1).join(', ')} or {ROLE.workDays.at(-1)},
+              between {ROLE.dailyWindow}. Does that work for you? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="availability" value="yes" required /> Yes, reliably</label>
+              <label class="choice"><input type="radio" name="availability" value="mostly" /> Most weeks</label>
+              <label class="choice"><input type="radio" name="availability" value="no" /> No</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="label-text">Which of those days work for you? <span class="req">*</span></span>
+            <div class="choices">
+              {ROLE.workDays.map(day => (
+                <label class="choice"><input type="checkbox" name="days" value={day} /> {day}</label>
+              ))}
+            </div>
+            <p class="help">
+              Check every day that could work, not just your favorite. How you split the {ROLE.hoursPerWeek}
+              hours is flexible: two longer days or three shorter ones, whichever suits you.
+            </p>
+          </div>
+
+          <div class="field">
+            <span class="label-text">
+              I work from home most days, so the house usually isn't empty. Are you comfortable
+              working with someone else in the house? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="employer_home" value="yes" required /> Yes, doesn't bother me</label>
+              <label class="choice"><input type="radio" name="employer_home" value="prefer_empty" /> I'd prefer an empty house, but I can manage</label>
+              <label class="choice"><input type="radio" name="employer_home" value="no" /> No, I really need an empty house</label>
+            </div>
+            <p class="help">
+              Please be honest here. Plenty of excellent people strongly prefer an empty house, and
+              I'd much rather know now than have you be miserable three months in. I'll mostly be
+              in my office on calls, not following you around.
+            </p>
+          </div>
+
+          <div class="field">
+            <span class="label-text">
+              Are you comfortable being paid on the books, with a W-2? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="w2" value="yes" required /> Yes</label>
+              <label class="choice"><input type="radio" name="w2" value="questions" /> Yes, but I have questions</label>
+              <label class="choice"><input type="radio" name="w2" value="no" /> No, I prefer cash or 1099</label>
+            </div>
+            <p class="help">
+              This role is a W-2 household employee position. It means taxes withheld, paid leave,
+              and a real earnings record. We can't do cash for this one.
+            </p>
+          </div>
+
+          <div class="field">
+            <span class="label-text">
+              Are you willing to complete a background check? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="bgcheck" value="yes" required /> Yes</label>
+              <label class="choice"><input type="radio" name="bgcheck" value="no" /> No</label>
+            </div>
+            <p class="help">
+              Standard identity, criminal, and driving-record check, run only after we've made
+              you a conditional offer. We pay for it.
+            </p>
+          </div>
+
+          <div class="field">
+            <span class="label-text">
+              Can you provide two references we can call? <span class="req">*</span>
+            </span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="refs_ok" value="yes" required /> Yes</label>
+              <label class="choice"><input type="radio" name="refs_ok" value="one" /> I have one</label>
+              <label class="choice"><input type="radio" name="refs_ok" value="no" /> No</label>
+            </div>
+            <p class="help">Former employers are far more useful to us than friends.</p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your experience</legend>
+
+          <div class="field">
+            <label for="experience">
+              Tell us what a typical week looked like in your most recent household or cleaning role.
+              <span class="req">*</span>
+            </label>
+            <textarea id="experience" name="experience" rows="5" required></textarea>
+            <p class="help">A few sentences is plenty. What did you actually do, and for how long?</p>
+          </div>
+
+          <div class="field">
+            <label for="enjoy">
+              Of laundry, cleaning bathrooms, meal prep, organizing, and errands: which do you
+              genuinely enjoy, and which do you just tolerate? <span class="req">*</span>
+            </label>
+            <textarea id="enjoy" name="enjoy" rows="3" required></textarea>
+            <p class="help">
+              Everyone has one they'd rather skip. Saying so honestly counts in your favor here.
+            </p>
+          </div>
+
+          <div class="field">
+            <label for="alone">
+              Have you worked in a home while the family was there? How did you handle questions
+              that came up, and how did you decide when to interrupt someone versus figure it out
+              yourself? <span class="req">*</span>
+            </label>
+            <textarea id="alone" name="alone" rows="4" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="left">Why did your last position end? <span class="req">*</span></label>
+            <textarea id="left" name="left" rows="3" required></textarea>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="other_work">Is this your only job? <span class="req">*</span></label>
+              <input type="text" id="other_work" name="other_work" required placeholder="e.g. I clean for two other families on Mon/Wed" />
+            </div>
+            <div class="field">
+              <label for="start">How soon could you start? <span class="req">*</span></label>
+              <input type="text" id="start" name="start" required placeholder="e.g. two weeks' notice, or right away" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>References</legend>
+          <p class="fieldset-note">
+            We won't call anyone without telling you first.
+          </p>
+
+          <div class="row">
+            <div class="field">
+              <label for="ref1_name">Reference 1: name <span class="req">*</span></label>
+              <input type="text" id="ref1_name" name="ref1_name" required />
+            </div>
+            <div class="field">
+              <label for="ref1_rel">Their relationship to you <span class="req">*</span></label>
+              <input type="text" id="ref1_rel" name="ref1_rel" required placeholder="e.g. former employer, 2019-2024" />
+            </div>
+            <div class="field">
+              <label for="ref1_phone">Phone <span class="req">*</span></label>
+              <input type="tel" id="ref1_phone" name="ref1_phone" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="ref2_name">Reference 2: name</label>
+              <input type="text" id="ref2_name" name="ref2_name" />
+            </div>
+            <div class="field">
+              <label for="ref2_rel">Their relationship to you</label>
+              <input type="text" id="ref2_rel" name="ref2_rel" />
+            </div>
+            <div class="field">
+              <label for="ref2_phone">Phone</label>
+              <input type="tel" id="ref2_phone" name="ref2_phone" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Anything else</legend>
+
+          <div class="field">
+            <label for="notes">
+              Is there anything you'd want us to know, or anything you want to ask?
+              <span class="opt">optional</span>
+            </label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="source">How did you hear about this role? <span class="opt">optional</span></label>
+            <input type="text" id="source" name="source" />
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn submit">Send application</button>
+        <p class="privacy-note">
+          What you send here goes to one private inbox, is used only to fill this role, and isn't
+          shared with anyone or added to any mailing list.
+        </p>
+      </form>
+    </Section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .form-title {
+    font-size: var(--text-4xl);
+    max-width: 18ch;
+    margin-top: var(--space-4);
+  }
+
+  .lede {
+    max-width: 58ch;
+    margin-top: var(--space-5);
+  }
+
+  .alert {
+    max-width: 58ch;
+    margin-top: var(--space-6);
+    padding: var(--space-4) var(--space-6);
+    border-left: 2px solid var(--color-gold);
+    background-color: var(--gray-100);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .form {
+    max-width: 720px;
+    margin-top: var(--space-12);
+  }
+
+  /* Honeypot: off-canvas rather than display:none, which some bots detect */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: var(--space-16);
+  }
+
+  legend {
+    font-family: var(--ff-heading);
+    font-size: var(--text-2xl);
+    color: var(--color-ink);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-8);
+    border-bottom: 1px solid var(--gray-300);
+    width: 100%;
+  }
+
+  .fieldset-note {
+    margin-top: calc(var(--space-8) * -1 + var(--space-2));
+    margin-bottom: var(--space-8);
+    font-size: var(--text-base);
+    max-width: 58ch;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .field {
+    margin-bottom: var(--space-8);
+  }
+
+  label,
+  .label-text {
+    display: block;
+    margin-bottom: var(--space-3);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+    line-height: var(--leading-normal);
+  }
+
+  .req { color: var(--color-gold); }
+
+  .opt {
+    font-weight: var(--weight-regular);
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  textarea {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--ff-body);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    background-color: var(--color-white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    transition: border-color var(--duration-base) var(--easing-standard);
+  }
+
+  input::placeholder,
+  textarea::placeholder { color: var(--gray-400); }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(153, 97, 22, 0.15);
+  }
+
+  textarea { resize: vertical; line-height: var(--leading-relaxed); }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .choice {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: 0;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-full);
+    background-color: var(--color-white);
+    font-weight: var(--weight-regular);
+    cursor: pointer;
+    transition: border-color var(--duration-base) var(--easing-standard);
+  }
+
+  .choice:hover { border-color: var(--color-gold); }
+
+  .choice:has(input:checked) {
+    border-color: var(--color-gold);
+    background-color: var(--gray-100);
+    font-weight: var(--weight-medium);
+  }
+
+  .choice input { accent-color: var(--color-gold); }
+
+  .help {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    max-width: 58ch;
+    line-height: var(--leading-normal);
+  }
+
+  .submit {
+    min-height: 48px;
+    font-size: var(--text-base);
+  }
+
+  .privacy-note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    max-width: 58ch;
+  }
+
+  @media (max-width: 767px) {
+    .form-title { font-size: var(--text-3xl); }
+  }
+</style>

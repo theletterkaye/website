@@ -1,0 +1,168 @@
+---
+/**
+ * Shared shell for the later steps of the household-manager funnel
+ * (thank-you, interview brief, trial-day brief, offer hub).
+ *
+ * No site nav by design. These pages are sent to one person at one moment,
+ * and every extra link is a way to lose them.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  headline: string;
+  lede?: string;
+}
+
+const { title, description, eyebrow, headline, lede } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <main>
+    <Section variant="default" size="md">
+      <p class="label">{eyebrow}</p>
+      <h1 class="funnel-title" set:html={headline} />
+      {lede && <p class="funnel-lede">{lede}</p>}
+
+      <div class="prose">
+        <slot />
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .funnel-title {
+    font-size: var(--text-4xl);
+    max-width: 20ch;
+    margin-top: var(--space-4);
+  }
+
+  .funnel-lede {
+    max-width: 58ch;
+    margin-top: var(--space-5);
+    font-size: var(--text-xl);
+    color: var(--color-ink);
+  }
+
+  .prose {
+    max-width: 62ch;
+    margin-top: var(--space-12);
+  }
+
+  .prose :global(h2) {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-16);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--gray-300);
+  }
+
+  .prose :global(h2:first-child) { margin-top: 0; }
+
+  .prose :global(h3) {
+    font-size: var(--text-lg);
+    margin-top: var(--space-8);
+  }
+
+  .prose :global(p) {
+    margin-top: var(--space-4);
+    font-size: var(--text-base);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .prose :global(li) {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--text-base);
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+  }
+
+  .prose :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 6px;
+    height: 1px;
+    background-color: var(--color-gold);
+  }
+
+  .prose :global(ol) { counter-reset: item; }
+
+  .prose :global(ol li) {
+    counter-increment: item;
+    padding-left: var(--space-8);
+  }
+
+  .prose :global(ol li)::before {
+    content: counter(item, decimal-leading-zero);
+    top: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    font-family: var(--ff-heading);
+    font-size: var(--text-sm);
+    color: var(--color-gold);
+  }
+
+  /* Callout box for the one thing on a page that must not be missed */
+  .prose :global(.note) {
+    margin-top: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-left: 2px solid var(--color-gold);
+    background-color: var(--gray-100);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .prose :global(.note p:first-child) { margin-top: 0; }
+
+  /* Key/value strip for logistics: date, time, address, what to bring */
+  .prose :global(.facts) {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding: var(--space-6);
+    background-color: var(--gray-100);
+    border-radius: var(--radius-lg);
+  }
+
+  .prose :global(.fact) {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+
+  .prose :global(.fact dt) {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semi);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .prose :global(.fact dd) {
+    font-size: var(--text-base);
+    color: var(--color-ink);
+  }
+
+  .prose :global(.btn) { margin-top: var(--space-8); }
+
+  @media (max-width: 767px) {
+    .funnel-title { font-size: var(--text-3xl); }
+    .prose :global(.fact) { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+import FunnelLayout from '../../layouts/FunnelLayout.astro';
+import { ROLE } from '../../data/household-role';
+
+const trialHours = 4;
+---
+
+<FunnelLayout
+  title="Your paid trial day: household manager role"
+  description="What the paid trial day involves."
+  eyebrow="Step four · The paid trial day"
+  headline="A paid day, before <em>either of us</em> commits."
+  lede={`Full rate, full day, no strings. If at the end of it either of us says "this isn't it," that's a completely fine outcome and you still get paid.`}
+>
+  <div class="facts">
+    <div class="fact"><dt>When</dt><dd>[TODO: date and time]</dd></div>
+    <div class="fact"><dt>How long</dt><dd>{trialHours} hours</dd></div>
+    <div class="fact"><dt>Pay</dt><dd>${ROLE.hourlyRate}/hour, ${ROLE.hourlyRate * trialHours} total, paid the same day</dd></div>
+    <div class="fact"><dt>Where</dt><dd>{ROLE.street}, {ROLE.town}, IL {ROLE.zip}</dd></div>
+    <div class="fact"><dt>Getting in</dt><dd>Ring the bell. I'll be here to let you in.</dd></div>
+    <div class="fact"><dt>Questions</dt><dd>Text <a href={ROLE.interviewPhoneHref}>{ROLE.interviewPhone}</a></dd></div>
+  </div>
+
+  <h2>How the day works</h2>
+  <p>
+    You'll arrive and we'll walk through a short written list together, maybe ten minutes. Then
+    I'll get out of your way and go work in my office, which is exactly how a normal week would
+    go. I'll be in the house but I won't be watching you, and you should work the way you'd
+    actually work.
+  </p>
+  <p>
+    Knock on the office door any time. Interrupting me is genuinely fine, and today especially I'd
+    rather answer a question than have you guess.
+  </p>
+
+  <div class="note">
+    <p>
+      <strong>The list will be longer than the time.</strong> That's deliberate, and it isn't a
+      trap. We want to see what you'd prioritize when everything can't get done, because that's
+      the real job every single week. Finishing the whole list is not the goal and not possible.
+    </p>
+  </div>
+
+  <h2>What we're actually looking at</h2>
+  <ul>
+    <li>What you chose to do first, and whether that matches what mattered most</li>
+    <li>Whether you used your own judgment on the gray areas or waited to be told</li>
+    <li>Whether you flagged things as they came up rather than saving them for the end</li>
+    <li>The quality of the work itself, which is honestly the part we worry about least</li>
+  </ul>
+  <p>
+    We are not looking for speed, and we're not timing you. Someone who does four things well
+    beats someone who does eight things halfway, every time.
+  </p>
+
+  <h2>What we'd like from you</h2>
+  <ul>
+    <li>Text us if something's unclear. Asking is always better than guessing, today especially</li>
+    <li>Tell us immediately if anything breaks, spills, or stains. It will never be a problem</li>
+    <li>Don't skip a break, and don't stay past your hours</li>
+  </ul>
+
+  <h2>At the end</h2>
+  <p>
+    We'll sit down for ten minutes and ask you one question that matters more than the rest:
+    <em>what would you change about how this house is set up?</em> Answer it honestly. Someone
+    who can see what isn't working and say so plainly is exactly who we're trying to hire.
+  </p>
+  <p>
+    You'll be paid before you leave. We'll tell you our decision within two days either way, and
+    we'd like to know yours too.
+  </p>
+
+  <h2>The practical bits</h2>
+  <ul>
+    <li>Wear what you'd actually work in. Bring a change of shoes if you like</li>
+    <li>All supplies and equipment are here. Bring nothing</li>
+    <li>Help yourself to coffee, water, and anything in the fridge. Genuinely</li>
+    <li>No pets in the house</li>
+    <li>I'll be on calls part of the day, so if a door is shut, a text works better than a knock</li>
+    <li>{ROLE.parking}</li>
+    <li>No alarm system, and nothing to remember on the way in or out. I'll let you in and I'll be here when you go</li>
+  </ul>
+
+  <a href={ROLE.basePath} class="btn btn--ghost">Re-read the role</a>
+</FunnelLayout>

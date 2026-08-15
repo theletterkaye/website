@@ -1,0 +1,105 @@
+---
+import FunnelLayout from '../../layouts/FunnelLayout.astro';
+import BookingCalendar from '../../components/BookingCalendar.astro';
+import { ROLE, PROCESS } from '../../data/household-role';
+
+// Rendered per request: this page branches on query params, which don't exist
+// at build time.
+export const prerender = false;
+
+// `?q=1` is set by the API route when an applicant cleared all five basic
+// requirements. Those candidates book the screening call straight away rather
+// than waiting on an email round-trip.
+const qualified =
+  ROLE.scheduling.autoInviteQualified && Astro.url.searchParams.get('q') === '1';
+
+const name = Astro.url.searchParams.get('n') ?? undefined;
+const email = Astro.url.searchParams.get('e') ?? undefined;
+
+const { durationMinutes, platform } = ROLE.scheduling;
+---
+
+<FunnelLayout
+  title="Application received"
+  description="Thanks for applying to the household manager role."
+  eyebrow="Application received"
+  headline={
+    qualified
+      ? 'Got it. Now <em>pick a time</em> to talk.'
+      : 'Got it. Thank you for <em>taking the time</em>.'
+  }
+  lede={
+    qualified
+      ? `Your application came through, and everything we need is there. The next step is a ${durationMinutes}-minute video call, and you can book it right now rather than waiting on us to email you.`
+      : 'Your application came through. Here’s exactly what happens now, so you’re not left guessing.'
+  }
+>
+  {qualified ? (
+    <>
+      <BookingCalendar name={name} email={email} />
+
+      <h2>About the call</h2>
+      <ul>
+        <li>{durationMinutes} minutes on {platform}, from a phone or a computer</li>
+        <li>A link arrives with your confirmation email. Nothing to install if you're on a computer</li>
+        <li>Camera on or off, your call. It doesn't count against you either way</li>
+        <li>No preparation needed. We'll confirm availability, rate, and scope, and you can ask us anything</li>
+      </ul>
+
+      <div class="note">
+        <p>
+          <strong>Would you rather do a regular phone call?</strong> Just email
+          <a href={`mailto:${ROLE.contactEmail}`}>{ROLE.contactEmail}</a> and we'll set one up. It's
+          a normal request and it changes nothing about your application.
+        </p>
+      </div>
+
+      <h2>And after that</h2>
+      <ol>
+        {PROCESS.slice(2).map(stage => (
+          <li><strong>{stage.step}.</strong> {stage.detail} <em>({stage.timing})</em></li>
+        ))}
+      </ol>
+      <p>
+        The in-home visit is only for a small number of people, so we won't be able to invite
+        everyone we talk to. We'll tell you either way, and quickly.
+      </p>
+    </>
+  ) : (
+    <>
+      <h2>What happens next</h2>
+      <ol>
+        {PROCESS.slice(1).map(stage => (
+          <li><strong>{stage.step}.</strong> {stage.detail} <em>({stage.timing})</em></li>
+        ))}
+      </ol>
+
+      <div class="note">
+        <p>
+          <strong>You will hear back either way.</strong> If we're not moving forward, we'll tell
+          you rather than leaving you wondering. If you haven't heard anything in two weeks,
+          please do email and nudge us. It means something got lost, not that the answer is no.
+        </p>
+      </div>
+
+      <h2>A couple of things to think about before we talk</h2>
+      <p>
+        Nothing to prepare, but these are worth having thought through, because they're the ones
+        that matter most in practice:
+      </p>
+      <ul>
+        <li>Which two weekdays genuinely work for you, month after month, not just this month</li>
+        <li>What you'd want to know about our house and how we work before you'd say yes</li>
+        <li>Whether there's anything about the schedule or scope you'd want to negotiate</li>
+      </ul>
+    </>
+  )}
+
+  <h2>Questions in the meantime</h2>
+  <p>
+    Email <a href={`mailto:${ROLE.contactEmail}`} class="link-underline">{ROLE.contactEmail}</a> any
+    time. Asking questions before you commit is a good sign, not a bother.
+  </p>
+
+  <a href={ROLE.basePath} class="btn btn--ghost">Re-read the role</a>
+</FunnelLayout>
