@@ -79,13 +79,13 @@ export const MOTIV = {
   },
 };
 
-/* ---------- IL Regionals cuts (SCY) — 14 & 11 columns ---------- */
+/* ---------- IL 2027 Regionals cuts (SCY) — 14 boys / 11 girls ---------- */
 export const REGIONALS = {
   afton: {
     "50FR": parseT("26.29"), "100FR": parseT("56.99"), "200FR": parseT("2:04.99"),
-    "100BK": parseT("1:05.69"), "200BK": parseT("2:21.19"),
-    "100BR": parseT("1:14.19"), "200BR": parseT("2:40.89"),
-    "100FL": parseT("1:03.69"), "200FL": parseT("2:25.89"),
+    "50BK": parseT("29.59"), "100BK": parseT("1:05.69"), "200BK": parseT("2:21.19"),
+    "50BR": parseT("33.39"), "100BR": parseT("1:14.19"), "200BR": parseT("2:40.89"),
+    "50FL": parseT("28.69"), "100FL": parseT("1:03.69"), "200FL": parseT("2:25.89"),
     "200IM": parseT("2:22.79"),
   },
   leila: {
@@ -97,19 +97,19 @@ export const REGIONALS = {
   },
 };
 
-/* ---------- IL 2026 Championship cuts (SCY) — 14 boys / 11 girls ---------- */
+/* ---------- IL 2027 Championship cuts (SCY) — 14 boys / 11 girls ---------- */
 export const CHAMPS = {
   afton: {
-    "50FR": parseT("23.89"), "100FR": parseT("51.79"), "200FR": parseT("1:53.19"),
-    "100BK": parseT("59.09"), "200BK": parseT("2:08.29"),
-    "100BR": parseT("1:06.09"), "200BR": parseT("2:25.29"),
-    "100FL": parseT("57.89"), "200FL": parseT("2:12.59"),
+    "50FR": parseT("23.79"), "100FR": parseT("51.79"), "200FR": parseT("1:53.19"),
+    "50BK": parseT("27.69"), "100BK": parseT("59.09"), "200BK": parseT("2:08.29"),
+    "50BR": parseT("31.39"), "100BR": parseT("1:06.19"), "200BR": parseT("2:25.29"),
+    "50FL": parseT("26.49"), "100FL": parseT("57.89"), "200FL": parseT("2:12.59"),
     "200IM": parseT("2:08.79"),
   },
   leila: {
     "50FR": parseT("28.59"), "100FR": parseT("1:03.79"), "200FR": parseT("2:15.69"),
     "50BK": parseT("33.39"), "100BK": parseT("1:11.99"), "200BK": parseT("2:33.69"),
-    "50BR": parseT("37.39"), "100BR": parseT("1:21.79"), "200BR": parseT("2:56.89"),
+    "50BR": parseT("37.19"), "100BR": parseT("1:21.79"), "200BR": parseT("2:56.89"),
     "50FL": parseT("31.29"), "100FL": parseT("1:11.59"), "200FL": parseT("2:41.39"),
     "100IM": parseT("1:11.99"), "200IM": parseT("2:32.19"),
   },
