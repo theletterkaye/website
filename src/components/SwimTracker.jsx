@@ -120,9 +120,8 @@ function AddSwimForm({ event, onAdd }) {
   );
 }
 
-function EventDetail({ kid, event, swims, status, champVal, editing, onAdd, onDelete, onSetChamp }) {
+function EventDetail({ kid, event, swims, status, editing, onAdd, onDelete }) {
   const sorted = [...swims].sort((a, b) => b.date.localeCompare(a.date));
-  const [champInput, setChampInput] = useState(champVal != null ? fmtT(champVal) : "");
   return (
     <div className="detail">
       <EventChart swims={swims} status={status} color={kid.color} />
@@ -131,15 +130,6 @@ function EventDetail({ kid, event, swims, status, champVal, editing, onAdd, onDe
         <>
           <div className="detail-sec-label">Log a new time</div>
           <AddSwimForm event={event} onAdd={onAdd} />
-
-          <div className="detail-sec-label">Champs cut for this event
-            <span className="hint"> (2026 IL cut preloaded — edit only if it changes)</span>
-          </div>
-          <div className="add-row">
-            <input placeholder="e.g. 1:10.99" value={champInput} inputMode="decimal"
-              onChange={(e) => setChampInput(e.target.value)} className="inp inp-time" />
-            <button className="btn-add btn-quiet" onClick={() => onSetChamp(parseT(champInput))}>Save cut</button>
-          </div>
         </>
       )}
 
@@ -261,7 +251,7 @@ export default function SwimTracker() {
       out[code] = {
         swims,
         status: eventStatus(swims, MOTIV[kidId][code], REGIONALS[kidId][code] ?? null,
-          data.champs[kidId][code] ?? CHAMPS[kidId][code] ?? null),
+          CHAMPS[kidId][code] ?? null),
       };
     }
     return out;
@@ -280,12 +270,6 @@ export default function SwimTracker() {
     const next = structuredClone(data);
     next.swims[kidId] = next.swims[kidId].filter((x) => x.id !== id);
     save({ type: "delete", kid: kidId, id }, next);
-  };
-  const setChamp = (code, val) => {
-    const next = structuredClone(data);
-    if (val == null) delete next.champs[kidId][code];
-    else next.champs[kidId][code] = val;
-    save({ type: "champ", kid: kidId, event: code, value: val }, next);
   };
 
   const cutsCount = Object.values(byEvent).filter((e) => e.status?.achieved).length;
@@ -366,10 +350,8 @@ export default function SwimTracker() {
 
               {isOpen && (
                 <EventDetail kid={kid} event={code} swims={e.swims} status={st}
-                  champVal={data.champs[kidId][code] ?? CHAMPS[kidId][code] ?? null}
                   editing={editing}
-                  onAdd={addSwim} onDelete={deleteSwim}
-                  onSetChamp={(v) => setChamp(code, v)} />
+                  onAdd={addSwim} onDelete={deleteSwim} />
               )}
             </section>
           );
@@ -462,7 +444,6 @@ body { background: #EEF5F8; }
   font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px;
   letter-spacing: 1px; text-transform: uppercase; color: #43596B; margin: 14px 0 6px;
 }
-.hint { font-family: inherit; font-weight: 400; text-transform: none; letter-spacing: 0; color: #8296A3; font-size: 11px; }
 .add-row { display: flex; gap: 6px; }
 .add-row2 { margin-top: 6px; align-items: center; }
 .inp {
@@ -477,7 +458,6 @@ body { background: #EEF5F8; }
   padding: 8px 14px; font-weight: 700; font-size: 13px; cursor: pointer;
 }
 .btn-add:disabled { opacity: .5; cursor: default; }
-.btn-quiet { margin-left: 0; background: #43596B; color: #fff; flex: 0 0 auto; }
 .form-err { color: #C0392B; font-size: 12px; margin-top: 5px; }
 
 .hist { display: flex; flex-direction: column; }

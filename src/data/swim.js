@@ -252,7 +252,7 @@ const SEED_SWIMS = {
 };
 
 /** What the tracker shows before anything has been saved to the database. */
-export const DEFAULT_DATA = { swims: SEED_SWIMS, champs: { afton: {}, leila: {} } };
+export const DEFAULT_DATA = { swims: SEED_SWIMS };
 
 /* ---------- edits ---------- */
 const KID_IDS = KIDS.map((k) => k.id);
@@ -266,7 +266,6 @@ const COURSES = ["SCY", "LCM", "SCM"];
  *
  *   { type: "add",    kid, swim: { event, date, t, course, relay, dq } }
  *   { type: "delete", kid, id }
- *   { type: "champ",  kid, event, value }   (value null clears the override)
  */
 export function applyEdit(data, edit) {
   if (!edit || !KID_IDS.includes(edit.kid)) return null;
@@ -290,15 +289,6 @@ export function applyEdit(data, edit) {
 
   if (edit.type === "delete") {
     next.swims[kid] = next.swims[kid].filter((x) => x.id !== edit.id);
-    return next;
-  }
-
-  if (edit.type === "champ") {
-    if (!EVENT_CODES.includes(edit.event)) return null;
-    const v = edit.value;
-    if (v == null) delete next.champs[kid][edit.event];
-    else if (typeof v === "number" && v > 0 && v < 3600) next.champs[kid][edit.event] = v;
-    else return null;
     return next;
   }
 
