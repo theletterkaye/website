@@ -90,6 +90,20 @@ function EventChart({ swims, status, color }) {
   );
 }
 
+/**
+ * Phone keypads have no colon, so the time box takes digits only and places
+ * the punctuation itself: the last two digits are hundredths, the two before
+ * are seconds, anything earlier is minutes. 30287 → 3:02.87, 3813 → 38.13.
+ * Pasted times like "3:02.87" come out the same since only digits are kept.
+ */
+const formatTimeDigits = (raw) => {
+  const d = raw.replace(/\D/g, "").replace(/^0+(?=\d)/, "").slice(0, 6);
+  if (d.length <= 2) return d;
+  const hund = d.slice(-2), rest = d.slice(0, -2);
+  if (rest.length <= 2) return `${rest}.${hund}`;
+  return `${rest.slice(0, -2)}:${rest.slice(-2)}.${hund}`;
+};
+
 function AddSwimForm({ event, onAdd }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -101,7 +115,7 @@ function AddSwimForm({ event, onAdd }) {
   const submit = () => {
     const t = parseT(time);
     if (!date) { setErr("Pick the meet date."); return; }
-    if (t == null) { setErr("Time should look like 39.75 or 1:27.34."); return; }
+    if (t == null || !time.includes(".")) { setErr("Type every digit including hundredths, like 3813 for 38.13."); return; }
     onAdd({ id: `u-${Date.now()}`, event, date, t, course, relay, dq });
     setTime(""); setRelay(false); setDq(false); setErr("");
   };
@@ -110,8 +124,8 @@ function AddSwimForm({ event, onAdd }) {
     <div className="add-form">
       <div className="add-row">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="inp" />
-        <input placeholder="1:27.34" value={time} inputMode="decimal"
-          onChange={(e) => setTime(e.target.value)} className="inp inp-time" />
+        <input placeholder="1:27.34" value={time} inputMode="numeric"
+          onChange={(e) => setTime(formatTimeDigits(e.target.value))} className="inp inp-time" />
         <select value={course} onChange={(e) => setCourse(e.target.value)} className="inp inp-course">
           <option>SCY</option><option>LCM</option><option>SCM</option>
         </select>
