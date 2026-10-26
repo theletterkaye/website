@@ -17,29 +17,30 @@ const writePass = (v) => { try { v ? localStorage.setItem(PASS_KEY, v) : localSt
 
 /* ---------- per-event computation ---------- */
 function eventStatus(swims, motiv, regional, champ) {
+  // No SCY time yet (brand-new event, or only LCM/SCM swims): still show the
+  // cuts to aim for, just without a best time or gaps.
   const counting = swims.filter((x) => x.course === "SCY" && !x.dq);
-  if (!counting.length) return null;
-  const bestSwim = counting.reduce((a, b) => (b.t < a.t ? b : a));
-  const best = bestSwim.t;
+  const bestSwim = counting.length ? counting.reduce((a, b) => (b.t < a.t ? b : a)) : null;
+  const best = bestSwim?.t ?? null;
 
   let achieved = null, next = null;
-  if (motiv) {
+  if (motiv && best != null) {
     for (let i = motiv.length - 1; i >= 0; i--) {
       if (best <= motiv[i].t) { achieved = motiv[i]; next = motiv[i + 1] || null; break; }
     }
-    if (!achieved) next = motiv[0];
   }
+  if (motiv && !achieved) next = motiv[0];
   return {
     best, bestSwim, achieved, next,
-    nextGap: next ? best - next.t : null,
-    regional, regGap: regional != null ? best - regional : null,
-    champ, chGap: champ != null ? best - champ : null,
+    nextGap: next && best != null ? best - next.t : null,
+    regional, regGap: regional != null && best != null ? best - regional : null,
+    champ, chGap: champ != null && best != null ? best - champ : null,
   };
 }
 
 /* ---------- small pieces ---------- */
 function GapChip({ made, gap, none }) {
-  if (none) return <span className="chip chip-none">—</span>;
+  if (none || (!made && gap == null)) return <span className="chip chip-none">—</span>;
   if (made) return <span className="chip chip-made">✓ made</span>;
   return <span className="chip chip-gap">{gap.toFixed(2)} off</span>;
 }
@@ -49,7 +50,12 @@ function EventChart({ swims, status, color }) {
     .filter((x) => x.course === "SCY" && !x.dq)
     .sort((a, b) => a.date.localeCompare(b.date))
     .map((x) => ({ date: x.date, t: x.t, relay: x.relay }));
-  if (pts.length < 2) return <div className="chart-empty">Add one more swim to see the trend.</div>;
+  // Cuts not made yet stretch the y-axis so they're always on screen; cuts
+  // already made only show if they fall inside the range of her times. The
+  // axis recalculates from the swims + cuts on every render, so it follows
+  // the times down and moves on to the next cut once one is made.
+  const fit = (gap) => (gap == null || gap > 0 ? "extendDomain" : "hidden");
+  if (pts.length < 2) return <div className="chart-empty">{pts.length ? "Add one more SCY swim to see the trend." : "No SCY times yet. Log one to start the trend."}</div>;
   return (
     <div style={{ width: "100%", height: 220 }}>
       <ResponsiveContainer>
@@ -68,12 +74,12 @@ function EventChart({ swims, status, color }) {
           )}
           {status?.regional != null && (
             <ReferenceLine y={status.regional} stroke="#C99700" strokeDasharray="6 4"
-              ifOverflow="hidden"
-              label={{ value: `Regionals ${fmtT(status.regional)}`, position: "insideBottomLeft", fontSize: 10, fill: "#C99700" }} />
+              ifOverflow={fit(status.regGap)}
+              label={{ value: `Regionals ${fmtT(status.regional)}`, position: "insideBottomRight", fontSize: 10, fill: "#C99700" }} />
           )}
           {status?.champ != null && (
             <ReferenceLine y={status.champ} stroke="#C0392B" strokeDasharray="6 4"
-              ifOverflow="hidden"
+              ifOverflow={fit(status.chGap)}
               label={{ value: `Champs ${fmtT(status.champ)}`, position: "insideBottomLeft", fontSize: 10, fill: "#C0392B" }} />
           )}
           <Line type="monotone" dataKey="t" stroke={color} strokeWidth={2.5}
@@ -155,6 +161,20 @@ function EventDetail({ kid, event, swims, status, editing, onAdd, onDelete }) {
   );
 }
 
+/** Edit-mode picker for an event a kid hasn't swum yet (first 100 Fly, etc.). */
+function AddEvent({ events, onPick }) {
+  if (!events.length) return null;
+  return (
+    <div className="card add-event">
+      <span className="add-event-label">＋ First time swimming an event?</span>
+      <select className="inp" value="" onChange={(e) => e.target.value && onPick(e.target.value)}>
+        <option value="">Add an event…</option>
+        {events.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+      </select>
+    </div>
+  );
+}
+
 /** Header control: view-only by default, a passcode switches on editing. */
 function EditLock({ editing, onUnlock, onLock }) {
   const [asking, setAsking] = useState(false);
@@ -190,6 +210,8 @@ export default function SwimTracker() {
   const [data, setData] = useState(null);
   const [loadErr, setLoadErr] = useState("");
   const [open, setOpen] = useState(null); // event code
+  // Events picked from "Add an event" that don't have a swim saved yet, per kid.
+  const [added, setAdded] = useState({});
   const [saveState, setSaveState] = useState("");
   const [pass, setPass] = useState("");
 
@@ -247,7 +269,7 @@ export default function SwimTracker() {
     const out = {};
     for (const [code] of EVENTS) {
       const swims = data.swims[kidId].filter((x) => x.event === code);
-      if (!swims.length) continue;
+      if (!swims.length && !added[kidId]?.includes(code)) continue;
       out[code] = {
         swims,
         status: eventStatus(swims, MOTIV[kidId][code], REGIONALS[kidId][code] ?? null,
@@ -255,7 +277,7 @@ export default function SwimTracker() {
       };
     }
     return out;
-  }, [data, kidId]);
+  }, [data, kidId, added]);
 
   if (!data) return (
     <div className="app"><style>{CSS}</style><div className="load">{loadErr || "Loading times…"}</div></div>
@@ -271,6 +293,12 @@ export default function SwimTracker() {
     next.swims[kidId] = next.swims[kidId].filter((x) => x.id !== id);
     save({ type: "delete", kid: kidId, id }, next);
   };
+
+  const addEvent = (code) => {
+    setAdded((a) => ({ ...a, [kidId]: [...(a[kidId] || []), code] }));
+    setOpen(code);
+  };
+  const unswum = EVENTS.filter(([code]) => !byEvent[code]);
 
   const cutsCount = Object.values(byEvent).filter((e) => e.status?.achieved).length;
   const regCount = Object.values(byEvent).filter((e) => e.status?.regGap != null && e.status.regGap <= 0).length;
@@ -308,7 +336,7 @@ export default function SwimTracker() {
       <main className="events">
         {EVENTS.map(([code, name]) => {
           const e = byEvent[code];
-          if (!e?.status) return null;
+          if (!e) return null;
           const st = e.status;
           const isOpen = open === code;
           return (
@@ -320,12 +348,12 @@ export default function SwimTracker() {
                     {st.achieved
                       ? <span className="lvl">{st.achieved.n}</span>
                       : <span className="lvl lvl-none">no cut yet</span>}
-                    {st.bestSwim.relay && <span className="mini-note">relay PB</span>}
+                    {st.bestSwim?.relay && <span className="mini-note">relay PB</span>}
                   </div>
                 </div>
                 <div className="card-right">
                   <div className="best">{fmtT(st.best)}</div>
-                  <div className="best-date">{fmtDate(st.bestSwim.date)}</div>
+                  <div className="best-date">{st.bestSwim ? fmtDate(st.bestSwim.date) : "no SCY time"}</div>
                 </div>
               </button>
 
@@ -339,12 +367,12 @@ export default function SwimTracker() {
                 <div className="gap-row">
                   <span className="gap-label">IL Regionals {st.regional != null ? fmtT(st.regional) : ""}</span>
                   <GapChip made={st.regGap != null && st.regGap <= 0}
-                    gap={st.regGap ?? 0} none={st.regional == null} />
+                    gap={st.regGap} none={st.regional == null} />
                 </div>
                 <div className="gap-row">
                   <span className="gap-label">IL Champs {st.champ != null ? fmtT(st.champ) : "— no cut for this event"}</span>
                   <GapChip made={st.chGap != null && st.chGap <= 0}
-                    gap={st.chGap ?? 0} none={st.champ == null} />
+                    gap={st.chGap} none={st.champ == null} />
                 </div>
               </div>
 
@@ -356,6 +384,7 @@ export default function SwimTracker() {
             </section>
           );
         })}
+        {editing && <AddEvent events={unswum} onPick={addEvent} />}
       </main>
 
       <footer className="foot">
@@ -437,6 +466,10 @@ body { background: #EEF5F8; }
 .chip-made { background: #DDF3E6; color: #0F7A44; }
 .chip-gap { background: #FFF3C4; color: #8A6D00; }
 .chip-none { background: #F0F4F6; color: #A9B8C2; }
+
+.add-event { display: flex; align-items: center; gap: 10px; padding: 12px 14px; flex-wrap: wrap; }
+.add-event-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: #43596B; }
+.add-event .inp { font-size: 14px; }
 
 .detail { border-top: 1px dashed #DCE8ED; padding: 12px 14px 16px; }
 .chart-empty { font-size: 12px; color: #8296A3; padding: 10px 0; }
