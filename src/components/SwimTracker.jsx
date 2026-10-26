@@ -4,7 +4,7 @@ import {
   ResponsiveContainer, CartesianGrid,
 } from "recharts";
 import {
-  parseT, fmtT, fmtDate, EVENTS, KIDS, MOTIV, REGIONALS, CHAMPS,
+  parseT, fmtT, fmtDate, EVENTS, KIDS, MOTIV, REGIONALS, CHAMPS, isRelayEvent,
 } from "../data/swim.js";
 
 const API = "/api/swim";
@@ -64,7 +64,7 @@ function EventChart({ swims, status, color }) {
           <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 10, fill: "#5B7280" }}
             interval="preserveStartEnd" minTickGap={40} />
           <YAxis tickFormatter={fmtT} tick={{ fontSize: 10, fill: "#5B7280" }}
-            domain={["auto", "auto"]} width={52} />
+            domain={["auto", "auto"]} width={60} />
           <Tooltip formatter={(v) => [fmtT(v), "time"]} labelFormatter={fmtDate}
             contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #DCE8ED" }} />
           {status?.next && (
@@ -131,7 +131,9 @@ function AddSwimForm({ event, onAdd }) {
         </select>
       </div>
       <div className="add-row add-row2">
-        <label className="ck"><input type="checkbox" checked={relay} onChange={(e) => setRelay(e.target.checked)} /> relay split</label>
+        {!isRelayEvent(event) && (
+          <label className="ck"><input type="checkbox" checked={relay} onChange={(e) => setRelay(e.target.checked)} /> relay split</label>
+        )}
         <label className="ck"><input type="checkbox" checked={dq} onChange={(e) => setDq(e.target.checked)} /> DQ</label>
         <button className="btn-add" onClick={submit}>Add swim</button>
       </div>
@@ -373,13 +375,13 @@ export default function SwimTracker() {
 
               <div className="gaps">
                 <div className="gap-row">
-                  <span className="gap-label">{st.next ? `${st.next.n} cut ${fmtT(st.next.t)}` : (MOTIV[kidId][code] ? "AAAA — top of the sheet 🏆" : "no USA sheet for this event")}</span>
+                  <span className="gap-label">{st.next ? `${st.next.n} cut ${fmtT(st.next.t)}` : (MOTIV[kidId][code] ? "AAAA — top of the sheet 🏆" : isRelayEvent(code) ? "team time · no USA sheet for relays" : "no USA sheet for this event")}</span>
                   {st.next
                     ? <GapChip made={false} gap={st.nextGap} />
                     : <GapChip made={!!MOTIV[kidId][code]} none={!MOTIV[kidId][code]} />}
                 </div>
                 <div className="gap-row">
-                  <span className="gap-label">IL Regionals {st.regional != null ? fmtT(st.regional) : ""}</span>
+                  <span className="gap-label">IL Regionals {st.regional != null ? fmtT(st.regional) : isRelayEvent(code) ? "— no relay cuts" : ""}</span>
                   <GapChip made={st.regGap != null && st.regGap <= 0}
                     gap={st.regGap} none={st.regional == null} />
                 </div>
