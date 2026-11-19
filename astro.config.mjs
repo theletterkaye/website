@@ -10,8 +10,9 @@ import react from '@astrojs/react';
 // someone who was given the link. `/for/` is also disallowed in robots.txt;
 // `/hm-` deliberately is not, since listing it there would advertise that it
 // exists. The noindex meta tag on those pages does the real work. `/swim` is
-// the family swim tracker, same treatment.
-const HIDDEN = ['/for/', '/hm-', '/swim'];
+// the family swim tracker, same treatment. `/studio` is Kaye's private social
+// dashboard; its data is also passcode-gated at the API.
+const HIDDEN = ['/for/', '/hm-', '/swim', '/studio'];
 
 // https://astro.build/config
 export default defineConfig({
