@@ -60,6 +60,23 @@ const css = `
 .gate input{font:inherit;font-size:20px;padding:14px;border-radius:12px;border:0}
 .gate .btn{background:var(--goldl);color:var(--ink);font-size:18px;padding:14px}
 .pop{position:fixed;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:90px;animation:pop 1.1s ease-out forwards;z-index:9}
+/* Desktop: the same page, laid out as three columns under a wide header. */
+@media (min-width: 960px){
+  .sd{max-width:1240px;padding:24px 28px 48px;font-size:16px}
+  .hero{border-radius:22px;padding:28px 32px;display:grid;grid-template-columns:auto 1fr;column-gap:40px;align-items:center}
+  .hero .dayn{grid-column:1/-1}
+  .hero .big{font-size:76px;margin:4px 0 0}
+  .hero .sub{align-self:end;padding-bottom:10px}
+  .hero .bar{grid-column:1/-1;height:14px}
+  .hero .pace{grid-column:1/-1;font-size:15px}
+  .tiles{padding:18px 0 0;gap:16px}
+  .tile{padding:16px}
+  .grid{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:36px;align-items:start}
+  .sec{padding:26px 0 0}
+  .badges{grid-template-columns:repeat(3,1fr)}
+  .btn{cursor:pointer}.btn:hover{filter:brightness(1.15)}
+  .check{cursor:pointer}
+}
 @keyframes pop{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.25);opacity:1}100%{transform:scale(1) translateY(-90px);opacity:0}}
 `;
 
@@ -156,6 +173,7 @@ export default function StudioDash() {
       </div>
       {state.error && <div className="sec" style={{ color: '#C8402F', fontWeight: 700 }}>{state.error}</div>}
 
+      <div className="grid"><div className="col">
       <div className="sec"><h2>Post today</h2>
         {v.todo.length === 0 && <div className="note">{v.doneToday.length ? 'All done for today. 🎉' : 'Nothing scheduled today.'}</div>}
         {v.todo.map((x) => <Item key={x.id} x={x} late={x.date < v.today} />)}
@@ -173,6 +191,7 @@ export default function StudioDash() {
           <label className={'check' + (on ? ' on' : '')} key={s.id}><input type="checkbox" checked={on} onChange={(e) => mark('shots', s.id, e.target.checked)} /><span>{s.text}{s.why ? <em style={{ display: 'block', fontSize: 14, color: 'var(--mute)', fontStyle: 'normal' }}>{s.why}</em> : null}</span></label>); })}
       </div>
 
+      </div><div className="col">
       <div className="sec"><h2>Coming up</h2>
         {v.soon.length === 0 && <div className="note">Nothing planned for the next 7 days.</div>}
         {[...new Set(v.soon.map((x) => x.date))].map((d) => { const dayItems = v.soon.filter((x) => x.date === d); const tr = dayItems.filter((x) => x.kind === 'trial'); return (
@@ -182,6 +201,7 @@ export default function StudioDash() {
           </div>); })}
       </div>
 
+      </div><div className="col">
       <div className="sec"><h2>Results</h2>
         {(data.posts || []).length === 0 && <div className="note">No numbers yet. They appear after the first weekly review.</div>}
         {(data.posts || []).slice(0, 8).map((p) => <div className="row" key={p.id + p.platform}><span>{p.hook}</span><span>{fmt(p.views)} views{p.vsBase ? ` · ${p.vsBase}x` : ''}</span></div>)}
@@ -193,6 +213,8 @@ export default function StudioDash() {
       <div className="sec"><h2>Badges</h2>
         <div className="badges">{v.badges.map(([e, l, got]) => <div className={'badge' + (got ? ' got' : '')} key={l}><span className="e">{e}</span>{l}</div>)}</div>
       </div>
+
+      </div></div>
 
       <div className="sec note">Updated {data.updated ? new Date(data.updated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '–'}. Points: main post 10, Trial Reel 3, shot 5, graduate 25.</div>
     </div>);
