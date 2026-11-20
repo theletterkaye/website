@@ -15,10 +15,13 @@ export const prerender = false;
  * Two documents in Upstash Redis:
  *   studio:data:v1   pushed from Kaye's laptop (schedule, shot list, results)
  *   studio:marks:v1  written from the page (what she marked as posted or shot)
+ *   studio:insights:v1  written once a day by the collector on the Mac Studio (per-post numbers and
+ *                       the follower count, read from Instagram Insights)
  */
 
 const DATA_KEY = 'studio:data:v1';
 const MARKS_KEY = 'studio:marks:v1';
+const INSIGHTS_KEY = 'studio:insights:v1';
 
 const url = import.meta.env.KV_REST_API_URL ?? import.meta.env.UPSTASH_REDIS_REST_URL;
 const token = import.meta.env.KV_REST_API_TOKEN ?? import.meta.env.UPSTASH_REDIS_REST_TOKEN;
@@ -47,7 +50,7 @@ const DAY = /^\d{4}-\d{2}-\d{2}$/;
 export const GET: APIRoute = async ({ request }) => {
   if (!passcodeOk(request.headers.get('x-studio-passcode'))) return json({ error: 'Wrong passcode.' }, 401);
   try {
-    return json({ data: await get(DATA_KEY), marks: (await get(MARKS_KEY)) ?? emptyMarks() });
+    return json({ data: await get(DATA_KEY), marks: (await get(MARKS_KEY)) ?? emptyMarks(), insights: await get(INSIGHTS_KEY) });
   } catch (err) {
     console.error('studio: load failed', err);
     return json({ error: 'Could not load.' }, 500);
@@ -65,7 +68,13 @@ export const POST: APIRoute = async ({ request }) => {
     if (body.type === 'push') {
       if (!body.data || typeof body.data !== 'object' || JSON.stringify(body.data).length > 600_000) return json({ error: 'Bad data.' }, 400);
       await set(DATA_KEY, body.data);
-      return json({ ok: true, marks: (await get(MARKS_KEY)) ?? emptyMarks() });
+      return json({ ok: true, marks: (await get(MARKS_KEY)) ?? emptyMarks(), insights: await get(INSIGHTS_KEY) });
+    }
+    // From the Mac Studio collector: replace the insights document.
+    if (body.type === 'insights') {
+      if (!body.insights || typeof body.insights !== 'object' || JSON.stringify(body.insights).length > 500_000) return json({ error: 'Bad insights.' }, 400);
+      await set(INSIGHTS_KEY, body.insights);
+      return json({ ok: true });
     }
     // From the page: mark something posted or shot (or undo it).
     if (body.type === 'mark') {

@@ -83,7 +83,7 @@ const css = `
 export default function StudioDash() {
   const [pass, setPass] = useState(() => (typeof localStorage !== 'undefined' && localStorage.getItem(KEY)) || '');
   const [typed, setTyped] = useState('');
-  const [state, setState] = useState({ status: pass ? 'loading' : 'gate', data: null, marks: null, error: '' });
+  const [state, setState] = useState({ status: pass ? 'loading' : 'gate', data: null, marks: null, insights: null, error: '' });
   const [pop, setPop] = useState(null);
 
   const load = async (p) => {
@@ -92,7 +92,7 @@ export default function StudioDash() {
       if (r.status === 401) { localStorage.removeItem(KEY); setState({ status: 'gate', data: null, marks: null, error: 'That passcode did not work.' }); return; }
       const j = await r.json();
       localStorage.setItem(KEY, p); setPass(p);
-      setState({ status: 'ready', data: j.data, marks: j.marks || { posted: {}, shots: {} }, error: '' });
+      setState({ status: 'ready', data: j.data, marks: j.marks || { posted: {}, shots: {} }, insights: j.insights || null, error: '' });
     } catch { setState((s) => ({ ...s, status: s.data ? 'ready' : 'gate', error: 'Could not reach the dashboard. Check your connection.' })); }
   };
   useEffect(() => { if (pass) load(pass); }, []);
@@ -113,13 +113,18 @@ export default function StudioDash() {
   const v = useMemo(() => {
     const { data, marks } = state; if (!data || !marks) return null;
     const today = day(); const g = data.goal || {}; const sched = [...(data.schedule?.main || []).map((x) => ({ ...x, kind: 'main' })), ...(data.schedule?.trials || []).map((x) => ({ ...x, kind: 'trial' }))];
-    const postedOn = (id) => marks.posted[id] || (data.posted || {})[id] || null;
-    const ig = (data.followers?.instagram || []).filter((x) => x.n != null); const now = ig.length ? ig[ig.length - 1].n : g.start;
+    // Numbers the Mac Studio reads from Instagram Insights once a day: per-post results, the follower count, and what went up.
+    const ins = state.insights || {}; const media = Object.values(ins.media || {}).filter((m) => m.id);
+    const seen = {}; for (const m of media) if (m.posted && (!seen[m.id] || m.posted < seen[m.id])) seen[m.id] = m.posted;
+    const postedOn = (id) => marks.posted[id] || (data.posted || {})[id] || seen[id] || null;
+    const ig = [...(data.followers?.instagram || []), ...Object.entries(ins.followers || {}).map(([date, n]) => ({ date, n }))].filter((x) => x.n != null).sort((a, b) => a.date.localeCompare(b.date)); const now = ig.length ? ig[ig.length - 1].n : g.start;
+    const titleOf = Object.fromEntries(sched.map((x) => [x.id, x]));
+    const lab = media.map((m) => ({ ...m, title: (titleOf[m.id]?.hook || titleOf[m.id]?.title || m.text || m.id), kind: titleOf[m.id]?.kind || (String(m.id).startsWith('T-') ? 'trial' : 'main') })).sort((a, b) => (b.follows || 0) - (a.follows || 0) || (b.views || 0) - (a.views || 0));
     const total = Math.max(1, diff(g.startDate, g.endDate)); const dayN = Math.min(total, Math.max(1, diff(g.startDate, today) + 1)); const left = Math.max(0, diff(today, g.endDate));
     const gained = now - g.start; const need = g.followers - now; const perDayNeed = left ? need / left : need; const perDayNow = dayN > 1 ? gained / (dayN - 1) : 0;
     const expected = g.start + (g.followers - g.start) * ((dayN - 1) / total);
     // streak: consecutive days ending today (or yesterday) with at least one post
-    const days = new Set(Object.values({ ...(data.posted || {}), ...marks.posted })); let streak = 0; let d = days.has(today) ? today : addDays(today, -1);
+    const days = new Set(Object.values({ ...seen, ...(data.posted || {}), ...marks.posted })); let streak = 0; let d = days.has(today) ? today : addDays(today, -1);
     while (days.has(d)) { streak++; d = addDays(d, -1); }
     let best = 0, run = 0, prev = null; for (const x of [...days].sort()) { run = prev && diff(prev, x) === 1 ? run + 1 : 1; best = Math.max(best, run); prev = x; }
     const isPosted = (x) => !!postedOn(x.id); const mainDone = sched.filter((x) => x.kind === 'main' && isPosted(x)); const trialDone = sched.filter((x) => x.kind === 'trial' && isPosted(x));
@@ -136,7 +141,7 @@ export default function StudioDash() {
       ['🧪', '10 trial reels', trialDone.length >= 10], ['🎓', 'First graduate', grads >= 1], ['🎬', 'First shoot done', shotsDone >= 1], ['👀', '10K-view post', topViews >= 10000],
       ['📈', '12K followers', now >= 12000], ['🌟', '15K followers', now >= 15000], ['🏔️', '20K followers', now >= 20000], ['💯', 'Level 5', level >= 5],
     ];
-    return { today, g, now, dayN, total, left, gained, need, perDayNeed, perDayNow, expected, streak, best, xp, level, wk, todo, doneToday, soon, badges, postedOn };
+    return { today, g, now, dayN, total, left, gained, need, perDayNeed, perDayNow, expected, streak, best, xp, level, wk, todo, doneToday, soon, badges, postedOn, lab, ins };
   }, [state]);
 
   if (state.status === 'gate') return (
@@ -203,6 +208,14 @@ export default function StudioDash() {
       </div>
 
       </div><div className="col">
+      <div className="sec"><h2>Follows by post</h2>
+        {v.ins.status && v.ins.status !== 'ok' && <div className="note" style={{ color: '#C8402F', fontWeight: 700 }}>{v.ins.status === 'logged-out' ? 'Instagram is logged out on the Mac Studio, so numbers have stopped updating.' : `The daily read had a problem: ${v.ins.note || v.ins.status}`}</div>}
+        {v.ins.updated && Date.now() - new Date(v.ins.updated).getTime() > 40 * 3600 * 1000 && <div className="note" style={{ color: '#C8402F', fontWeight: 700 }}>The Mac Studio has not read Instagram in over a day. It may be off, or nobody is logged in on it.</div>}
+        {v.lab.length === 0 && <div className="note">The Mac Studio reads these from Instagram every morning. Nothing read yet.</div>}
+        {v.lab.slice(0, 12).map((m) => <div className="row" key={m.mediaId || m.id + m.posted}><span>{m.kind === 'trial' ? '🧪 ' : ''}{String(m.title).slice(0, 64)}</span><span><b>{m.follows ?? 0}</b> follows · {fmt(m.views || 0)} views{m.shares ? ` · ${m.shares} shares` : ''}</span></div>)}
+        {v.ins.updated ? <div className="note" style={{ marginTop: 10 }}>Read from Instagram {new Date(v.ins.updated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}{v.ins.unmatched ? ` · ${v.ins.unmatched} post${v.ins.unmatched > 1 ? 's' : ''} not matched to the plan yet` : ''}.</div> : null}
+      </div>
+
       <div className="sec"><h2>Results</h2>
         {(data.posts || []).length === 0 && <div className="note">No numbers yet. They appear after the first weekly review.</div>}
         {(data.posts || []).slice(0, 8).map((p) => <div className="row" key={p.id + p.platform}><span>{p.hook}</span><span>{fmt(p.views)} views{p.vsBase ? ` · ${p.vsBase}x` : ''}</span></div>)}
