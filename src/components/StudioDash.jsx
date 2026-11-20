@@ -193,10 +193,11 @@ export default function StudioDash() {
 
       </div><div className="col">
       <div className="sec"><h2>Coming up</h2>
+        <div className="note" style={{ marginBottom: 8 }}>Post whatever feels right. Mark it here and the rest of the plan slides around it.</div>
         {v.soon.length === 0 && <div className="note">Nothing planned for the next 7 days.</div>}
         {[...new Set(v.soon.map((x) => x.date))].map((d) => { const dayItems = v.soon.filter((x) => x.date === d); const tr = dayItems.filter((x) => x.kind === 'trial'); return (
           <div key={d}>
-            {dayItems.filter((x) => x.kind === 'main').map((x) => <div className="row" key={x.id}><span><b>{x.title}</b></span><span>{nice(d)}</span></div>)}
+            {dayItems.filter((x) => x.kind === 'main').map((x) => <div className="row" key={x.id}><span><b>{x.title}</b></span><span>{nice(d)} <button className="btn ghost" style={{ marginLeft: 8, padding: '4px 10px', fontSize: 13 }} title="Posted this one today instead" onClick={() => mark('posted', x.id, true)}>Posted early ✓</button></span></div>)}
             {tr.length > 0 && <div className="row"><span>{tr.length} Trial Reel{tr.length > 1 ? 's' : ''} (#{tr[0].order}{tr.length > 1 ? `–${tr[tr.length - 1].order}` : ''})</span><span>{nice(d)}</span></div>}
           </div>); })}
       </div>
