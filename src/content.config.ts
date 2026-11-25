@@ -66,6 +66,46 @@ const blog = defineCollection({
   }),
 });
 
+// "What I built with AI" recipe pages at /builds/<slug>. The markdown body is
+// "her version" (how the real build works, with screenshots); the frontmatter
+// carries the 10-minute starter version that every build post gives away.
+const builds = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/builds' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    description: z.string(),
+    hook: z.string(),
+    tier: z.enum(['starter', 'ambitious']),
+    keyword: z.string(),
+    tools: z.array(z.string()),
+    timeToBuild: z.string(),
+    whatItDoes: z.string(),
+    publishDate: z.coerce.date(),
+    draft: z.boolean().default(true),
+
+    starter: z.object({
+      title: z.string(),
+      intro: z.string(),
+      steps: z.array(z.string()).default([]),
+      prompt: z.string(),
+      whatYouGet: z.string(),
+    }),
+
+    limitation: z.string(),
+
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    ogImage: z.string().optional(),
+
+    tldr: z.string(),
+    faq: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).default([]),
+  }),
+});
+
 const archetypes = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/archetypes' }),
   schema: z.object({
@@ -88,4 +128,4 @@ const archetypes = defineCollection({
   }),
 });
 
-export const collections = { casestudies, blog, archetypes };
+export const collections = { casestudies, blog, archetypes, builds };

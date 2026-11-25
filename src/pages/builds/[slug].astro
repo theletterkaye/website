@@ -1,0 +1,360 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+
+export async function getStaticPaths() {
+  // Drafts render in `astro dev` so Kaye can review them, never in a production build.
+  const builds = (await getCollection('builds')).filter((b) => import.meta.env.DEV || !b.data.draft);
+  return builds.map((build) => ({ params: { slug: build.data.slug }, props: { build } }));
+}
+
+const { build } = Astro.props;
+const d = build.data;
+const { Content } = await render(build);
+
+const canonical = new URL(`/builds/${d.slug}`, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'HowTo',
+      name: d.starter.title,
+      description: d.starter.intro,
+      totalTime: 'PT10M',
+      tool: d.tools.map((t) => ({ '@type': 'HowToTool', name: t })),
+      step: [...d.starter.steps, 'Paste the prompt below and run it.'].map((s, i) => ({
+        '@type': 'HowToStep', position: i + 1, text: s,
+      })),
+      author: { '@type': 'Person', name: 'Kaye Putnam', url: 'https://kayeputnam.com' },
+      url: canonical,
+    },
+    ...(d.faq.length ? [{
+      '@type': 'FAQPage',
+      mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
+    }] : []),
+  ],
+};
+---
+
+<BaseLayout title={`${d.title} | Kaye Putnam`} description={d.description} image={d.ogImage || d.image}>
+  <Nav />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <main style="padding-top: var(--site-header-height);">
+    <header class="b-hero">
+      <div class="b-wrap">
+        <a href="/builds" class="b-back">Builds</a>
+        <h1>{d.title}</h1>
+        <p class="b-what">{d.whatItDoes}</p>
+        <dl class="b-meta">
+          <div><dt>Built with</dt><dd>{d.tools.join(', ')}</dd></div>
+          <div><dt>Time to build</dt><dd>{d.timeToBuild}</dd></div>
+        </dl>
+        <p class="b-tldr">{d.tldr}</p>
+      </div>
+    </header>
+
+    <section class="b-starter" id="try-it">
+      <div class="b-wrap">
+        <p class="b-starter-label">Try it in 10 minutes</p>
+        <h2>{d.starter.title}</h2>
+        <p class="b-starter-intro">{d.starter.intro}</p>
+        {d.starter.steps.length > 0 && (
+          <ol class="b-steps">
+            {d.starter.steps.map((s) => <li>{s}</li>)}
+          </ol>
+        )}
+        <div class="b-prompt">
+          <div class="b-prompt-bar">
+            <span>The prompt</span>
+            <button type="button" class="b-copy" data-copy-target="starter-prompt">Copy prompt</button>
+          </div>
+          <pre id="starter-prompt">{d.starter.prompt}</pre>
+        </div>
+        <p class="b-get"><strong>What you get:</strong> {d.starter.whatYouGet}</p>
+      </div>
+    </section>
+
+    <section class="b-body-section">
+      <div class="b-wrap">
+        <h2 class="b-section-title">How my version works</h2>
+        <div class="b-body">
+          <Content />
+        </div>
+
+        <div class="b-limit">
+          <p class="b-limit-label">What it still gets wrong</p>
+          <p>{d.limitation}</p>
+        </div>
+
+        {d.faq.length > 0 && (
+          <div class="b-faq">
+            <h2 class="b-section-title">Questions people ask</h2>
+            {d.faq.map((f) => (
+              <details>
+                <summary>{f.question}</summary>
+                <p>{f.answer}</p>
+              </details>
+            ))}
+          </div>
+        )}
+
+        <div class="b-sub">
+          <SubscribeForm
+            heading="Get the next build."
+            desc="I send the recipe when I ship something new with AI. Real builds only, no fluff."
+            button="Send it"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.b-copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const el = document.getElementById(btn.dataset.copyTarget || '');
+      if (!el) return;
+      try {
+        await navigator.clipboard.writeText(el.textContent || '');
+        btn.textContent = 'Copied';
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+        btn.textContent = 'Selected, now copy';
+      }
+      setTimeout(() => { btn.textContent = 'Copy prompt'; }, 2000);
+    });
+  });
+</script>
+
+<style>
+  .b-wrap {
+    max-width: 860px;
+    margin-inline: auto;
+    padding-inline: var(--container-fluid-margin);
+  }
+
+  /* Hero */
+  .b-hero {
+    background-color: var(--color-cream);
+    padding-block: var(--space-24) var(--space-16);
+  }
+  .b-back {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-gold);
+    margin-bottom: var(--space-6);
+  }
+  .b-back::before { content: '← '; }
+  .b-hero h1 {
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    margin-bottom: var(--space-6);
+  }
+  .b-what {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--gray-700);
+    max-width: 60ch;
+    margin-bottom: var(--space-8);
+  }
+  .b-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-10);
+    margin: 0 0 var(--space-8);
+  }
+  .b-meta dt {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+  .b-meta dd { margin: 0; font-size: var(--text-base); }
+  .b-tldr {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    border-left: 2px solid var(--color-gold);
+    padding-left: var(--space-5);
+    max-width: 62ch;
+  }
+
+  /* Starter */
+  .b-starter {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    border-radius: 48px 48px 0 0;
+    padding-block: var(--space-16) var(--space-20);
+  }
+  .b-starter-label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: var(--space-4);
+  }
+  .b-starter h2 {
+    color: var(--color-cream);
+    font-size: clamp(var(--text-2xl), 3.5vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-6);
+  }
+  .b-starter-intro {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: rgba(247, 247, 245, 0.75);
+    max-width: 60ch;
+    margin-bottom: var(--space-8);
+  }
+  .b-steps {
+    list-style: decimal;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-8);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+  }
+  .b-steps li { margin-bottom: var(--space-3); }
+  .b-steps li::marker { color: var(--color-gold); }
+  .b-prompt {
+    background-color: var(--color-forest);
+    border: 1px solid rgba(247, 247, 245, 0.12);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-8);
+  }
+  .b-prompt-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid rgba(247, 247, 245, 0.12);
+    font-size: var(--text-sm);
+    color: var(--color-blush);
+  }
+  .b-copy {
+    font-family: var(--ff-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semi);
+    background: var(--color-gold);
+    color: var(--color-cream);
+    border: 0;
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-5);
+    cursor: pointer;
+  }
+  .b-copy:hover { opacity: 0.85; }
+  .b-prompt pre {
+    margin: 0;
+    padding: var(--space-6) var(--space-5);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-cream);
+    max-height: 520px;
+    overflow: auto;
+  }
+  .b-get {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: rgba(247, 247, 245, 0.75);
+    max-width: 62ch;
+  }
+  .b-get strong { color: var(--color-cream); }
+
+  /* Body */
+  .b-body-section {
+    background-color: var(--color-cream);
+    padding-block: var(--space-16) var(--space-24);
+  }
+  .b-section-title {
+    font-size: clamp(var(--text-2xl), 3vw, var(--text-3xl));
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-8);
+  }
+  .b-body {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+  }
+  .b-body :global(p) { margin-bottom: var(--space-6); max-width: none; }
+  .b-body :global(h3) { font-size: var(--text-xl); margin: var(--space-12) 0 var(--space-4); }
+  .b-body :global(ol) { list-style: decimal; }
+  .b-body :global(ul) { list-style: disc; }
+  .b-body :global(ol), .b-body :global(ul) { padding-left: var(--space-6); margin-bottom: var(--space-6); }
+  .b-body :global(li) { margin-bottom: var(--space-3); }
+  .b-body :global(li::marker) { color: var(--color-gold); }
+  .b-body :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 0 1px rgba(153, 97, 22, 0.12), 0 12px 32px rgba(18, 24, 27, 0.08);
+    margin: var(--space-4) 0 var(--space-2);
+  }
+  .b-body :global(img + em), .b-body :global(p > em:only-child) {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+  }
+  .b-body :global(a) {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .b-body :global(code) {
+    font-size: 0.9em;
+    background: var(--gray-200);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+
+  .b-limit {
+    margin: var(--space-12) 0;
+    padding: var(--space-8);
+    background-color: var(--gray-100);
+    border-radius: var(--radius-lg);
+  }
+  .b-limit-label {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semi);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: var(--space-3);
+  }
+  .b-limit p:last-child { font-size: var(--text-lg); line-height: var(--leading-relaxed); margin: 0; }
+
+  .b-faq { margin: var(--space-16) 0; }
+  .b-faq details {
+    border-top: 1px solid var(--gray-300);
+    padding: var(--space-5) 0;
+  }
+  .b-faq details:last-child { border-bottom: 1px solid var(--gray-300); }
+  .b-faq summary {
+    font-family: var(--ff-heading);
+    font-size: var(--text-lg);
+    cursor: pointer;
+  }
+  .b-faq details p { margin-top: var(--space-3); line-height: var(--leading-relaxed); }
+
+  .b-sub { margin-top: var(--space-16); }
+
+  @media (max-width: 767px) {
+    .b-hero { padding-block: var(--space-16) var(--space-12); }
+    .b-starter { border-radius: 32px 32px 0 0; padding-block: var(--space-12) var(--space-16); }
+    .b-limit { padding: var(--space-6); }
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+
+const builds = (await getCollection('builds'))
+  .filter((b) => import.meta.env.DEV || !b.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<BaseLayout
+  title="Builds | Kaye Putnam"
+  description="Things I've built with AI, and a 10-minute version of each you can run today."
+>
+  <Nav />
+  <main style="padding-top: var(--site-header-height);">
+    <header class="bi-header">
+      <div class="bi-wrap">
+        <h1>Builds</h1>
+        <p>Real things I've built with AI. Each one comes with a 10-minute version you can copy and run today, no code required.</p>
+      </div>
+    </header>
+
+    <section class="bi-list-section">
+      <div class="bi-wrap">
+        {builds.length === 0 ? (
+          <p class="bi-empty">The first recipe lands here soon. Get it in your inbox:</p>
+        ) : (
+          <ul class="bi-list">
+            {builds.map((b) => (
+              <li>
+                <a href={`/builds/${b.data.slug}`} class="bi-row">
+                  {b.data.image && (
+                    <div class="bi-img"><img src={b.data.image} alt={b.data.imageAlt || ''} loading="lazy" /></div>
+                  )}
+                  <div class="bi-body">
+                    <h2>{b.data.title}</h2>
+                    <p>{b.data.whatItDoes}</p>
+                    <span class="bi-cta">Get the 10-minute version →</span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div class="bi-sub">
+          <SubscribeForm
+            heading="Get the next build."
+            desc="I send the recipe when I ship something new with AI. Real builds only, no fluff."
+            button="Send it"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .bi-wrap { max-width: 1000px; margin-inline: auto; padding-inline: var(--container-fluid-margin); }
+  .bi-header {
+    background-color: var(--color-cream);
+    border-bottom: 1px solid var(--gray-300);
+    padding-block: var(--space-32) var(--space-16);
+  }
+  .bi-header h1 { margin-bottom: var(--space-4); }
+  .bi-header p { font-size: var(--text-lg); color: var(--gray-700); line-height: var(--leading-relaxed); max-width: 56ch; }
+  .bi-list-section { background-color: var(--color-cream); padding-block: var(--space-12) var(--space-24); }
+  .bi-list { list-style: none; padding: 0; margin: 0; }
+  .bi-list li { border-top: 1px solid var(--gray-300); }
+  .bi-list li:last-child { border-bottom: 1px solid var(--gray-300); }
+  .bi-row {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-8) 0;
+    color: var(--color-ink);
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+  .bi-row:hover { opacity: 0.7; }
+  .bi-img { width: 200px; aspect-ratio: 4 / 3; flex-shrink: 0; border-radius: var(--radius-lg); overflow: hidden; background: var(--gray-200); }
+  .bi-img img { width: 100%; height: 100%; object-fit: cover; }
+  .bi-body h2 {
+    font-size: clamp(var(--text-xl), 2.4vw, var(--text-2xl));
+    line-height: var(--leading-snug);
+    font-weight: var(--weight-regular);
+    margin-bottom: var(--space-3);
+  }
+  .bi-body p { font-size: var(--text-base); color: var(--gray-700); line-height: var(--leading-relaxed); margin-bottom: var(--space-3); }
+  .bi-cta { font-size: var(--text-sm); font-weight: var(--weight-semi); color: var(--color-gold); }
+  .bi-empty { font-size: var(--text-lg); color: var(--gray-700); }
+  .bi-sub { margin-top: var(--space-16); }
+  @media (max-width: 767px) {
+    .bi-row { flex-direction: column; align-items: stretch; gap: var(--space-4); }
+    .bi-img { width: 100%; }
+  }
+</style>
