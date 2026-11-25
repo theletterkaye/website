@@ -97,6 +97,9 @@ const builds = defineCollection({
     image: z.string().optional(),
     imageAlt: z.string().optional(),
     ogImage: z.string().optional(),
+    // Tall full-page phone screenshot; renders in a phone frame beside the hero and scrolls slowly.
+    heroPhone: z.string().optional(),
+    heroPhoneAlt: z.string().optional(),
 
     tldr: z.string(),
     faq: z.array(z.object({

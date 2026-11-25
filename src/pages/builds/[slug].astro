@@ -45,15 +45,24 @@ const jsonLd = {
 
   <main style="padding-top: var(--site-header-height);">
     <header class="b-hero">
-      <div class="b-wrap">
-        <a href="/builds" class="b-back">Builds</a>
-        <h1>{d.title}</h1>
-        <p class="b-what">{d.whatItDoes}</p>
-        <dl class="b-meta">
-          <div><dt>Built with</dt><dd>{d.tools.join(', ')}</dd></div>
-          <div><dt>Time to build</dt><dd>{d.timeToBuild}</dd></div>
-        </dl>
-        <p class="b-tldr">{d.tldr}</p>
+      <div class:list={['b-wrap', { 'b-hero-grid': !!d.heroPhone }]}>
+        <div class="b-hero-text">
+          <a href="/builds" class="b-back">Builds</a>
+          <h1>{d.title}</h1>
+          <p class="b-what">{d.whatItDoes}</p>
+          <dl class="b-meta">
+            <div><dt>Built with</dt><dd>{d.tools.join(', ')}</dd></div>
+            <div><dt>Time to build</dt><dd>{d.timeToBuild}</dd></div>
+          </dl>
+          <p class="b-tldr">{d.tldr}</p>
+        </div>
+        {d.heroPhone && (
+          <div class="b-phone" role="img" aria-label={d.heroPhoneAlt || d.title}>
+            <div class="b-phone-screen">
+              <img src={d.heroPhone} alt="" loading="eager" decoding="async" />
+            </div>
+          </div>
+        )}
       </div>
     </header>
 
@@ -149,6 +158,68 @@ const jsonLd = {
     background-color: var(--color-cream);
     padding-block: var(--space-24) var(--space-16);
   }
+  /* Hero with a phone: text left, phone right */
+  .b-hero-grid {
+    max-width: 1160px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-16);
+    align-items: center;
+  }
+  .b-phone {
+    --pw: 300px;
+    --ph: 620px;
+    --bezel: 11px;
+    --status: 40px;
+    width: var(--pw);
+    height: var(--ph);
+    padding: var(--bezel);
+    border-radius: 48px;
+    background: var(--color-ink);
+    box-shadow:
+      0 0 0 1px rgba(18, 24, 27, 0.6),
+      0 2px 0 1px rgba(255, 255, 255, 0.06) inset,
+      0 40px 80px -20px rgba(18, 24, 27, 0.35),
+      0 18px 36px -18px rgba(18, 24, 27, 0.3);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .b-phone::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--bezel) + 10px);
+    left: 50%;
+    width: 86px;
+    height: 24px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: var(--color-ink);
+    z-index: 2;
+  }
+  .b-phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 37px;
+    overflow: hidden;
+    background: var(--color-cream);
+    padding-top: var(--status);
+  }
+  .b-phone-screen img {
+    width: 100%;
+    height: auto;
+    display: block;
+    animation: phone-scroll 60s ease-in-out infinite;
+  }
+  .b-phone:hover .b-phone-screen img { animation-play-state: paused; }
+  @keyframes phone-scroll {
+    0%, 5% { transform: translateY(0); }
+    47%, 53% { transform: translateY(calc(-100% + var(--ph) - 2 * var(--bezel) - var(--status))); }
+    95%, 100% { transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .b-phone-screen img { animation: none; }
+  }
+
   .b-back {
     display: inline-block;
     font-size: var(--text-sm);
@@ -351,6 +422,11 @@ const jsonLd = {
   .b-faq details p { margin-top: var(--space-3); line-height: var(--leading-relaxed); }
 
   .b-sub { margin-top: var(--space-16); }
+
+  @media (max-width: 959px) {
+    .b-hero-grid { grid-template-columns: 1fr; gap: var(--space-12); }
+    .b-phone { justify-self: center; --pw: 260px; --ph: 540px; }
+  }
 
   @media (max-width: 767px) {
     .b-hero { padding-block: var(--space-16) var(--space-12); }

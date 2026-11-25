@@ -45,6 +45,8 @@ limitation: "It can tell me my follows are low. It can't tell me why. The number
 
 image: "/builds/instagram-dashboard/cover.jpg"
 imageAlt: "Kaye's Instagram dashboard: a 90-day follower goal bar, a day streak, a level, and badges."
+heroPhone: "/builds/instagram-dashboard/phone-full.jpg"
+heroPhoneAlt: "The full dashboard on a phone: follower goal bar, streak, level, today's posts, the week's progress, the shoot list, the schedule, follows by post, results, tests, and badges."
 tldr: "Kaye Putnam built a private Instagram dashboard with Claude Code in 1-2 hours that turns a 90-day follower goal into a game, with a pace line, streaks, levels, and badges, so she stops opening Instagram to check numbers. Anyone can build a simpler version in about 10 minutes by giving Claude screenshots of their post insights and the prompt on this page."
 faq:
   - question: "Do I need to know how to code?"
