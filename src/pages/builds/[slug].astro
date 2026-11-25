@@ -23,7 +23,7 @@ const jsonLd = {
       '@type': 'HowTo',
       name: d.starter.title,
       description: d.starter.intro,
-      totalTime: 'PT10M',
+      totalTime: `PT${parseInt(d.starter.time) || 10}M`,
       tool: d.tools.map((t) => ({ '@type': 'HowToTool', name: t })),
       step: [...d.starter.steps, 'Paste the prompt below and run it.'].map((s, i) => ({
         '@type': 'HowToStep', position: i + 1, text: s,
@@ -52,7 +52,7 @@ const jsonLd = {
           <p class="b-what">{d.whatItDoes}</p>
           <dl class="b-meta">
             <div><dt>Built with</dt><dd>{d.tools.join(', ')}</dd></div>
-            <div><dt>Time to build</dt><dd>{d.timeToBuild}</dd></div>
+            <div><dt>{d.timeLabel}</dt><dd>{d.timeToBuild}</dd></div>
           </dl>
           <p class="b-tldr">{d.tldr}</p>
         </div>
@@ -68,7 +68,7 @@ const jsonLd = {
 
     <section class="b-starter" id="try-it">
       <div class="b-wrap">
-        <p class="b-starter-label">Try it in 10 minutes</p>
+        <p class="b-starter-label">Try it in {d.starter.time}</p>
         <h2>{d.starter.title}</h2>
         <p class="b-starter-intro">{d.starter.intro}</p>
         {d.starter.steps.length > 0 && (

@@ -80,11 +80,15 @@ const builds = defineCollection({
     keyword: z.string(),
     tools: z.array(z.string()),
     timeToBuild: z.string(),
+    // Label for the timeToBuild value, e.g. "Running since" when the build time isn't known.
+    timeLabel: z.string().default('Time to build'),
     whatItDoes: z.string(),
     publishDate: z.coerce.date(),
     draft: z.boolean().default(true),
 
     starter: z.object({
+      // Honest total time including gathering inputs, e.g. "10 minutes", "20 minutes".
+      time: z.string().default('10 minutes'),
       title: z.string(),
       intro: z.string(),
       steps: z.array(z.string()).default([]),
